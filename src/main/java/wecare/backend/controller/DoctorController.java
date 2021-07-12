@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import wecare.backend.exception.UserCollectionException;
+import wecare.backend.model.ClinicSchedule;
 import wecare.backend.model.Doctor;
 import wecare.backend.service.DoctorService;
 
@@ -34,4 +35,8 @@ public class DoctorController {
 		List<Doctor> doctors = doctorService.getAllDoctors();
 		return doctors;
 	}
+	
+	
+	
+	
 }

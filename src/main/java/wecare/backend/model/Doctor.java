@@ -53,6 +53,7 @@ public class Doctor {
 		@Column(name="Clinic_ID")
 		private String clinic;
 		
+		
 		public Integer getId() {
 			return id;
 		}
