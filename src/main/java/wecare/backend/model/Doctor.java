@@ -20,6 +20,7 @@ public class Doctor {
 		@Column(name="ID")
 		private Integer id;	
 		
+	
 		@Column(name="First_Name")
 		private String firstName;
 		
@@ -30,19 +31,10 @@ public class Doctor {
 		private String email;
 		
 		@Column(name="NIC")
-		private String nic;
-		
-		@Column(name="Address1")
-		private String address1;
-		
-		@Column(name="Address2")
-		private String address2;
+		private String nic;	
 		
 		@Column(name="Mobile")
-		private Integer mobile;
-		
-		@Column(name="Password")
-		private String password;
+		private Integer mobile;		
 		
 		@Column(name="Qualification")
 		private String qualification;
@@ -84,29 +76,11 @@ public class Doctor {
 		public void setNic(String nic) {
 			this.nic = nic;
 		}
-		public String getAddress1() {
-			return address1;
-		}
-		public void setAddress1(String address1) {
-			this.address1 = address1;
-		}
-		public String getAddress2() {
-			return address2;
-		}
-		public void setAddress2(String address2) {
-			this.address2 = address2;
-		}
 		public Integer getMobile() {
 			return mobile;
 		}
 		public void setMobile(Integer mobile) {
 			this.mobile = mobile;
-		}
-		public String getPassword() {
-			return password;
-		}
-		public void setPassword(String password) {
-			this.password = password;
 		}
 		public String getQualification() {
 			return qualification;
@@ -126,14 +100,13 @@ public class Doctor {
 		public void setClinic(String clinic) {
 			this.clinic = clinic;
 		}
+	
 		@Override
 		public String toString() {
 			return "Doctor [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
-					+ ", nic=" + nic + ", address1=" + address1 + ", address2=" + address2 + ", mobile=" + mobile
-					+ ", password=" + password + ", qualification=" + qualification + ", specialty=" + specialty
-					+ ", clinic=" + clinic + "]";
+					+ ", nic=" + nic + ", mobile=" + mobile + ", qualification=" + qualification + ", specialty="
+					+ specialty + ", clinic=" + clinic + "]";
 		}
-	
 		
 		
 }

@@ -13,6 +13,7 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name="nurse")
 public class Nurse {
 	
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
 	@GenericGenerator(name="native",strategy = "native")
@@ -31,17 +32,8 @@ public class Nurse {
 	@Column(name="NIC")
 	private String nic;
 	
-	@Column(name="Address1")
-	private String address1;
-	
-	@Column(name="Address2")
-	private String address2;
-	
 	@Column(name="Mobile")
-	private Integer mobile;
-	
-	@Column(name="Password")
-	private String password;
+	private Integer mobile;	
 	
 	@Column(name="Qualification")
 	private String qualification;
@@ -83,30 +75,14 @@ public class Nurse {
 	public void setNic(String nic) {
 		this.nic = nic;
 	}
-	public String getAddress1() {
-		return address1;
-	}
-	public void setAddress1(String address1) {
-		this.address1 = address1;
-	}
-	public String getAddress2() {
-		return address2;
-	}
-	public void setAddress2(String address2) {
-		this.address2 = address2;
-	}
+	
 	public Integer getMobile() {
 		return mobile;
 	}
 	public void setMobile(Integer mobile) {
 		this.mobile = mobile;
 	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
+	
 	public String getQualification() {
 		return qualification;
 	}
@@ -126,5 +102,10 @@ public class Nurse {
 		this.clinic = clinic;
 	}
 	
-	
+	@Override
+	public String toString() {
+		return "Nurse [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", nic="
+				+ nic + ", mobile=" + mobile + ", qualification=" + qualification + ", type=" + type + ", clinic="
+				+ clinic + "]";
+	}
 }
