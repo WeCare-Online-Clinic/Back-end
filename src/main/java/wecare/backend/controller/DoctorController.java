@@ -35,6 +35,9 @@ public class DoctorController {
 		List<Doctor> doctors = doctorService.getAllDoctors();
 		return doctors;
 	}
+
+
+
 	
 	
 	

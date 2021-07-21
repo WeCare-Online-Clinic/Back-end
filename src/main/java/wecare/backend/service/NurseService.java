@@ -19,7 +19,7 @@ public class NurseService {
 	public Nurse addNurse(Nurse nurse) throws UserCollectionException{
 		Nurse resultedNurse = nurseRepo.findByEmail(nurse.getEmail());
 		if(resultedNurse==null) {
-			return nurseRepo.save(nurse);
+			return nurseRepo.saveAndFlush(nurse);
 		}
 		else {
 			throw new UserCollectionException(UserCollectionException.UserAlreadyExist());

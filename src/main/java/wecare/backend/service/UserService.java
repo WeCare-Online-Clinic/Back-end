@@ -18,8 +18,14 @@ public class UserService {
 			throw new UserCollectionException(UserCollectionException.NotFoundExeption(user.getEmail()));
 		}
 		else {
+//			if(resultUser.getFirstName()==user.getFirstName()) {
 			return resultUser;
+//			}
+//			else {
+//				return null;
+//			}
 		}
 		
 	}
+
 }

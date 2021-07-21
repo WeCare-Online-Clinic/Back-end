@@ -1,15 +1,13 @@
 package wecare.backend.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.GenericGenerators;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="doctor")
@@ -18,9 +16,8 @@ public class Doctor {
 		@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
 		@GenericGenerator(name="native",strategy = "native")
 		@Column(name="ID")
-		private Integer id;	
-		
-	
+		private Integer id;
+
 		@Column(name="First_Name")
 		private String firstName;
 		
@@ -41,9 +38,25 @@ public class Doctor {
 		
 		@Column(name="Specialty")
 		private String specialty;
-		
+
 		@Column(name="Clinic_ID")
-		private String clinic;
+		private Integer clinicId;
+		
+		
+		@OneToMany(targetEntity = DoctorSchedule.class,cascade = CascadeType.ALL)
+		@JoinColumn(name="Doctor_ID",referencedColumnName = "id")
+		private List<DoctorSchedule> doctorSchedule;
+		
+		public List<DoctorSchedule> getDoctorSchedule() {
+			if(doctorSchedule ==null) {
+				doctorSchedule = new ArrayList<>();
+			}
+			return doctorSchedule;
+		}
+		
+		public void setDoctorSchedule(List<DoctorSchedule> doctorSchedule) {
+			this.doctorSchedule = doctorSchedule;
+		}
 		
 		
 		public Integer getId() {
@@ -94,19 +107,29 @@ public class Doctor {
 		public void setSpecialty(String specialty) {
 			this.specialty = specialty;
 		}
-		public String getClinic() {
-			return clinic;
+		public Integer getClinicId() {	return clinicId;}
+		public void setClinicId(Integer clinicId) {
+			this.clinicId = clinicId;
 		}
-		public void setClinic(String clinic) {
-			this.clinic = clinic;
-		}
+
 	
+
 		@Override
 		public String toString() {
-			return "Doctor [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
-					+ ", nic=" + nic + ", mobile=" + mobile + ", qualification=" + qualification + ", specialty="
-					+ specialty + ", clinic=" + clinic + "]";
+			return "Doctor{" +
+					"id=" + id +
+					", firstName='" + firstName + '\'' +
+					", lastName='" + lastName + '\'' +
+					", email='" + email + '\'' +
+					", nic='" + nic + '\'' +
+					", mobile=" + mobile +
+					", qualification='" + qualification + '\'' +
+					", specialty='" + specialty + '\'' +
+					", clinicId='" + clinicId + '\'' +
+					'}';
 		}
-		
+
+	
+
 		
 }

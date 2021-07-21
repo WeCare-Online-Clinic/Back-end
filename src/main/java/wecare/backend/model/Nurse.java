@@ -1,10 +1,16 @@
 package wecare.backend.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -20,6 +26,7 @@ public class Nurse {
 	@Column(name="ID")
 	private Integer id;
 	
+
 	@Column(name="First_Name")	
 	private String firstName;
 	
@@ -42,8 +49,25 @@ public class Nurse {
 	private Integer type;
 	
 	@Column(name="Clinic_ID")
-	private String clinic;
+	private Integer clinicId;	
 	
+
+
+	@OneToMany(targetEntity =  NurseSchedule.class,cascade = CascadeType.ALL)
+	@JoinColumn(name="Nurse_ID",referencedColumnName = "id")
+	private List<NurseSchedule> nurseSchedule;
+		
+	
+	
+	public List<NurseSchedule> getNurseSchedule() {
+		if(nurseSchedule==null) {
+			nurseSchedule =new ArrayList<>();
+		}
+		return nurseSchedule;
+	}
+	public void setNurseSchedule(List<NurseSchedule> nurseSchedule) {
+		this.nurseSchedule = nurseSchedule;
+	}
 	
 	public Integer getId() {
 		return id;
@@ -95,17 +119,17 @@ public class Nurse {
 	public void setType(Integer type) {
 		this.type = type;
 	}
-	public String getClinic() {
-		return clinic;
+	public Integer getClinicId() {
+		return clinicId;
 	}
-	public void setClinic(String clinic) {
-		this.clinic = clinic;
+	public void setClinicId(Integer clinicId) {
+		this.clinicId = clinicId;
 	}
 	
 	@Override
 	public String toString() {
 		return "Nurse [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", nic="
-				+ nic + ", mobile=" + mobile + ", qualification=" + qualification + ", type=" + type + ", clinic="
-				+ clinic + "]";
+				+ nic + ", mobile=" + mobile + ", qualification=" + qualification + ", type=" + type + ", clinicId="
+				+ clinicId + ", nurseSchedule=" + nurseSchedule + "]";
 	}
 }
