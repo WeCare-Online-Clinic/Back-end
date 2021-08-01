@@ -3,7 +3,8 @@ package wecare.backend.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import wecare.backend.model.ClinicSchedule;
 
@@ -15,6 +16,7 @@ public interface ClinicRepository extends JpaRepository<ClinicSchedule, Integer>
 	
 	List<ClinicSchedule> findByClinicName(String clinicName);
 	
-	
+	@Query("FROM ClinicSchedule")
+	public List<ClinicSchedule> getClinicShedule(@Param(value="doctor_id") Integer id);
 
 } 

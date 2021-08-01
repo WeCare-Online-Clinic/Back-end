@@ -12,6 +12,7 @@ import wecare.backend.model.ClinicSchedule;
 @Repository
 public interface DoctorRepository extends JpaRepository<Doctor, String> {
 		Doctor findByEmail(String email);
+		Doctor findById(Integer id);
 		
 //		@Query("SELECT s FROM Student s WHERE name=:name")
 //		public Student getStudentByName(@Param(value="name") String name);

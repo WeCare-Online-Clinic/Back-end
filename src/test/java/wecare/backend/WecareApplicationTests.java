@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import wecare.backend.exception.UserCollectionException;
+import wecare.backend.model.ClinicSchedule;
 import wecare.backend.model.Doctor;
 import wecare.backend.model.DoctorSchedule;
 import wecare.backend.repository.DoctorRepository;
@@ -28,17 +29,25 @@ class WecareApplicationTests {
 	void saveDoctor() throws UserCollectionException {
 		
 		Doctor d = new Doctor();
-		d.setClinicId(01);
-		doctorservice.addDoctor(d);
+		
+		d.setFirstName("bac");
+		d.setClinicId(100);
+		
 		DoctorSchedule x = new DoctorSchedule();
+		ClinicSchedule s = new ClinicSchedule();
+		s.setClinicName("NAme");
+
 		d.getDoctorSchedule().add(x);
 		
+		doctorservice.addDoctor(d);
 		
+	}
+	
+
+	@Test
+	void getDoctorShedule() throws UserCollectionException {
 		
-		
-		doctorRepo.saveAndFlush(d);
-		
-		
+		doctorservice.getDoctorScheduleById(73);
 		
 	}
 
