@@ -2,9 +2,12 @@ package wecare.backend.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -18,9 +21,11 @@ public class NurseSchedule {
 	@GenericGenerator(name="native",strategy = "native")
 	private Integer id;
 	
-	@Column(name="Clinic_SID")
-	private Integer sId;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="Clinic_SID",referencedColumnName = "ID")
+	private ClinicSchedule clinicSchedule;
 	
+
 	public Integer getId() {
 		return id;
 	}
@@ -29,13 +34,14 @@ public class NurseSchedule {
 		this.id = id;
 	}
 
-	public Integer getsId() {
-		return sId;
+	public ClinicSchedule getClinicSchedule(){
+		return clinicSchedule;
+	}
+	
+	public void setClinicSchedule(ClinicSchedule clinicSchedule){
+		this.clinicSchedule = clinicSchedule;
 	}
 
-	public void setsId(Integer sId) {
-		this.sId = sId;
-	}
 
 
 }
