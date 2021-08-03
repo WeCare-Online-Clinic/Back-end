@@ -3,6 +3,7 @@ package wecare.backend.service;
 
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,5 +31,10 @@ public class NurseService {
 	public List<Nurse> getAllNurses(){
 		List<Nurse> nurses = nurseRepo.findAll();
 		return nurses;
+	}
+	
+	public Optional<Nurse> getNurseProfileById(Integer id) {
+		Optional<Nurse> nurse = nurseRepo.findById(id);
+		return nurse;
 	}
 }
