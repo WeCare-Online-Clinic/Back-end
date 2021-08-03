@@ -15,10 +15,10 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table(name="nurse_schedule")
 public class NurseSchedule {
-	@Id
-	@Column(name="ID")
+	@Id	
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
 	@GenericGenerator(name="native",strategy = "native")
+	@Column(name="nurse_schedule_ID")
 	private Integer id;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
