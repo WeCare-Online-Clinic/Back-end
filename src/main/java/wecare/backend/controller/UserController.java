@@ -24,7 +24,7 @@ public class UserController {
 	
 	@PostMapping("/userlogin")
 	public ResponseEntity<User> getuserDetails(@RequestBody User user) throws UserCollectionException {	
-		// LOG.info("START : Get a user");
+		//LOG.info("START : Get a user");
 		return new ResponseEntity<>(userService.getSingleUser(user), HttpStatus.OK);
 	}
 }

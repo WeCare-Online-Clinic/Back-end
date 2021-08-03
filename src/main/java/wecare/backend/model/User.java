@@ -3,50 +3,52 @@ package wecare.backend.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+
 import javax.persistence.Table;
 
 import org.springframework.stereotype.Component;
 
 @Component
 @Entity
-@Table(name="user")
+@Table(name="users")
 public class User {
-	
-	@Id	
+
+	@Id
+	@Column(name="id")
 	private String id;
+
+	@Column(name="role")
+	private String role;
 	
-	@Column(name="firstname")
-	private String firstName;
-	
-	@Column(name="usertype")
-	private String userType;
-	
+	@Column(name="verification_string")
+	private String verificationString; 
+
+	@Column(name="verified")
+	private String verified; 
+
+	@Column(name="password")
+	private String password; 
+
 	@Column(name="email")
-	private String email; 
+	private String email;
 	
-	public String getId() {
-		return id;
+	public String getUserRole() {
+		return role;
 	}
-	public void setId(String id) {
-		this.id = id;
+
+	public void setUserRole(String role) {
+		this.role = role;
 	}
-	public String getFirstName() {
-		return firstName;
-	}
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-	public String getUserType() {
-		return userType;
-	}
-	public void setUserType(String userType) {
-		this.userType = userType;
-	}
+
 	public String getEmail() {
 		return email;
 	}
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
 
+	public String getPassword(String password){
+		return password;
+	}
 }
