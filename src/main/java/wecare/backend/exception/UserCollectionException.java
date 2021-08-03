@@ -15,4 +15,8 @@ public class UserCollectionException extends Exception {
 	public static String UserAlreadyExist() {
 		return "email is alreay existing";
 	}
+
+	public static String UserPasswordWrong(String password) {
+		return "Password entered is wrong "+password;
+	}
 }

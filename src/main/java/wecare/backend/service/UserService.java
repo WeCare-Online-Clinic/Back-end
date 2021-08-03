@@ -18,14 +18,13 @@ public class UserService {
 			throw new UserCollectionException(UserCollectionException.NotFoundExeption(user.getEmail()));
 		}
 		else {
-//			if(resultUser.getFirstName()==user.getFirstName()) {
-			return resultUser;
-//			}
-//			else {
-//				return null;
-//			}
+			if (user.getPassword().equals(resultUser.getPassword())) {
+				return resultUser;
+			}
+			else{
+				throw new UserCollectionException(UserCollectionException.UserPasswordWrong(user.getPassword()));
+			}
 		}
 		
 	}
-
 }
