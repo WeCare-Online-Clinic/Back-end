@@ -30,12 +30,10 @@ class WecareApplicationTests {
 		
 		Doctor d = new Doctor();
 		
-		d.setFirstName("bac");
-		d.setClinicId(100);
-		
+		d.setName("bac");
+
 		DoctorSchedule x = new DoctorSchedule();
 		ClinicSchedule s = new ClinicSchedule();
-		s.setClinicName("NAme");
 
 		d.getDoctorSchedule().add(x);
 		

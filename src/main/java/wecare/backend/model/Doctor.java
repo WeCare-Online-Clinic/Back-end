@@ -15,40 +15,37 @@ public class Doctor {
 		@Id
 		@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
 		@GenericGenerator(name="native",strategy = "native")
-		@Column(name="ID")
+		@Column(name="id")
 		private Integer id;
 
-		@Column(name="First_Name")
-		private String firstName;
-		
-		@Column(name="Last_Name")
-		private String lastName;
-		
-		@Column(name="Email")
+		@Column(name="name")
+		private String name;
+
+		@Column(name="email")
 		private String email;
 		
-		@Column(name="NIC")
-		private String nic;	
+		@Column(name="doctor_id")
+		private String doctorId;
 		
-		@Column(name="Mobile")
-		private Integer mobile;		
+		@Column(name="contact")
+		private Integer contact;
 		
-		@Column(name="Qualification")
+		@Column(name="qualification")
 		private String qualification;
 		
-		@Column(name="Specialty")
-		private String specialty;
+		@Column(name="specialization")
+		private String specialization;
 
-		@Column(name="Clinic_ID")
-		private Integer clinicId;
-		
-		
-		@OneToMany(targetEntity = DoctorSchedule.class,cascade = CascadeType.ALL)
-		@JoinColumn(name="Doctor_ID",referencedColumnName = "id")
+		@OneToOne(fetch = FetchType.EAGER)
+		@JoinColumn(name = "clinic_id", referencedColumnName = "id")
+		private Clinic clinic;
+
+		@OneToOne(targetEntity = DoctorSchedule.class,cascade = CascadeType.ALL)
+		@JoinColumn(name="doctor_id",referencedColumnName = "id")
 		private List<DoctorSchedule> doctorSchedule;
 		
 		public List<DoctorSchedule> getDoctorSchedule() {
-			if(doctorSchedule ==null) {
+			if(doctorSchedule == null) {
 				doctorSchedule = new ArrayList<>();
 			}
 			return doctorSchedule;
@@ -65,17 +62,11 @@ public class Doctor {
 		public void setId(Integer id) {
 			this.id = id;
 		}
-		public String getFirstName() {
-			return firstName;
+		public String getName() {
+			return name;
 		}
-		public void setFirstName(String firstName) {
-			this.firstName = firstName;
-		}
-		public String getLastName() {
-			return lastName;
-		}
-		public void setLastName(String lastName) {
-			this.lastName = lastName;
+		public void setName(String name) {
+			this.name = name;
 		}
 		public String getEmail() {
 			return email;
@@ -83,17 +74,15 @@ public class Doctor {
 		public void setEmail(String email) {
 			this.email = email;
 		}
-		public String getNic() {
-			return nic;
+		public String getDoctorId() { return doctorId; }
+		public void setDoctorId(String doctorId) {
+			this.doctorId = doctorId;
 		}
-		public void setNic(String nic) {
-			this.nic = nic;
+		public Integer getContact() {
+			return contact;
 		}
-		public Integer getMobile() {
-			return mobile;
-		}
-		public void setMobile(Integer mobile) {
-			this.mobile = mobile;
+		public void setContact(Integer contact) {
+			this.contact = contact;
 		}
 		public String getQualification() {
 			return qualification;
@@ -101,31 +90,25 @@ public class Doctor {
 		public void setQualification(String qualification) {
 			this.qualification = qualification;
 		}
-		public String getSpecialty() {
-			return specialty;
+		public String getSpecialization() {
+			return specialization;
 		}
-		public void setSpecialty(String specialty) {
-			this.specialty = specialty;
+		public void setSpecialization(String specialization) {
+			this.specialization = specialization;
 		}
-		public Integer getClinicId() {	return clinicId;}
-		public void setClinicId(Integer clinicId) {
-			this.clinicId = clinicId;
-		}
-
-	
+		public Clinic getClinic() { return clinic;}
 
 		@Override
 		public String toString() {
 			return "Doctor{" +
 					"id=" + id +
-					", firstName='" + firstName + '\'' +
-					", lastName='" + lastName + '\'' +
+					", name='" + name + '\'' +
 					", email='" + email + '\'' +
-					", nic='" + nic + '\'' +
-					", mobile=" + mobile +
+					", doctor_id='" + doctorId + '\'' +
+					", contact=" + contact +
 					", qualification='" + qualification + '\'' +
-					", specialty='" + specialty + '\'' +
-					", clinicId='" + clinicId + '\'' +
+					", specialization='" + specialization + '\'' +
+					", clinic='" + clinic.getName() + '\'' +
 					'}';
 		}
 

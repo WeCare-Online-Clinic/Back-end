@@ -3,15 +3,7 @@ package wecare.backend.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -23,45 +15,38 @@ public class Nurse {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
 	@GenericGenerator(name="native",strategy = "native")
-	@Column(name="ID")
+	@Column(name="id")
 	private Integer id;
-	
 
-	@Column(name="First_Name")	
-	private String firstName;
-	
-	@Column(name="Last_Name")
-	private String lastName;
-	
-	@Column(name="Email")
+	@Column(name="name")
+	private String name;
+
+	@Column(name = "gender")
+	private Character gender;
+
+	@Column(name="email")
 	private String email;
+
+	@Column(name="contact")
+	private Integer contact;
 	
-	@Column(name="NIC")
-	private String nic;
-	
-	@Column(name="Mobile")
-	private Integer mobile;	
-	
-	@Column(name="Qualification")
+	@Column(name="qualification")
 	private String qualification;
 	
-	@Column(name="Type")
-	private Integer type;
-	
-	@Column(name="Clinic_ID")
-	private Integer clinicId;	
-	
+	@Column(name="is_head")
+	private Boolean isHead;
 
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "clinic_id", referencedColumnName = "id")
+	private Clinic clinic;
 
 	@OneToMany(targetEntity =  NurseSchedule.class,cascade = CascadeType.ALL)
-	@JoinColumn(name="Nurse_ID",referencedColumnName = "id")
+	@JoinColumn(name="nurse_id",referencedColumnName = "id")
 	private List<NurseSchedule> nurseSchedule;
-		
-	
-	
+
 	public List<NurseSchedule> getNurseSchedule() {
-		if(nurseSchedule==null) {
-			nurseSchedule =new ArrayList<>();
+		if(nurseSchedule == null) {
+			nurseSchedule = new ArrayList<>();
 		}
 		return nurseSchedule;
 	}
@@ -75,17 +60,11 @@ public class Nurse {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public String getFirstName() {
-		return firstName;
+	public String getName() {
+		return name;
 	}
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-	public String getLastName() {
-		return lastName;
-	}
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	public void setName(String name) {
+		this.name = name;
 	}
 	public String getEmail() {
 		return email;
@@ -93,43 +72,25 @@ public class Nurse {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getNic() {
-		return nic;
+	public Integer getContact() {
+		return contact;
 	}
-	public void setNic(String nic) {
-		this.nic = nic;
+	public void setContact(Integer contact) {
+		this.contact = contact;
 	}
-	
-	public Integer getMobile() {
-		return mobile;
+	public Boolean getIsHead() {
+		return isHead;
 	}
-	public void setMobile(Integer mobile) {
-		this.mobile = mobile;
+	public void setIsHead(Boolean isHead) {
+		this.isHead = isHead;
 	}
-	
-	public String getQualification() {
-		return qualification;
+	public Clinic getClinic() {
+		return clinic;
 	}
-	public void setQualification(String qualification) {
-		this.qualification = qualification;
-	}
-	public Integer getType() {
-		return type;
-	}
-	public void setType(Integer type) {
-		this.type = type;
-	}
-	public Integer getClinicId() {
-		return clinicId;
-	}
-	public void setClinicId(Integer clinicId) {
-		this.clinicId = clinicId;
-	}
-	
+
 	@Override
 	public String toString() {
-		return "Nurse [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", nic="
-				+ nic + ", mobile=" + mobile + ", qualification=" + qualification + ", type=" + type + ", clinicId="
-				+ clinicId + ", nurseSchedule=" + nurseSchedule + "]";
+		return "Nurse [id=" + id + ", name=" + name + ", email=" + email + ", contact=" + contact + ", isHead=" + isHead + ", clinicId="
+				+ clinic.getName() + ", nurseSchedule=" + nurseSchedule + "]";
 	}
 }

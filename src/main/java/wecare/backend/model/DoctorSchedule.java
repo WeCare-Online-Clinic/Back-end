@@ -22,33 +22,25 @@ public class DoctorSchedule {
 	@Id	
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
 	@GenericGenerator(name="native",strategy = "native")
-	@Column(name="doctor_schedule_ID")
+	@Column(name="id")
 	private Integer id;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="Clinic_SID",referencedColumnName = "ID")
+	@JoinColumn(name="clinic_sid",referencedColumnName = "id")
 	private ClinicSchedule clinicSchedule;
-	
-	
+
 	public Integer getId() {
 		return id;
 	}
-
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
-
 	public ClinicSchedule getClinicSchedule() {
 		return clinicSchedule;
 	}
-
-
 	public void setClinicSchedule(ClinicSchedule clinicSchedule) {
 		this.clinicSchedule = clinicSchedule;
 	}
 
-
-	
 }
 
