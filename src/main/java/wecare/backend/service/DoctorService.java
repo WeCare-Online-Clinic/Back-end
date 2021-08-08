@@ -9,7 +9,7 @@ import wecare.backend.exception.UserCollectionException;
 import wecare.backend.model.ClinicSchedule;
 import wecare.backend.model.Doctor;
 import wecare.backend.model.DoctorSchedule;
-import wecare.backend.repository.ClinicRepository;
+import wecare.backend.repository.ClinicScheduleRepository;
 import wecare.backend.repository.DoctorRepository;
 import wecare.backend.repository.DoctorSchedulesRepository;
 
@@ -23,14 +23,13 @@ public class DoctorService {
 	private DoctorSchedulesRepository doctorScheduleRepo;
 	
 	@Autowired
-	private ClinicRepository clinicRepo;
+	private ClinicScheduleRepository clinicScheduleRepo;
 	
 
 	
 	public Doctor addDoctor(Doctor doctor) throws UserCollectionException{
 		Doctor resultDoctor=doctorRepo.findByEmail(doctor.getEmail());
 		if(resultDoctor==null) {
-			doctor.getDoctorSchedule();
 			return doctorRepo.saveAndFlush(doctor);
 		}
 		else {
@@ -43,19 +42,10 @@ public class DoctorService {
 		List<Doctor> doctors =doctorRepo.findAll();
 		return doctors;
 	}
-	
-	
-	public Doctor getDoctorProfileById(Integer id) {
-		Doctor doctor = doctorRepo.findById(id);
-		return doctor;
-	}
-	
+
 	public List<ClinicSchedule> getDoctorScheduleById(Integer id){
-		List<ClinicSchedule> doctorSchedule = clinicRepo.getClinicShedule(id);
+		List<ClinicSchedule> doctorSchedule = clinicScheduleRepo.getClinicShedule(id);
 		return doctorSchedule;
 	}
 
-	
-
-	
 }

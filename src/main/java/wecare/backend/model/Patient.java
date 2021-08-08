@@ -42,14 +42,45 @@ public class Patient {
     @Column(name = "registered_date")
     private Date registeredDate;
 
-    public Integer getId(){ return id; }
-    public String getNic(){ return  nic; }
-    public Character getGender() { return gender; }
-    public Date getBirthdate(){ return  birthdate; }
-    public Integer getContact(){ return  contact; }
-    public String getEmail(){ return email; }
-    public Date getRegisteredDate(){ return  registeredDate; }
-    public String getName(){ return  name; }
+    public Integer getId(){
+
+        return id;
+    }
+
+    public String getNic(){
+
+        return  nic;
+    }
+
+    public Character getGender() {
+
+        return gender;
+    }
+
+    public Date getBirthdate(){
+
+        return  birthdate;
+    }
+
+    public Integer getContact(){
+
+        return  contact;
+    }
+
+    public String getEmail(){
+
+        return email;
+    }
+
+    public Date getRegisteredDate(){
+
+        return  registeredDate;
+    }
+
+    public String getName(){
+
+        return  name;
+    }
 
 }
 

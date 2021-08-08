@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import wecare.backend.model.Clinic;
 import wecare.backend.model.ClinicSchedule;
 import wecare.backend.repository.ClinicRepository;
+import wecare.backend.repository.ClinicScheduleRepository;
 
 @Service
 public class ClinicService {
@@ -19,12 +21,17 @@ public class ClinicService {
 
 	@Autowired
 	private ClinicRepository clinicRepo;
-	
-	public List<ClinicSchedule> getClinicsSchedule(String clinic){	
-		LOG.info("START : clinic Days request {}",clinic);
-		List<ClinicSchedule> clinics = clinicRepo.findByClinicName(clinic);
+	private ClinicScheduleRepository clinicScheduleRepo;
+
+	public List<Clinic> getClinics(){
+		List<Clinic> clinics = clinicRepo.findAll();
 		return clinics;
-		
 	}
-	
+
+	public List<ClinicSchedule> getClinicsSchedule(String clinic){
+		LOG.info("START : clinic Days request {}",clinic);
+		List<ClinicSchedule> clinics = clinicScheduleRepo.findAll();
+		return clinics;
+
+	}
 }

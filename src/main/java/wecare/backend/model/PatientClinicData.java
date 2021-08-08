@@ -31,10 +31,29 @@ public class PatientClinicData {
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     private Doctor doctor;
 
-    public String getNote(){ return  note; }
-    public String getPrescription(){ return  prescription; }
-    public String getLabTests(){ return  labTests; }
-    public ClinicAppointment getClinicAppointment(){ return clinicAppointment; }
-    public Doctor getDoctor(){ return  doctor; }
+    public String getNote(){
+
+        return  note;
+    }
+
+    public String getPrescription(){
+
+        return  prescription;
+    }
+
+    public String getLabTests(){
+
+        return  labTests;
+    }
+
+    public ClinicAppointment getClinicAppointment(){
+
+        return clinicAppointment;
+    }
+
+    public Doctor getDoctor(){
+
+        return  doctor;
+    }
 
 }

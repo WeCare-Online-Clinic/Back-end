@@ -7,13 +7,15 @@ import org.springframework.stereotype.Repository;
 
 
 import wecare.backend.model.Doctor;
-import wecare.backend.model.ClinicSchedule;
+import wecare.backend.model.Nurse;
+
+import java.util.Optional;
 
 @Repository
-public interface DoctorRepository extends JpaRepository<Doctor, String> {
-		Doctor findByEmail(String email);
-		Doctor findById(Integer id);
-		
+public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
+	Optional<Doctor> findById(Integer id);
+	Doctor findByEmail(String email);
+
 //		@Query("SELECT s FROM Student s WHERE name=:name")
 //		public Student getStudentByName(@Param(value="name") String name);
 

@@ -26,9 +26,28 @@ public class LabTechnician {
     @Column(name = "email")
     private String email;
 
-    public Integer getId() { return id; }
-    public String getName() { return name; }
-    public Character getGender(){ return  gender; }
-    public Integer getContact() { return contact; }
-    public String getEmail() { return email; }
+    public Integer getId() {
+
+        return id;
+    }
+
+    public String getName() {
+
+        return name;
+    }
+
+    public Character getGender(){
+
+        return  gender;
+    }
+
+    public Integer getContact() {
+
+        return contact;
+    }
+
+    public String getEmail() {
+
+        return email;
+    }
 }

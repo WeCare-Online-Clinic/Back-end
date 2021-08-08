@@ -35,8 +35,7 @@ class WecareApplicationTests {
 		DoctorSchedule x = new DoctorSchedule();
 		ClinicSchedule s = new ClinicSchedule();
 
-		d.getDoctorSchedule().add(x);
-		
+
 		doctorservice.addDoctor(d);
 		
 	}

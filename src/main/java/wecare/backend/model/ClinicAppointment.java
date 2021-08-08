@@ -38,10 +38,24 @@ public class ClinicAppointment {
     @Column(name = "queue_no")
     private Integer queueNo;
 
-    public Integer getId(){ return id; }
-    public Patient getPatient(){ return patient; }
-    public ClinicDate getClinicDate(){ return clinicDate; }
-    public Time getTime(){ return time; }
-    public Integer getQueueNo(){ return queueNo;}
+    public Integer getId(){
+        return id;
+    }
+
+    public Patient getPatient(){
+        return patient;
+    }
+
+    public ClinicDate getClinicDate(){
+        return clinicDate;
+    }
+
+    public Time getTime(){
+        return time;
+    }
+
+    public Integer getQueueNo(){
+        return queueNo;
+    }
 
 }

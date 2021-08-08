@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import wecare.backend.exception.UserCollectionException;
+import wecare.backend.model.Clinic;
 import wecare.backend.model.ClinicSchedule;
 import wecare.backend.model.Doctor;
 import wecare.backend.model.DoctorSchedule;
@@ -37,14 +38,6 @@ public class DoctorController {
 		List<Doctor> doctors = doctorService.getAllDoctors();
 		return doctors;
 	}
-
-	
-	@GetMapping("/getDoctorProfile/{id}")
-	public Doctor getDocterProfileById(@PathVariable Integer id){
-		Doctor doctor = doctorService.getDoctorProfileById(id);
-		return doctor;
-		
-	}
 	
 	@GetMapping("/getDoctorSchedule/{id}")
 	public List<ClinicSchedule> getDoctorSchedules(@PathVariable Integer id){
@@ -52,9 +45,5 @@ public class DoctorController {
 		return docterSchedule;
 	}
 
-
-	
-	
-	
 	
 }

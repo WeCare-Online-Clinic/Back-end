@@ -20,7 +20,7 @@ import lombok.Data;
 public class DoctorSchedule {
 	
 	@Id	
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "native")
 	@GenericGenerator(name="native",strategy = "native")
 	@Column(name="id")
 	private Integer id;
@@ -29,16 +29,27 @@ public class DoctorSchedule {
 	@JoinColumn(name="clinic_sid",referencedColumnName = "id")
 	private ClinicSchedule clinicSchedule;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="doctor_id",referencedColumnName = "id", nullable = true)
+	private Doctor doctor;
+
 	public Integer getId() {
+
 		return id;
 	}
+
 	public void setId(Integer id) {
+
 		this.id = id;
 	}
+
 	public ClinicSchedule getClinicSchedule() {
+
 		return clinicSchedule;
 	}
+
 	public void setClinicSchedule(ClinicSchedule clinicSchedule) {
+
 		this.clinicSchedule = clinicSchedule;
 	}
 

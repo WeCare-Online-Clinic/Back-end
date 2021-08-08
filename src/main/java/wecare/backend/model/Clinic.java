@@ -1,20 +1,18 @@
 package wecare.backend.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.hibernate.annotations.GenericGenerator;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "clinic")
 public class Clinic {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "native")
     @GenericGenerator(name="native",strategy = "native")
     @Column(name="id")
     private Integer id;
@@ -25,8 +23,29 @@ public class Clinic {
     @Column(name = "description")
     private String description;
 
-    public Integer getId(){ return id; }
-    public String getName(){ return  name; }
-    public String getDescription(){ return description; }
+    @OneToMany(targetEntity = ClinicSchedule.class, cascade = CascadeType.ALL, mappedBy = "clinic")
+    private List<ClinicSchedule> clinicSchedules;
 
+    public List<ClinicSchedule> getClinicSchedules(){
+        if(clinicSchedules == null){
+            clinicSchedules = new ArrayList<>();
+        }
+
+        return clinicSchedules;
+    }
+
+    public Integer getId(){
+
+        return id;
+    }
+
+    public String getName(){
+
+        return  name;
+    }
+
+    public String getDescription(){
+
+        return description;
+    }
 }

@@ -11,8 +11,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,30 +40,37 @@ public class ClinicDate {
     private Integer noPatients;
 
     @Column(name = "queue")
-    private List<Integer> queue;
+    private Integer[] queue;
 
     @Column(name = "summary")
-    private Map <String, String> summary;
+    private String summary;
 
     public Integer getId() {
+
         return id;
     }
     public void setId(Integer id) {
+
         this.id = id;
     }
     public ClinicSchedule getClinicSchedule() {
+
         return clinicSchedule;
     }
     public Date getClinicDate() {
+
         return date;
     }
     public Integer getNoPatients() {
+
         return noPatients;
     }
-    public List getQueue() {
+    public Integer[] getQueue() {
+
         return queue;
     }
-    public Map<String, String> getSummary() {
+    public String getSummary() {
+
         return summary;
     }
 

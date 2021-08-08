@@ -26,15 +26,22 @@ public class NurseSchedule {
 	private ClinicSchedule clinicSchedule;
 
 	public Integer getId() {
+
 		return id;
 	}
+
 	public void setId(Integer id) {
+
 		this.id = id;
 	}
+
 	public ClinicSchedule getClinicSchedule(){
+
 		return clinicSchedule;
 	}
+
 	public void setClinicSchedule(ClinicSchedule clinicSchedule){
+
 		this.clinicSchedule = clinicSchedule;
 	}
 

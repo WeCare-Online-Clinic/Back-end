@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
+import wecare.backend.model.Clinic;
 import wecare.backend.model.ClinicSchedule;
 import wecare.backend.service.ClinicService;
 
@@ -39,6 +40,12 @@ public class ClinicController {
 //			LOG.info("START : clinic Days request {}",clinic);
 			List<ClinicSchedule> clinics= clinicService.getClinicsSchedule(clinic);
 //			LOG.info("START : clinic Days {}",clinics);
+			return clinics;
+		}
+
+		@GetMapping("/getClinics")
+		public List<Clinic> getClinics(){
+			List<Clinic> clinics = clinicService.getClinics();
 			return clinics;
 		}
 }

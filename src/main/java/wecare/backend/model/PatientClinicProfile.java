@@ -38,9 +38,28 @@ public class PatientClinicProfile {
     @Column(name="admission_date")
     private Date admissionDate;
 
-    public Integer getId(){ return id; }
-    public Clinic getClinic(){ return clinic; }
-    public Patient getPatient(){ return  patient; }
-    public String getDiagnosis(){ return  diagnosis; }
-    public Date getAdmissionDate(){ return admissionDate; }
+    public Integer getId(){
+
+        return id;
+    }
+
+    public Clinic getClinic(){
+
+        return clinic;
+    }
+
+    public Patient getPatient(){
+
+        return  patient;
+    }
+
+    public String getDiagnosis(){
+
+        return  diagnosis;
+    }
+
+    public Date getAdmissionDate(){
+
+        return admissionDate;
+    }
 }

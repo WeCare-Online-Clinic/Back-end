@@ -13,7 +13,7 @@ import java.util.List;
 @Table(name="doctor")
 public class Doctor {
 		@Id
-		@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+		@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "native")
 		@GenericGenerator(name="native",strategy = "native")
 		@Column(name="id")
 		private Integer id;
@@ -40,63 +40,94 @@ public class Doctor {
 		@JoinColumn(name = "clinic_id", referencedColumnName = "id")
 		private Clinic clinic;
 
-		@OneToOne(targetEntity = DoctorSchedule.class,cascade = CascadeType.ALL)
-		@JoinColumn(name="doctor_id",referencedColumnName = "id")
-		private List<DoctorSchedule> doctorSchedule;
-		
-		public List<DoctorSchedule> getDoctorSchedule() {
-			if(doctorSchedule == null) {
-				doctorSchedule = new ArrayList<>();
+		@OneToMany(targetEntity = DoctorSchedule.class, cascade = CascadeType.ALL, mappedBy = "doctor")
+		private List<DoctorSchedule> doctorSchedules;
+
+		public List<DoctorSchedule> getDoctorSchedules(){
+			if(doctorSchedules == null){
+				doctorSchedules = new ArrayList<>();
 			}
-			return doctorSchedule;
+			return  doctorSchedules;
 		}
-		
-		public void setDoctorSchedule(List<DoctorSchedule> doctorSchedule) {
-			this.doctorSchedule = doctorSchedule;
+
+		public void setDoctorSchedules(List<DoctorSchedule> doctorSchedules){
+
+			this.doctorSchedules = doctorSchedules;
 		}
-		
-		
+
 		public Integer getId() {
+
 			return id;
 		}
+
 		public void setId(Integer id) {
+
 			this.id = id;
 		}
+
 		public String getName() {
+
 			return name;
 		}
+
 		public void setName(String name) {
+
 			this.name = name;
 		}
 		public String getEmail() {
+
 			return email;
 		}
+
 		public void setEmail(String email) {
+
 			this.email = email;
 		}
-		public String getDoctorId() { return doctorId; }
+
+		public String getDoctorId() {
+
+			return doctorId;
+		}
+
 		public void setDoctorId(String doctorId) {
+
 			this.doctorId = doctorId;
 		}
+
 		public Integer getContact() {
+
 			return contact;
 		}
+
 		public void setContact(Integer contact) {
+
 			this.contact = contact;
 		}
+
 		public String getQualification() {
+
 			return qualification;
 		}
+
 		public void setQualification(String qualification) {
+
 			this.qualification = qualification;
 		}
+
 		public String getSpecialization() {
+
 			return specialization;
 		}
+
 		public void setSpecialization(String specialization) {
+
 			this.specialization = specialization;
 		}
-		public Clinic getClinic() { return clinic;}
+
+		public Clinic getClinic() {
+
+			return clinic;
+		}
 
 		@Override
 		public String toString() {
