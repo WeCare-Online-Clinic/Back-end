@@ -1,11 +1,6 @@
 package wecare.backend.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -16,8 +11,17 @@ import java.util.Date;
 public class Patient {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-    @GenericGenerator(name="native",strategy = "native")
+    @SequenceGenerator(
+            name = "patient_id_seq",
+            sequenceName = "patient_id_seq",
+            allocationSize = 1
+    )
+
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "patient_id_seq"
+    )
+
     @Column(name="id")
     private Integer id;
 

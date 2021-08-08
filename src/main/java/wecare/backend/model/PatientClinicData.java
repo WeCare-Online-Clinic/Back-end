@@ -9,8 +9,17 @@ import javax.persistence.*;
 public class PatientClinicData {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "native")
-    @GenericGenerator(name="native",strategy = "native")
+    @SequenceGenerator(
+            name = "patient_clinic_data_id_seq",
+            sequenceName = "patient_clinic_data_id_seq",
+            allocationSize = 1
+    )
+
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "patient_clinic_data_id_seq"
+    )
+
     @Column(name="id")
     private Integer id;
 

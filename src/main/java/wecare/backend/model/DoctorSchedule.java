@@ -1,15 +1,6 @@
 package wecare.backend.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -20,8 +11,17 @@ import lombok.Data;
 public class DoctorSchedule {
 	
 	@Id	
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "native")
-	@GenericGenerator(name="native",strategy = "native")
+	@SequenceGenerator(
+			name = "doctor_schedule_id_seq",
+			sequenceName = "doctor_schedule_id_seq",
+			allocationSize = 1
+	)
+
+	@GeneratedValue(
+			strategy = GenerationType.SEQUENCE,
+			generator = "doctor_schedule_id_seq"
+	)
+
 	@Column(name="id")
 	private Integer id;
 
@@ -29,8 +29,8 @@ public class DoctorSchedule {
 	@JoinColumn(name="clinic_sid",referencedColumnName = "id")
 	private ClinicSchedule clinicSchedule;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="doctor_id",referencedColumnName = "id", nullable = true)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="doctor_id", referencedColumnName = "id")
 	private Doctor doctor;
 
 	public Integer getId() {

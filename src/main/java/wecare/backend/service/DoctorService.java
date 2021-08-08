@@ -30,6 +30,7 @@ public class DoctorService {
 	public Doctor addDoctor(Doctor doctor) throws UserCollectionException{
 		Doctor resultDoctor=doctorRepo.findByEmail(doctor.getEmail());
 		if(resultDoctor==null) {
+			doctor.getDoctorSchedules();
 			return doctorRepo.saveAndFlush(doctor);
 		}
 		else {

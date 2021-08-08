@@ -1,9 +1,6 @@
 package wecare.backend.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 
 @Entity
@@ -11,6 +8,17 @@ import javax.persistence.criteria.CriteriaBuilder;
 public class LabTechnician {
 
     @Id
+    @SequenceGenerator(
+            name = "lab_technician_id_seq",
+            sequenceName = "lab_technician_id_seq",
+            allocationSize = 1
+    )
+
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "lab_technician_id_seq"
+    )
+
     @Column(name = "id")
     private Integer id;
 

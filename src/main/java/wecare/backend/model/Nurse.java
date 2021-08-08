@@ -13,8 +13,17 @@ public class Nurse {
 	
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-	@GenericGenerator(name="native",strategy = "native")
+	@SequenceGenerator(
+			name = "nurse_id_seq",
+			sequenceName = "nurse_id_seq",
+			allocationSize = 1
+	)
+
+	@GeneratedValue(
+			strategy = GenerationType.SEQUENCE,
+			generator = "nurse_id_seq"
+	)
+
 	@Column(name="id")
 	private Integer id;
 

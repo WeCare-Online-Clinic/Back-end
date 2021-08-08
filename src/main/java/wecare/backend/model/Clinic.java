@@ -12,8 +12,17 @@ import java.util.List;
 public class Clinic {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "native")
-    @GenericGenerator(name="native",strategy = "native")
+    @SequenceGenerator(
+            name = "clinic_id_seq",
+            sequenceName = "clinic_id_seq",
+            allocationSize = 1
+    )
+
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "clinic_id_seq"
+    )
+
     @Column(name="id")
     private Integer id;
 
