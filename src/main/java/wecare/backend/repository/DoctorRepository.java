@@ -9,14 +9,16 @@ import org.springframework.stereotype.Repository;
 import wecare.backend.model.Doctor;
 import wecare.backend.model.Nurse;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
+	
 	Optional<Doctor> findById(Integer id);
 	Doctor findByEmail(String email);
+	List<Doctor> findByClinicId(Integer clinicId);
 
-//		@Query("SELECT s FROM Student s WHERE name=:name")
-//		public Student getStudentByName(@Param(value="name") String name);
-
+	@Query("SELECT d FROM Doctor d WHERE d.name LIKE %:name% ")
+	List<Doctor> findByFirstNameLike(@Param("name") String name);
 }

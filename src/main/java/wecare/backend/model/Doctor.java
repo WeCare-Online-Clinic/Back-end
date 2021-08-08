@@ -49,7 +49,8 @@ public class Doctor {
 		@JoinColumn(name = "clinic_id", referencedColumnName = "id")
 		private Clinic clinic;
 
-		@OneToMany(targetEntity = DoctorSchedule.class, cascade = CascadeType.ALL, mappedBy = "doctor")
+		@OneToMany(targetEntity = DoctorSchedule.class, cascade = CascadeType.ALL)
+		@JoinColumn(name="doctor_id",referencedColumnName = "id")
 		private List<DoctorSchedule> doctorSchedules;
 
 		public List<DoctorSchedule> getDoctorSchedules(){

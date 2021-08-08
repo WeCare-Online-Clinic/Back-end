@@ -1,6 +1,7 @@
 package wecare.backend.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,6 +44,26 @@ public class DoctorController {
 	public List<ClinicSchedule> getDoctorSchedules(@PathVariable Integer id){
 		List<ClinicSchedule> docterSchedule =doctorService.getDoctorScheduleById(id);
 		return docterSchedule;
+	}
+	
+	@GetMapping("/getDoctorProfile/{id}") 
+	public  Optional<Doctor> getDocterProfileById(@PathVariable Integer id){
+		Optional<Doctor> doctor = doctorService.getDoctorProfileById(id);
+		return doctor;
+		
+	}
+	@GetMapping("/getDoctorProfileByName/{name}")
+	public List<Doctor> getDocterProfileByName(@PathVariable String name){
+		List<Doctor> doctor=doctorService.getDocterProfileByName(name);
+		return doctor;
+		
+	}
+	
+	@GetMapping("/getDoctorProfileDetailsByClinic/{clinicId}")
+	public List<Doctor> getDocterProfileByClinic(@PathVariable Integer clinicId){
+		List<Doctor> doctor=doctorService.getDocterProfileByClinic(clinicId);
+		return doctor;
+		
 	}
 
 	
