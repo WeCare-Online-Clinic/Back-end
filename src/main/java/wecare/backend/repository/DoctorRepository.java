@@ -15,10 +15,18 @@ import java.util.Optional;
 @Repository
 public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
 	
-	Optional<Doctor> findById(Integer id);
+		
 	Doctor findByEmail(String email);
+	
 	List<Doctor> findByClinicId(Integer clinicId);
 
 	@Query("SELECT d FROM Doctor d WHERE d.name LIKE %:name% ")
 	List<Doctor> findByFirstNameLike(@Param("name") String name);
+	
+	@Query("SELECT d FROM Doctor d WHERE d.id = :id")
+	List<Doctor> getDoctorProfileById(@Param("id") Integer id);
+	
+
+	
+	
 }

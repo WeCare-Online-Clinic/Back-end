@@ -47,8 +47,8 @@ public class DoctorController {
 	}
 	
 	@GetMapping("/getDoctorProfile/{id}") 
-	public  Optional<Doctor> getDocterProfileById(@PathVariable Integer id){
-		Optional<Doctor> doctor = doctorService.getDoctorProfileById(id);
+	public  List<Doctor> getDocterProfileById(@PathVariable Integer id){
+		List<Doctor> doctor = doctorService.getDoctorProfileById(id);
 		return doctor;
 		
 	}

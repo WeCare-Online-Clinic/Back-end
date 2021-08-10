@@ -44,7 +44,8 @@ class WecareApplicationTests {
 	@Test
 	void getDoctorShedule() throws UserCollectionException {
 		
-		doctorservice.getDoctorScheduleById(73);
+//		doctorservice.getDoctorScheduleById(73);
+//		doctorRepo.findByNameOrEmail("Prakash","prakash@gmail.com");
 		
 	}
 

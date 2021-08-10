@@ -50,8 +50,8 @@ public class DoctorService {
 		return doctorSchedule;
 	}
 	
-	public Optional<Doctor> getDoctorProfileById(Integer id) {
-		Optional<Doctor> doctor = doctorRepo.findById(id);
+	public List<Doctor> getDoctorProfileById(Integer id) {
+		List<Doctor> doctor = doctorRepo.getDoctorProfileById(id);
 		return doctor;
 	
 	}
@@ -65,5 +65,7 @@ public class DoctorService {
 		List<Doctor> doctor=doctorRepo.findByClinicId(clinicId);
 		return doctor;
 	}
+	
+	
 
 }
