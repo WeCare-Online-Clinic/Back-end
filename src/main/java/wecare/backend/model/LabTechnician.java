@@ -11,7 +11,8 @@ public class LabTechnician {
     @SequenceGenerator(
             name = "lab_technician_id_seq",
             sequenceName = "lab_technician_id_seq",
-            allocationSize = 1
+            allocationSize = 1,
+            initialValue = 200
     )
 
     @GeneratedValue(

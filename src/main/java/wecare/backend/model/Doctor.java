@@ -16,7 +16,8 @@ public class Doctor {
 		@SequenceGenerator(
 				name = "doctor_id_seq",
 				sequenceName = "doctor_id_seq",
-				allocationSize = 1
+				allocationSize = 1,
+				initialValue = 100000
 		)
 
 		@GeneratedValue(

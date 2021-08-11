@@ -10,7 +10,8 @@ public class Admin {
     @SequenceGenerator(
             name = "admin_id_seq",
             sequenceName = "admin_id_seq",
-            allocationSize = 1
+            allocationSize = 1,
+            initialValue = 100
     )
 
     @GeneratedValue(

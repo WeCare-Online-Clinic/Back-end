@@ -16,7 +16,8 @@ public class Nurse {
 	@SequenceGenerator(
 			name = "nurse_id_seq",
 			sequenceName = "nurse_id_seq",
-			allocationSize = 1
+			allocationSize = 1,
+			initialValue = 1000
 	)
 
 	@GeneratedValue(

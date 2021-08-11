@@ -15,7 +15,7 @@ public class User {
 
 	@Id
 	@Column(name="id")
-	private String id;
+	private Integer id;
 
 	@Column(name="role")
 	private String role;
@@ -24,14 +24,22 @@ public class User {
 	private String verificationString; 
 
 	@Column(name="verified")
-	private String verified; 
+	private Boolean verified;
 
 	@Column(name="password")
 	private String password; 
 
 	@Column(name="email")
 	private String email;
-	
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 	public String getUserRole() {
 
 		return role;
@@ -40,6 +48,30 @@ public class User {
 	public void setUserRole(String role) {
 
 		this.role = role;
+	}
+
+	public String getVerificationString() {
+		return verificationString;
+	}
+
+	public void setVerificationString(String verificationString) {
+		this.verificationString = verificationString;
+	}
+
+	public Boolean getVerified() {
+		return verified;
+	}
+
+	public void setVerified(Boolean verified) {
+		this.verified = verified;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public String getEmail() {
@@ -52,8 +84,4 @@ public class User {
 		this.email = email;
 	}
 
-	public String getPassword(){
-
-		return password;
-	}
 }
