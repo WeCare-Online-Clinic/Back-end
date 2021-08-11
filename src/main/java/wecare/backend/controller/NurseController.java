@@ -38,9 +38,23 @@ public class NurseController {
 		return nurses;
 	}
 	
-	@GetMapping("/getNurseProfile/{id}")
-	public Optional<Nurse> getNurseProfileById(@PathVariable Integer id){
-		Optional<Nurse> nurse = nurseService.getNurseProfileById(id);
+	
+	@GetMapping("/getNurseProfile/{id}") 
+	public  List<Nurse> getNurseProfileById(@PathVariable Integer id){
+		List<Nurse> nurse = nurseService.getNurseProfileById(id);
+		return nurse;
+		
+	}
+	@GetMapping("/getNurseProfileByName/{name}")
+	public List<Nurse> getNurseProfileByName(@PathVariable String name){
+		List<Nurse> nurse=nurseService.getNurseProfileByName(name);
+		return nurse;
+		
+	}
+	
+	@GetMapping("/getNurseProfileDetailsByClinic/{clinicId}")
+	public List<Nurse> getNurseProfileByClinic(@PathVariable Integer clinicId){
+		List<Nurse> nurse=nurseService.getNurseProfileByClinic(clinicId);
 		return nurse;
 		
 	}
