@@ -119,6 +119,21 @@ public class Nurse {
 
 		return clinic;
 	}
+	public Character getGender() {
+		return gender;
+	}
+	public void setGender(Character gender) {
+		this.gender = gender;
+	}
+	public String getQualification() {
+		return qualification;
+	}
+	public void setQualification(String qualification) {
+		this.qualification = qualification;
+	}
+	public void setClinic(Clinic clinic) {
+		this.clinic = clinic;
+	}
 
 	@Override
 	public String toString() {

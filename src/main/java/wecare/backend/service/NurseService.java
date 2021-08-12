@@ -49,8 +49,19 @@ public class NurseService {
 		return nurses;
 	}
 	
-	public Optional<Nurse> getNurseProfileById(Integer id) {
-		Optional<Nurse> nurse = nurseRepo.findById(id);
+	public List<Nurse> getNurseProfileById(Integer id) {
+		List<Nurse> nurse = nurseRepo.getNurseProfileById(id);
+		return nurse;
+	
+	}
+	
+	public List<Nurse> getNurseProfileByName(String name){
+		List<Nurse> nurse=nurseRepo.findByFirstNameLike(name);
+		return nurse;
+	}
+
+	public List<Nurse> getNurseProfileByClinic(Integer clinicId){
+		List<Nurse> nurse=nurseRepo.findByClinicId(clinicId);
 		return nurse;
 	}
 }
