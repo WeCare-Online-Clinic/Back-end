@@ -10,6 +10,4 @@ import wecare.backend.model.Nurse;
 @Repository
 public interface NurseRepository extends JpaRepository<Nurse, Integer>{
 	Nurse findByEmail(String email);
-	
-	Optional<Nurse> findById(Integer id);
 }

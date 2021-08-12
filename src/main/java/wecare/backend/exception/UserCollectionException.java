@@ -8,8 +8,8 @@ public class UserCollectionException extends Exception {
 		super(message);
 	}
 
-	public static String NotFoundExeption(String id) {
-		return "User with "+id +" is not found";
+	public static String NotFoundExeption() {
+		return "User not found";
 	}
 
 	public static String UserAlreadyExist() {

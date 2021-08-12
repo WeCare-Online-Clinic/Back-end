@@ -27,16 +27,7 @@ class WecareApplicationTests {
 	
 	@Test
 	void saveDoctor() throws UserCollectionException {
-		
-		Doctor d = new Doctor();
-		
-		d.setName("bac");
 
-		DoctorSchedule x = new DoctorSchedule();
-		ClinicSchedule s = new ClinicSchedule();
-
-
-		doctorservice.addDoctor(d);
 		
 	}
 	

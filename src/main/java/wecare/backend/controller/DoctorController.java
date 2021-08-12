@@ -1,5 +1,6 @@
 package wecare.backend.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +22,8 @@ import wecare.backend.model.Doctor;
 import wecare.backend.model.DoctorSchedule;
 import wecare.backend.service.DoctorService;
 
+import javax.mail.MessagingException;
+
 @RestController
 @RequestMapping(value="wecare")
 @CrossOrigin(origins="http://localhost:3000")
@@ -30,7 +33,7 @@ public class DoctorController {
 	private DoctorService doctorService;
 	
 	@PostMapping("/addDoctor")
-	public ResponseEntity<Doctor> addDoctor(@RequestBody Doctor doctor) throws UserCollectionException{
+	public ResponseEntity<Doctor> addDoctor(@RequestBody Doctor doctor) throws UserCollectionException, MessagingException, UnsupportedEncodingException {
 		return new ResponseEntity<>(doctorService.addDoctor(doctor),HttpStatus.OK);
 	}
 	
@@ -54,17 +57,21 @@ public class DoctorController {
 	}
 	@GetMapping("/getDoctorProfileByName/{name}")
 	public List<Doctor> getDocterProfileByName(@PathVariable String name){
-		List<Doctor> doctor=doctorService.getDocterProfileByName(name);
+		List<Doctor> doctor=doctorService.getDoctorProfileByName(name);
 		return doctor;
 		
 	}
 	
 	@GetMapping("/getDoctorProfileDetailsByClinic/{clinicId}")
 	public List<Doctor> getDocterProfileByClinic(@PathVariable Integer clinicId){
-		List<Doctor> doctor=doctorService.getDocterProfileByClinic(clinicId);
+		List<Doctor> doctor=doctorService.getDoctorProfileByClinic(clinicId);
 		return doctor;
 		
 	}
 
+	@GetMapping("/doctor/info/{id}")
+	public Doctor getDoctorInfo(@PathVariable Integer id){
+		return doctorService.getDoctor(id);
+	}
 	
 }
