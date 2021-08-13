@@ -5,9 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-
 import wecare.backend.model.ClinicSchedule;
-import wecare.backend.model.Clinic;
 
 public interface ClinicScheduleRepository extends JpaRepository<ClinicSchedule, Integer>{
 
@@ -19,5 +17,11 @@ public interface ClinicScheduleRepository extends JpaRepository<ClinicSchedule, 
 
     @Query("FROM ClinicSchedule")
     public List<ClinicSchedule> getClinicShedule(@Param(value="doctor_id") Integer id);
+    
+   
+	@Query("SELECT c FROM ClinicSchedule c WHERE c.id = : id")
+	List<ClinicSchedule> getClinicScheduleById(@Param("id") Integer id);
+	
+	
 
 }

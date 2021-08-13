@@ -48,5 +48,11 @@ public class ClinicController {
 			List<Clinic> clinics = clinicService.getClinics();
 			return clinics;
 		}
+		
+		@GetMapping("/getClinicSchedule/{id}")
+		public List<ClinicSchedule> getClinicSchedules(@PathVariable Integer id){
+			List<ClinicSchedule> clinicSchedules=clinicService.getClinicSchedules(id);
+			return clinicSchedules;
+		}
 }
 

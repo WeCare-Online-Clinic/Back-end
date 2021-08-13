@@ -34,4 +34,8 @@ public class ClinicService {
 		return clinics;
 
 	}
+	public List<ClinicSchedule> getClinicSchedules(Integer id){
+		List<ClinicSchedule> clinicSchedule =clinicScheduleRepo.getClinicScheduleById(id);
+		return clinicSchedule;
+	}
 }
