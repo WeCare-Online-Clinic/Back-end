@@ -1,6 +1,7 @@
 package wecare.backend.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,8 @@ public class ClinicService {
 
 	@Autowired
 	private ClinicRepository clinicRepo;
+	
+	@Autowired
 	private ClinicScheduleRepository clinicScheduleRepo;
 
 	public List<Clinic> getClinics(){
@@ -34,8 +37,10 @@ public class ClinicService {
 		return clinics;
 
 	}
-	public List<ClinicSchedule> getClinicSchedules(Integer id){
-		List<ClinicSchedule> clinicSchedule =clinicScheduleRepo.getClinicScheduleById(id);
+	public Optional<Clinic> getClinicSchedule(Integer clinicId){
+//		LOG.info("START : clinic Days service request {}",clinicId);
+		Optional<Clinic> clinicSchedule =clinicRepo.findById(clinicId);
+//		LOG.info("START : clinic Days result {}",clinicSchedule);
 		return clinicSchedule;
 	}
 }

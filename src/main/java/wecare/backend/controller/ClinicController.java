@@ -1,6 +1,7 @@
 package wecare.backend.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,10 +22,10 @@ import wecare.backend.service.ClinicService;
 @CrossOrigin(origins="http://localhost:3000")
 public class ClinicController {
 	
-//	private static final Logger LOG = LoggerFactory.getLogger(ClinicController.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ClinicController.class);
 
 		@Autowired
-		private ClinicService clinicService;
+	   private ClinicService clinicService;
 		
 		
 //		@GetMapping("/getClinicDays")		
@@ -49,9 +50,10 @@ public class ClinicController {
 			return clinics;
 		}
 		
-		@GetMapping("/getClinicSchedule/{id}")
-		public List<ClinicSchedule> getClinicSchedules(@PathVariable Integer id){
-			List<ClinicSchedule> clinicSchedules=clinicService.getClinicSchedules(id);
+		@GetMapping("/getClinicSchedule/{clinicId}")
+		public Optional<Clinic> getClinicSchedule(@PathVariable Integer clinicId){
+			LOG.info("START : clinic Days {}",clinicId);
+			Optional<Clinic> clinicSchedules=clinicService.getClinicSchedule(clinicId);
 			return clinicSchedules;
 		}
 }

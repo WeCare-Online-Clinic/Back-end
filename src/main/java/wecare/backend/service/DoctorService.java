@@ -6,10 +6,15 @@ import java.io.UnsupportedEncodingException;
 import java.util.*;
 
 import net.bytebuddy.utility.RandomString;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+
+import wecare.backend.controller.DoctorController;
 import wecare.backend.exception.UserCollectionException;
 import wecare.backend.model.ClinicSchedule;
 import wecare.backend.model.Doctor;
@@ -25,6 +30,9 @@ import javax.mail.internet.MimeMessage;
 
 @Service
 public class DoctorService {
+	
+	private static final Logger LOG = LoggerFactory.getLogger(DoctorService.class);
+	
 	@Autowired
 	private DoctorRepository doctorRepo;	
 	
@@ -45,7 +53,7 @@ public class DoctorService {
 		Doctor newDoctor = null;
 		User newUser = new User();
 		if(resultDoctor==null) {
-			doctor.getDoctorSchedules();
+//			doctor.getDoctorSchedules();
 			newDoctor = doctorRepo.saveAndFlush(doctor);
 
 			String verificationString = RandomString.make(64);
@@ -126,6 +134,18 @@ public class DoctorService {
 		List<Doctor> doctor=doctorRepo.findByClinicId(clinicId);
 		return doctor;
 	}
+	
+	public void deleteDoctorScheduleById(Integer doctorId) {
+		LOG.info("START : doctor Id  service {}",doctorId);
+		doctorScheduleRepo.deleteDoctorScheduleById(doctorId);
+	}
+	
+	public void updateDoctorSchedule(List<DoctorSchedule> doctorSchedule) {	
+		doctorScheduleRepo.saveAllAndFlush(doctorSchedule);
+	
+	}
+
+
 	
 	
 
