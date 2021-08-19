@@ -1,7 +1,9 @@
 package wecare.backend.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import wecare.backend.exception.UserCollectionException;
 import wecare.backend.model.User;
@@ -27,14 +29,19 @@ public class UserService {
 
 	@Autowired
 	AdminRepository adminRepository;
+
+	public PasswordEncoder passwordEncoder(){
+		return  new BCryptPasswordEncoder(10);
+	}
 	
 	public User getSingleUser(User user) throws UserCollectionException{
 		User resultUser = userRepo.findByEmail(user.getEmail());
+
 		if(resultUser==null) {
 			throw new UserCollectionException(UserCollectionException.NotFoundExeption());
 		}
 		else {
-			if (user.getPassword().equals(resultUser.getPassword())) {
+			if (passwordEncoder().matches(user.getPassword(), resultUser.getPassword())) {
 				return resultUser;
 			}
 			else{
@@ -55,6 +62,7 @@ public class UserService {
 	}
 
 	public User setPassword(User user){
+		user.setPassword(passwordEncoder().encode(user.getPassword()));
 		return userRepo.save(user);
 	}
 
