@@ -24,68 +24,125 @@ public class Patient {
     )
 
     @Column(name="id")
-    private Integer id;
+	private Integer id;
 
-    @Column(name = "nic")
-    private String nic;
+	@Column(name="name")
+	private String name;
 
-    @Column(name = "name")
-    private String name;
+	@Column(name = "gender")
+	private Character gender;
 
-    @Column(name = "gender")
-    private Character gender;
+	@Column(name="email")
+	private String email;
 
-    @Column(name = "birthdate")
-    private Date birthdate;
+	@Column(name="contact")
+	private Integer contact;
+	
+	@Column(name="nic")
+	private String nic;
 
-    @Column(name = "contact")
-    private Integer contact;
+	@Column(name="addr")
+	private String addr;
+	
+	@Column(name="clinic")
+	private String clinic;
 
-    @Column(name = "email")
-    private String email;
+	@Column(name="dob")
+	private Date  dob;
 
-    @Column(name = "registered_date")
-    private Date registeredDate;
+	
+	
+	public Integer getId() {
 
-    public Integer getId(){
+		return id;
+	}
 
-        return id;
-    }
+	public void setId(Integer id) {
 
-    public String getNic(){
+		this.id = id;
+	}
 
-        return  nic;
-    }
+	public String getName() {
 
-    public Character getGender() {
+		return name;
+	}
 
-        return gender;
-    }
+	public void setName(String name) {
 
-    public Date getBirthdate(){
+		this.name = name;
+	}
+	
+	public String getClinic() {
 
-        return  birthdate;
-    }
+		return clinic;
+	}
 
-    public Integer getContact(){
+	public void setClinic(String clinic) {
 
-        return  contact;
-    }
+		this.clinic = clinic;
+	}
 
-    public String getEmail(){
+	public String getEmail() {
 
-        return email;
-    }
+		return email;
+	}
 
-    public Date getRegisteredDate(){
+	public void setEmail(String email) {
 
-        return  registeredDate;
-    }
+		this.email = email;
+	}
 
-    public String getName(){
+	public Integer getContact() {
 
-        return  name;
-    }
+		return contact;
+	}
 
+	public void setContact(Integer contact) {
+
+		this.contact = contact;
+	}
+
+	public String getAddr() {
+
+		return addr;
+	}
+
+	public void setAddr(String addr) {
+
+		this.addr = addr;
+	}
+	public String getNIC() {
+
+		return nic;
+	}
+
+	public void setNIC(String nic) {
+
+		this.nic = nic;
+	}
+	
+	public Date getDOB() {
+
+		return dob;
+	}
+
+	public void setDOB(Date dob) {
+
+		this.dob = dob;
+	}
+
+	
+	public Character getGender() {
+		return gender;
+	}
+	public void setGender(Character gender) {
+		this.gender = gender;
+	}
+	
+	
+
+	@Override
+	public String toString() {
+		return "Patient [id=" + id + ", name=" + name + ", email=" + email + ", contact=" + contact + ", addr=" + addr + ", nic=" + nic + ", dob=" + dob +" ,clinic=" + clinic + "]";
+	}
 }
-
