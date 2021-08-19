@@ -25,6 +25,11 @@ public class NurseSchedule {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="clinic_sid",referencedColumnName = "id")
 	private ClinicSchedule clinicSchedule;
+	
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="nurse_id", referencedColumnName = "id")
+	private Nurse nurse;
 
 	public Integer getId() {
 
@@ -44,6 +49,10 @@ public class NurseSchedule {
 	public void setClinicSchedule(ClinicSchedule clinicSchedule){
 
 		this.clinicSchedule = clinicSchedule;
+	}
+	
+	public void setNurse(Nurse nurse) {
+		this.nurse = nurse;
 	}
 
 }

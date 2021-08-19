@@ -85,9 +85,10 @@ public class DoctorController {
 	}
 	
 	@PostMapping("/updateDoctorSchedule")
-	public void updateDoctorSchedule(@RequestBody List<DoctorSchedule> doctorSchedulelist){
+	public List<DoctorSchedule> updateDoctorSchedule(@RequestBody List<DoctorSchedule> doctorSchedulelist){
 		LOG.info("START : doctor Schedule {}",doctorSchedulelist);
-		doctorService.updateDoctorSchedule(doctorSchedulelist);
+		List<DoctorSchedule> doctorSchedule = doctorService.updateDoctorSchedule(doctorSchedulelist);
+		return doctorSchedule;
 	}
 	
  }

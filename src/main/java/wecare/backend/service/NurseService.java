@@ -3,15 +3,15 @@ package wecare.backend.service;
 
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import wecare.backend.exception.UserCollectionException;
-import wecare.backend.model.Doctor;
 import wecare.backend.model.Nurse;
+import wecare.backend.model.NurseSchedule;
 import wecare.backend.model.User;
 import wecare.backend.repository.NurseRepository;
+import wecare.backend.repository.NurseSchedulesRepository;
 import wecare.backend.repository.UserRepository;
 
 @Service
@@ -23,6 +23,9 @@ public class NurseService {
 	@Autowired
 	private UserRepository userRepo;
 	
+	@Autowired
+	private NurseSchedulesRepository nurseSchedulesRepo;
+	
 	public Nurse addNurse(Nurse nurse) throws UserCollectionException{
 		Nurse resultedNurse = nurseRepo.findByEmail(nurse.getEmail());
 		Nurse newNurse = null;
@@ -30,7 +33,7 @@ public class NurseService {
 		if(resultedNurse==null) {
 			newNurse =  nurseRepo.saveAndFlush(nurse);
 			newUser.setId(newNurse.getId());
-			newUser.setUserRole("doctor");
+			newUser.setUserRole(newNurse.getIsHead().equals(true)?"headnurse":"nurse");
 			newUser.setVerificationString("");
 			newUser.setVerified(true);
 			newUser.setPassword("");
@@ -63,5 +66,16 @@ public class NurseService {
 	public List<Nurse> getNurseProfileByClinic(Integer clinicId){
 		List<Nurse> nurse=nurseRepo.findByClinicId(clinicId);
 		return nurse;
+	}
+	
+	public void deleteNurseScheduleById(Integer nurseId) {
+		nurseSchedulesRepo.deleteNurseScheduleById(nurseId);
+		
+	}
+	
+	public List<NurseSchedule> updateNurseSchedule(List<NurseSchedule> nurseSchedulelist) {	
+		List<NurseSchedule> nurseSchedule = nurseSchedulesRepo.saveAllAndFlush(nurseSchedulelist);
+		return nurseSchedule;
+	
 	}
 }

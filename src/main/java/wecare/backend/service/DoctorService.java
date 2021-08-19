@@ -140,8 +140,9 @@ public class DoctorService {
 		doctorScheduleRepo.deleteDoctorScheduleById(doctorId);
 	}
 	
-	public void updateDoctorSchedule(List<DoctorSchedule> doctorSchedule) {	
-		doctorScheduleRepo.saveAllAndFlush(doctorSchedule);
+	public List<DoctorSchedule> updateDoctorSchedule(List<DoctorSchedule> doctorScheduleList) {	
+		List<DoctorSchedule> doctorschedule = doctorScheduleRepo.saveAllAndFlush(doctorScheduleList);
+		return doctorschedule;
 	
 	}
 
