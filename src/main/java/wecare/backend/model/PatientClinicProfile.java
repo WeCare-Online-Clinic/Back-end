@@ -1,10 +1,9 @@
 package wecare.backend.model;
 
 import javax.persistence.*;
-
-import org.hibernate.annotations.GenericGenerator;
-
-import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 @Entity
@@ -60,8 +59,7 @@ public class PatientClinicProfile {
         return  diagnosis;
     }
 
-    public Date getAdmissionDate(){
-
-        return admissionDate;
+    public String getAdmissionDate(){
+        return new SimpleDateFormat("yyyy-MM-dd").format(admissionDate);
     }
 }

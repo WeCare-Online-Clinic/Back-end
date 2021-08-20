@@ -14,16 +14,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import wecare.backend.controller.DoctorController;
 import wecare.backend.exception.UserCollectionException;
-import wecare.backend.model.ClinicSchedule;
-import wecare.backend.model.Doctor;
-import wecare.backend.model.DoctorSchedule;
-import wecare.backend.model.User;
-import wecare.backend.repository.ClinicScheduleRepository;
-import wecare.backend.repository.DoctorRepository;
-import wecare.backend.repository.DoctorSchedulesRepository;
-import wecare.backend.repository.UserRepository;
+import wecare.backend.model.*;
+import wecare.backend.repository.*;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -47,6 +40,9 @@ public class DoctorService {
 
 	@Autowired
 	private JavaMailSender mailSender;
+
+	@Autowired
+	private PatientClinicProfileRepository patientClinicProfileRepo;
 	
 	public Doctor addDoctor(Doctor doctor) throws UserCollectionException, MessagingException, UnsupportedEncodingException {
 		Doctor resultDoctor=doctorRepo.findByEmail(doctor.getEmail());
@@ -146,8 +142,8 @@ public class DoctorService {
 	
 	}
 
-
-	
-	
+	public List<PatientClinicProfile> getPatientList(Integer clinic){
+		return patientClinicProfileRepo.findByClinicId(clinic);
+	}
 
 }

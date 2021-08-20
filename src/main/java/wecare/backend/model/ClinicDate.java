@@ -37,9 +37,6 @@ public class ClinicDate {
     @Column(name="date")
     private Date date;
 
-    @Column(name="no_patients")
-    private Integer noPatients;
-
     @Column(name = "queue")
     private Integer[] queue;
 
@@ -62,10 +59,7 @@ public class ClinicDate {
 
         return date;
     }
-    public Integer getNoPatients() {
 
-        return noPatients;
-    }
     public Integer[] getQueue() {
 
         return queue;

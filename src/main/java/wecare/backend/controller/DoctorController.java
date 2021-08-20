@@ -2,7 +2,6 @@ package wecare.backend.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,10 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import wecare.backend.exception.UserCollectionException;
-import wecare.backend.model.Clinic;
-import wecare.backend.model.ClinicSchedule;
-import wecare.backend.model.Doctor;
-import wecare.backend.model.DoctorSchedule;
+import wecare.backend.model.*;
 import wecare.backend.service.DoctorService;
 
 import javax.mail.MessagingException;
@@ -89,6 +85,11 @@ public class DoctorController {
 		LOG.info("START : doctor Schedule {}",doctorSchedulelist);
 		List<DoctorSchedule> doctorSchedule = doctorService.updateDoctorSchedule(doctorSchedulelist);
 		return doctorSchedule;
+	}
+
+	@GetMapping("/patient/list/{id}")
+	public List<PatientClinicProfile> getPatients(@PathVariable Integer id){
+		return doctorService.getPatientList(id);
 	}
 	
  }

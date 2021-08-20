@@ -44,6 +44,9 @@ public class Patient {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "address")
+    private String address;
+
     @Column(name = "registered_date")
     private Date registeredDate;
 
@@ -75,6 +78,11 @@ public class Patient {
     public String getEmail(){
 
         return email;
+    }
+
+    public String getAddress(){
+
+        return address;
     }
 
     public Date getRegisteredDate(){
