@@ -41,14 +41,14 @@ public class Patient {
 	@Column(name="nic")
 	private String nic;
 
-	@Column(name="addr")
-	private String addr;
+	@Column(name="address")
+	private String address;
 	
 	@Column(name="clinic")
 	private String clinic;
 
-	@Column(name="dob")
-	private Date  dob;
+	@Column(name="birthdate")
+	private Date  birthdate;
 
 	
 	
@@ -104,12 +104,12 @@ public class Patient {
 
 	public String getAddr() {
 
-		return addr;
+		return address;
 	}
 
-	public void setAddr(String addr) {
+	public void setAddr(String address) {
 
-		this.addr = addr;
+		this.address = address;
 	}
 	public String getNIC() {
 
@@ -123,12 +123,12 @@ public class Patient {
 	
 	public Date getDOB() {
 
-		return dob;
+		return birthdate;
 	}
 
-	public void setDOB(Date dob) {
+	public void setDOB(Date birthdate) {
 
-		this.dob = dob;
+		this.birthdate = birthdate;
 	}
 
 	
@@ -143,6 +143,6 @@ public class Patient {
 
 	@Override
 	public String toString() {
-		return "Patient [id=" + id + ", name=" + name + ", email=" + email + ", contact=" + contact + ", addr=" + addr + ", nic=" + nic + ", dob=" + dob +" ,clinic=" + clinic + "]";
+		return "Patient [id=" + id + ", name=" + name + ", email=" + email + ", contact=" + contact + ", address=" + address + ", nic=" + nic + ", birthdate=" + birthdate +" ,clinic=" + clinic + "]";
 	}
 }

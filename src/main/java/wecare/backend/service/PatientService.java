@@ -20,7 +20,7 @@ public class PatientService {
 	private static final String resultedPatient = null;
 
 	@Autowired
-	private static PatientRepository patientRepo;
+	private  PatientRepository patientRepo;
 
 	@Autowired
 	private UserRepository userRepo;
@@ -44,22 +44,22 @@ public class PatientService {
 			throw new UserCollectionException(UserCollectionException.UserAlreadyExist());
 		}
 	}
-
 	
-	public static List<Patient> getAllPatient(){
-List<Patient> patient = patientRepo.findAll();
-return patient;
-}
+	public List<Patient> getAllPatient(){
+		List<Patient> patient = patientRepo.findAll();
+		return patient;
+	}
 	
-public List<Patient> getPatientProfileById(Integer id) {
-List<Patient> patient = patientRepo.getPatientProfileById(id);
-return patient;
-
-}
-
-public List<Patient> getPatientProfileByName(String name){
+	public List<Patient> getPatientProfileById(Integer id) {
+		List<Patient> patient = patientRepo.getPatientProfileById(id);
+		return patient;
+	
+	}
+	
+	public List<Patient> getPatientProfileByName(String name){
 		List<Patient> patient=patientRepo.findByFirstNameLike(name);
 		return patient;
 	}
+
 
 }
