@@ -1,9 +1,6 @@
 package wecare.backend.model;
-
 import javax.persistence.*;
-
 import org.hibernate.annotations.GenericGenerator;
-
 import java.util.Date;
 
 @Entity
@@ -35,8 +32,11 @@ public class Patient {
     @Column(name = "gender")
     private Character gender;
 
-    @Column(name = "birthdate")
-    private Date birthdate;
+	@Column(name="address")
+	private String address;
+	
+	@Column(name="birthdate")
+	private Date  birthdate;
 
     @Column(name = "contact")
     private Integer contact;
@@ -44,48 +44,98 @@ public class Patient {
     @Column(name = "email")
     private String email;
 
+
     @Column(name = "registered_date")
     private Date registeredDate;
 
-    public Integer getId(){
+    public Integer getId() {
 
-        return id;
-    }
+		return id;
+	}
 
-    public String getNic(){
+	public void setId(Integer id) {
 
-        return  nic;
-    }
+		this.id = id;
+	}
 
-    public Character getGender() {
+	public String getName() {
 
-        return gender;
-    }
+		return name;
+	}
 
-    public Date getBirthdate(){
+	public void setName(String name) {
 
-        return  birthdate;
-    }
+		this.name = name;
+	}
 
-    public Integer getContact(){
+  
+	public String getEmail() {
 
-        return  contact;
-    }
+		return email;
+	}
 
-    public String getEmail(){
+	public void setEmail(String email) {
 
-        return email;
-    }
+		this.email = email;
+	}
+
 
     public Date getRegisteredDate(){
 
         return  registeredDate;
     }
+    
+    public Integer getContact(){
 
-    public String getName(){
-
-        return  name;
+        return  contact;
     }
+	public void setContact(Integer contact) {
+
+		this.contact = contact;
+	}
+
+	public String getAddr() {
+
+		return address;
+	}
+
+	public void setAddr(String address) {
+
+		this.address = address;
+	}
+	public String getNIC() {
+
+		return nic;
+	}
+
+	public void setNIC(String nic) {
+
+		this.nic = nic;
+	}
+	
+	public Date getDOB() {
+
+		return birthdate;
+	}
+
+	public void setDOB(Date birthdate) {
+
+		this.birthdate = birthdate;
+	}
+
+	
+	public Character getGender() {
+		return gender;
+	}
+	public void setGender(Character gender) {
+		this.gender = gender;
+	}
+	
+	
+
+	@Override
+	public String toString() {
+		return "Patient [id=" + id + ", name=" + name + ", email=" + email + ", contact=" + contact + ", address=" + address + ", nic=" + nic + ", birthdate=" + birthdate +"]";
+	}
 
 }
-
