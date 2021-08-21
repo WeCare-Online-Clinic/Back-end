@@ -8,6 +8,8 @@ import javax.persistence.Table;
 
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+
 @Component
 @Entity
 @Table(name="users")
@@ -32,6 +34,15 @@ public class User {
 	@Column(name="email")
 	private String email;
 
+	@Column(name="registered_date")
+	private Date registeredDate;
+
+	@Column(name="status")
+	private boolean status;
+
+	public User() {
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -41,12 +52,10 @@ public class User {
 	}
 
 	public String getUserRole() {
-
 		return role;
 	}
 
 	public void setUserRole(String role) {
-
 		this.role = role;
 	}
 
@@ -75,13 +84,47 @@ public class User {
 	}
 
 	public String getEmail() {
-
 		return email;
+	}
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	public Date getRegisteredDate() {
+		return registeredDate;
+	}
+
+	public void setRegisteredDate(Date registeredDate) {
+		this.registeredDate = registeredDate;
+	}
+
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
 	}
 
 	public void setEmail(String email) {
-
 		this.email = email;
 	}
 
+	@Override
+	public String toString() {
+		return "User{" +
+				"id=" + id +
+				", role='" + role + '\'' +
+				", verificationString='" + verificationString + '\'' +
+				", verified=" + verified +
+				", password='" + password + '\'' +
+				", email='" + email + '\'' +
+				", registeredDate=" + registeredDate +
+				", status=" + status +
+				'}';
+	}
 }

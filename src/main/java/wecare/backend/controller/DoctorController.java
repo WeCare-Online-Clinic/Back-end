@@ -45,25 +45,25 @@ public class DoctorController {
 	
 	@GetMapping("/getDoctorSchedule/{id}")
 	public List<ClinicSchedule> getDoctorSchedules(@PathVariable Integer id){
-		List<ClinicSchedule> docterSchedule =doctorService.getDoctorScheduleById(id);
-		return docterSchedule;
+		List<ClinicSchedule> doctorSchedule =doctorService.getDoctorScheduleById(id);
+		return doctorSchedule;
 	}
 	
 	@GetMapping("/getDoctorProfile/{id}") 
-	public  List<Doctor> getDocterProfileById(@PathVariable Integer id){
+	public  List<Doctor> getDoctorProfileById(@PathVariable Integer id){
 		List<Doctor> doctor = doctorService.getDoctorProfileById(id);
 		return doctor;
 		
 	}
 	@GetMapping("/getDoctorProfileByName/{name}")
-	public List<Doctor> getDocterProfileByName(@PathVariable String name){
+	public List<Doctor> getDoctorProfileByName(@PathVariable String name){
 		List<Doctor> doctor=doctorService.getDoctorProfileByName(name);
 		return doctor;
 		
 	}
 	
 	@GetMapping("/getDoctorProfileDetailsByClinic/{clinicId}")
-	public List<Doctor> getDocterProfileByClinic(@PathVariable Integer clinicId){
+	public List<Doctor> getDoctorProfileByClinic(@PathVariable Integer clinicId){
 		List<Doctor> doctor=doctorService.getDoctorProfileByClinic(clinicId);
 		return doctor;
 		
