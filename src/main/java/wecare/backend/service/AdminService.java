@@ -2,6 +2,7 @@ package wecare.backend.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import wecare.backend.model.Doctor;
 import wecare.backend.model.Nurse;
+import wecare.backend.model.User;
 import wecare.backend.model.dto.UserCount;
 import wecare.backend.repository.DoctorRepository;
 import wecare.backend.repository.NurseRepository;
@@ -59,25 +61,41 @@ public class AdminService {
 		return userCount;
 	}
 
-	public Integer changeDoctorStatus(Doctor doctor){
-		Boolean status=doctor.getStatus();
-		if(status==true){
-			doctor.setStatus(false);
-			doctorRepo.save(doctor);
-			return 1;//update succesfull
-		}
-		return 0;
+	public Integer changeDoctorStatus(Integer doctorId){
+		Optional<Doctor> doctorOptional=doctorRepo.findById(doctorId);
+		if(doctorOptional.isPresent()){
+			Doctor s = doctorOptional.get();
+			s.setStatus(false);
+			doctorRepo.saveAndFlush(s);
 
+			Optional<User> userOptional=userRepo.findById(doctorId);
+			if(userOptional.isPresent()){
+				User u=userOptional.get();
+				u.setStatus(false);
+				userRepo.saveAndFlush(u);
+			}
+			return 1;
+		}else {
+			return 0;
+		}
 	}
-	public Integer changeNurseStatus(Nurse nurse){
-		Boolean status=nurse.getStatus();
-		if(status==true){
-			nurse.setStatus(false);
-			nurseRepo.save(nurse);
-			return 1;//update succesfull
-		}
-		return 0;
+	public Integer changeNurseStatus(Integer nurseId){
+		Optional<Nurse> nurseOptional=nurseRepo.findById(nurseId);
+		if(nurseOptional.isPresent()){
+			Nurse n= nurseOptional.get();
+			n.setStatus(false);
+			nurseRepo.saveAndFlush(n);
 
+			Optional<User> userOptional=userRepo.findById(nurseId);
+			if(userOptional.isPresent()){
+				User u=userOptional.get();
+				u.setStatus(false);
+				userRepo.saveAndFlush(u);
+			}
+			return 1;
+		}else {
+			return 0;
+		}
 	}
 
 }

@@ -25,9 +25,9 @@ public class AdminController {
 		return userCount;
 	}
 
-	@PutMapping("/changeDoctorStatus")
-	public ResponseEntity<Integer> changeDoctorStatus(@RequestBody Doctor doctor){
-		Integer result=adminService.changeDoctorStatus(doctor);
+	@GetMapping("/changeDoctorStatus/{doctorId}")
+	public ResponseEntity<Integer> changeDoctorStatus(@PathVariable Integer doctorId){
+		Integer result=adminService.changeDoctorStatus(doctorId);
 		if(result!=null){
 			return ResponseEntity.ok(result);
 		}
@@ -37,9 +37,9 @@ public class AdminController {
 
 	}
 
-	@PutMapping("/changeNurseStatus")
-	public ResponseEntity<Integer> changeDoctorStatus(@RequestBody Nurse nurse){
-		Integer result=adminService.changeNurseStatus(nurse);
+	@GetMapping("/changeNurseStatus/{nurseId}")
+	public ResponseEntity<Integer> changeNurseStatus(@PathVariable Integer nurseId){
+		Integer result=adminService.changeNurseStatus(nurseId);
 		if(result!=null){
 			return ResponseEntity.ok(result);
 		}

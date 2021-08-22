@@ -48,7 +48,7 @@ public class NurseService {
 
 	
 	public List<Nurse> getAllNurses(){
-		List<Nurse> nurses = nurseRepo.findAll();
+		List<Nurse> nurses = nurseRepo.findAllNurses();
 		return nurses;
 	}
 	

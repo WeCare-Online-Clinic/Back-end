@@ -20,8 +20,12 @@ public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
 	Optional <Doctor> findById(Integer id);
 
 	Doctor findByEmail(String email);
-	
-	List<Doctor> findByClinicId(Integer clinicId);
+
+	@Query("SELECT d FROM Doctor d WHERE  d.status=true")
+	List<Doctor> findAllDoctors();
+
+	@Query("SELECT d FROM Doctor d WHERE d.clinic.id= :clinicId AND d.status=true")
+	List<Doctor> findByClinicId(@Param("clinicId") Integer clinicId);
 
 	@Query("SELECT d FROM Doctor d WHERE d.name LIKE %:name%  AND d.status=true")
 	List<Doctor> findByFirstNameLike(@Param("name") String name);

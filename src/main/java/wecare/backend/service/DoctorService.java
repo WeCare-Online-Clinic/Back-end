@@ -110,7 +110,7 @@ public class DoctorService {
 	}
 
 	public List<Doctor> getAllDoctors(){
-		return doctorRepo.findAll();
+		return doctorRepo.findAllDoctors();
 	}
 
 	public List<ClinicSchedule> getDoctorScheduleById(Integer id){
