@@ -17,10 +17,10 @@ public interface NurseRepository extends JpaRepository<Nurse, Integer>{
 	
 	List<Nurse> findByClinicId(Integer clinicId);
 
-	@Query("SELECT n FROM Nurse n WHERE n.name LIKE %:name% ")
+	@Query("SELECT n FROM Nurse n WHERE n.name LIKE %:name% AND d.status=true")
 	List<Nurse> findByFirstNameLike(@Param("name") String name);
 	
-	@Query("SELECT n FROM Nurse n WHERE n.id = :id")
+	@Query("SELECT n FROM Nurse n WHERE n.id = :id AND d.status=true")
 	List<Nurse> getNurseProfileById(@Param("id") Integer id);
 	
 }
