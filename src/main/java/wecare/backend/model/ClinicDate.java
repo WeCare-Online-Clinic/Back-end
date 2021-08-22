@@ -2,15 +2,29 @@ package wecare.backend.model;
 
 import javax.persistence.*;
 
-import org.hibernate.annotations.GenericGenerator;
+import com.vladmihalcea.hibernate.type.array.ListArrayType;
+import com.vladmihalcea.hibernate.type.json.JsonType;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.TypeDefs;
 
+import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@TypeDefs({
+        @TypeDef(
+                name = "list-array",
+                typeClass = ListArrayType.class
+        ),
+        @TypeDef(
+                name = "json",
+                typeClass = JsonType.class
+        )
+})
 @Entity
 @Table(name="clinic_date")
 public class ClinicDate {
@@ -37,11 +51,32 @@ public class ClinicDate {
     @Column(name="date")
     private Date date;
 
-    @Column(name = "queue")
-    private Integer[] queue;
+    @Type(type = "list-array")
+    @Column(
+            name = "queue",
+            columnDefinition = "integer[]"
+    )
+    private List<Integer> queue;
 
-    @Column(name = "summary")
-    private String summary;
+    @Type(type = "json")
+    @Column(name = "summary", columnDefinition = "jsonb")
+    private Map<String, String> summary = new HashMap<>();
+
+    @Column(name = "no_patients")
+    private Integer noPatients;
+
+    @Column(name = "start_time")
+    private Time startTime;
+
+    @Column(name = "end_time")
+    private Time endTime;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "nurse_id", referencedColumnName = "id")
+    private Nurse nurse;
+
+    public ClinicDate() {
+    }
 
     public Integer getId() {
 
@@ -55,16 +90,32 @@ public class ClinicDate {
 
         return clinicSchedule;
     }
-    public Date getClinicDate() {
+    public String getClinicDate() {
 
-        return date;
+        return new SimpleDateFormat("yyyy-MM-dd").format(date);
     }
 
-    public Integer[] getQueue() {
+    public String getStartTime() {
+        return new SimpleDateFormat("kk.mm").format(startTime);
+    }
+
+    public String getEndTime() {
+        return new SimpleDateFormat("kk.mm").format(endTime);
+    }
+
+    public Integer getNoPatients() {
+        return noPatients;
+    }
+
+    public Nurse getNurse() {
+        return nurse;
+    }
+
+    public List<Integer> getQueue() {
 
         return queue;
     }
-    public String getSummary() {
+    public Map<String, String> getSummary() {
 
         return summary;
     }

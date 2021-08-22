@@ -5,6 +5,7 @@ import javax.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.sql.Time;
+import java.text.SimpleDateFormat;
 
 @Entity
 @Table(name = "clinic_appointment")
@@ -52,9 +53,8 @@ public class ClinicAppointment {
         return clinicDate;
     }
 
-    public Time getTime(){
-        return time;
-    }
+    public String getTime(){
+        return new SimpleDateFormat("kk.mm").format(time);    }
 
     public Integer getQueueNo(){
         return queueNo;

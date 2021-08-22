@@ -2,6 +2,7 @@ package wecare.backend.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,5 +92,14 @@ public class DoctorController {
 	public List<PatientClinicProfile> getPatients(@PathVariable Integer id){
 		return doctorService.getPatientList(id);
 	}
-	
+
+	@GetMapping("/clinic/history/{id}")
+	public List <ClinicDate> getClinicDates(@PathVariable Integer id){
+		return doctorService.getClinicDates(id);
+	}
+
+	@GetMapping("/clinic/queue/{id}")
+	public List <ClinicAppointment> getQueue(@PathVariable Integer id){
+		return doctorService.getQueue(id);
+	}
  }
