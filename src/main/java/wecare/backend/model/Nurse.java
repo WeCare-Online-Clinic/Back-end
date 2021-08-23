@@ -32,6 +32,9 @@ public class Nurse {
     @Column(name = "gender")
     private Character gender;
 
+    @Column(name = "nurse_id")
+    private String nurseId;
+
     @Column(name = "email")
     private String email;
 
@@ -77,6 +80,10 @@ public class Nurse {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    public String getNurse_id() { return nurseId; }
+
+    public void setNurse_id(String nurse_id) { this.nurseId = nurse_id;}
 
     public String getName() {
         return name;

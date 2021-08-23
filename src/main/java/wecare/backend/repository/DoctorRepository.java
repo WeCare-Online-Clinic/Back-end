@@ -33,6 +33,8 @@ public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
 	@Query("SELECT d FROM Doctor d WHERE d.id = :id AND d.status=true")
 	List<Doctor> getDoctorProfileById(@Param("id") Integer id);
 
+	@Query("SELECT d FROM Doctor d WHERE d.doctorId = :doctorId AND d.status=true")
+	List<Doctor> getDoctorProfileByDoctorId(@Param("doctorId") String doctorId);
 	
 	
 }

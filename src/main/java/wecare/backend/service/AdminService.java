@@ -8,13 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
-import wecare.backend.model.Doctor;
-import wecare.backend.model.Nurse;
-import wecare.backend.model.User;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import wecare.backend.model.*;
 import wecare.backend.model.dto.UserCount;
-import wecare.backend.repository.DoctorRepository;
-import wecare.backend.repository.NurseRepository;
-import wecare.backend.repository.UserRepository;
+import wecare.backend.repository.*;
 
 @Service
 public class AdminService {
@@ -27,6 +27,12 @@ public class AdminService {
 
 	@Autowired
 	private NurseRepository nurseRepo;
+
+	@Autowired
+	private DoctorSchedulesRepository doctorScheduleRepo;
+
+	@Autowired
+	private NurseSchedulesRepository nurseSchedulesRepo;
 	
 	public List<UserCount> getUserCounts(){
 		
@@ -60,6 +66,7 @@ public class AdminService {
 		
 		return userCount;
 	}
+
 
 	public Integer changeDoctorStatus(Integer doctorId){
 		Optional<Doctor> doctorOptional=doctorRepo.findById(doctorId);
@@ -96,6 +103,45 @@ public class AdminService {
 		}else {
 			return 0;
 		}
+	}
+
+	public List<Doctor> getDoctorProfileByDoctorId(String doctorId) {
+		return doctorRepo.getDoctorProfileByDoctorId(doctorId);
+	}
+	public List<Nurse> getNurseProfileByNurseId(String nurseId) {
+		return nurseRepo.getNurseProfileByNurseId(nurseId);
+	}
+
+
+	public void deleteDoctorScheduleById(Integer doctorId) {
+		doctorScheduleRepo.deleteDoctorScheduleById(doctorId);
+	}
+
+	public Integer updateDoctorSchedule(List<DoctorSchedule> doctorScheduleList) {
+		List<DoctorSchedule> doctorSchedules= doctorScheduleRepo.saveAllAndFlush(doctorScheduleList);
+		if(doctorSchedules.isEmpty()){
+			return 0;
+		}
+		else {
+			return 1;
+		}
+	}
+
+	public void deleteNurseScheduleById(Integer nurseId) {
+		nurseSchedulesRepo.deleteNurseScheduleById(nurseId);
+
+	}
+
+	public Integer updateNurseSchedule(List<NurseSchedule> nurseSchedulelist) {
+		List<NurseSchedule> nurseSchedule = nurseSchedulesRepo.saveAllAndFlush(nurseSchedulelist);
+		if(nurseSchedule.isEmpty()){
+			return 0;
+		}
+		else{
+			return 1;
+		}
+
+
 	}
 
 }

@@ -27,4 +27,7 @@ public interface NurseRepository extends JpaRepository<Nurse, Integer> {
     @Query("SELECT n FROM Nurse n WHERE n.id = :id AND n.status=true")
     List<Nurse> getNurseProfileById(@Param("id") Integer id);
 
+    @Query("SELECT n FROM Nurse n WHERE n.nurseId = :nurseId AND n.status=true")
+    List<Nurse> getNurseProfileByNurseId(@Param("nurseId") String nurseId);
+
 }

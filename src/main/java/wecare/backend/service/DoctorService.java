@@ -129,15 +129,7 @@ public class DoctorService {
 		return doctorRepo.findByClinicId(clinicId);
 	}
 	
-	public void deleteDoctorScheduleById(Integer doctorId) {
-		LOG.info("START : doctor Id  service {}",doctorId);
-		doctorScheduleRepo.deleteDoctorScheduleById(doctorId);
-	}
-	
-	public List<DoctorSchedule> updateDoctorSchedule(List<DoctorSchedule> doctorScheduleList) {	
-		return doctorScheduleRepo.saveAllAndFlush(doctorScheduleList);
 
-	}
 
 	public List<PatientClinicProfile> getPatientList(Integer clinic){
 		return patientClinicProfileRepo.findByClinicId(clinic);

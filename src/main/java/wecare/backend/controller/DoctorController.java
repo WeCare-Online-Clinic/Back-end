@@ -75,18 +75,7 @@ public class DoctorController {
 		return doctorService.getDoctor(id);
 	}
 	
-	@DeleteMapping("/deleteDoctorSchedule/{doctorId}")
-	public void deleteDoctorScheduleById(@PathVariable Integer doctorId) {
-	    	LOG.info("START : doctor Id {}",doctorId);
-			doctorService.deleteDoctorScheduleById(doctorId);
-	}
-	
-	@PostMapping("/updateDoctorSchedule")
-	public List<DoctorSchedule> updateDoctorSchedule(@RequestBody List<DoctorSchedule> doctorSchedulelist){
-		LOG.info("START : doctor Schedule {}",doctorSchedulelist);
-		List<DoctorSchedule> doctorSchedule = doctorService.updateDoctorSchedule(doctorSchedulelist);
-		return doctorSchedule;
-	}
+
 
 	@GetMapping("/patient/list/{id}")
 	public List<PatientClinicProfile> getPatients(@PathVariable Integer id){
