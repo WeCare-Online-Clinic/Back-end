@@ -53,4 +53,11 @@ public class PatientController {
 		
 	}
 	
+	@GetMapping("/getPatientProfileDetailsByClinic/{clinicId}")
+	public List<Patient> getPatientProfileByClinic(@PathVariable Integer clinicId) {
+		List<Patient> patient = patientService.getPatientProfileByClinic(clinicId);
+		return patient;
+
+	}
+	
 }
