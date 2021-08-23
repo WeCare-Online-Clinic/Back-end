@@ -59,14 +59,5 @@ public class NurseController {
 
 	}
 
-	@DeleteMapping("/deleteNurseSchedule/{nurseId}")
-	public void deleteNurseScheduleById(@PathVariable Integer nurseId) {
-		nurseService.deleteNurseScheduleById(nurseId);
-	}
 
-	@PostMapping("/updateNurseSchedule")
-	public List<NurseSchedule> updateNurseSchedule(@RequestBody List<NurseSchedule> nurseSchedulelist) {
-		List<NurseSchedule> nurseSchedule = nurseService.updateNurseSchedule(nurseSchedulelist);
-		return nurseSchedule;
-	}
 }

@@ -1,11 +1,19 @@
 package wecare.backend.model;
 
-import org.hibernate.annotations.GenericGenerator;
+import com.vladmihalcea.hibernate.type.json.JsonType;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity
 @Table(name = "patient_clinic_data")
+@TypeDef(
+        name = "json",
+        typeClass = JsonType.class
+)
 public class PatientClinicData {
 
     @Id
@@ -26,8 +34,9 @@ public class PatientClinicData {
     @Column(name = "note")
     private String note;
 
-    @Column(name = "prescription")
-    private String prescription;
+    @Type(type = "json")
+    @Column(name = "prescription", columnDefinition = "jsonb")
+    private final Map<String,String> prescription = new HashMap<>();
 
     @Column(name = "lab_tests")
     private String labTests;
@@ -45,7 +54,7 @@ public class PatientClinicData {
         return  note;
     }
 
-    public String getPrescription(){
+    public Map<String, String> getPrescription(){
 
         return  prescription;
     }

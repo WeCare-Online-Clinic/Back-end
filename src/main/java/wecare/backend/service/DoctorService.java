@@ -1,7 +1,6 @@
 package wecare.backend.service;
 
 
-import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 
@@ -14,16 +13,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import wecare.backend.controller.DoctorController;
 import wecare.backend.exception.UserCollectionException;
-import wecare.backend.model.ClinicSchedule;
-import wecare.backend.model.Doctor;
-import wecare.backend.model.DoctorSchedule;
-import wecare.backend.model.User;
-import wecare.backend.repository.ClinicScheduleRepository;
-import wecare.backend.repository.DoctorRepository;
-import wecare.backend.repository.DoctorSchedulesRepository;
-import wecare.backend.repository.UserRepository;
+import wecare.backend.model.*;
+import wecare.backend.repository.*;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -47,6 +39,15 @@ public class DoctorService {
 
 	@Autowired
 	private JavaMailSender mailSender;
+
+	@Autowired
+	private PatientClinicProfileRepository patientClinicProfileRepo;
+
+	@Autowired
+	private ClinicDateRepository clinicDateRepo;
+
+	@Autowired
+	private ClinicAppointmentRepository clinicAppointmentRepo;
 	
 	public Doctor addDoctor(Doctor doctor) throws UserCollectionException, MessagingException, UnsupportedEncodingException {
 		Doctor resultDoctor=doctorRepo.findByEmail(doctor.getEmail());
@@ -65,9 +66,8 @@ public class DoctorService {
 			newUser.setPassword("");
 			newUser.setEmail(newDoctor.getEmail());
 
-			if(userRepo.save(newUser) != null){
-				sendVerificationEmail(newDoctor, newUser);
-			}
+			userRepo.save(newUser);
+			sendVerificationEmail(newDoctor, newUser);
 
 			return newDoctor;
 		}
@@ -84,7 +84,7 @@ public class DoctorService {
 		String subject = "Please verify email and finish registration";
 		String body = "Dr. [[name]], <br>"
 				+ "Please click the link below to proceed to setting up the account. <br>"
-				+ "<h4><href=\'[[link]]\'>[[link]]</h4>"
+				+ "<h4><href='[[link]]'>[[link]]</h4>"
 				+ "Thank you, <br>"
 				+ "Wecare Hospitals";
 
@@ -110,44 +110,37 @@ public class DoctorService {
 	}
 
 	public List<Doctor> getAllDoctors(){
-		List<Doctor> doctors =doctorRepo.findAll();
-		return doctors;
+		return doctorRepo.findAllDoctors();
 	}
 
 	public List<ClinicSchedule> getDoctorScheduleById(Integer id){
-		List<ClinicSchedule> doctorSchedule = clinicScheduleRepo.getClinicShedule(id);
-		return doctorSchedule;
+		return clinicScheduleRepo.getClinicShedule(id);
 	}
 	
 	public List<Doctor> getDoctorProfileById(Integer id) {
-		List<Doctor> doctor = doctorRepo.getDoctorProfileById(id);
-		return doctor;
-	
+		return doctorRepo.getDoctorProfileById(id);
 	}
 	
 	public List<Doctor> getDoctorProfileByName(String name){
-		List<Doctor> doctor=doctorRepo.findByFirstNameLike(name);
-		return doctor;
+		return  doctorRepo.findByFirstNameLike(name);
 	}
 
 	public List<Doctor> getDoctorProfileByClinic(Integer clinicId){
-		List<Doctor> doctor=doctorRepo.findByClinicId(clinicId);
-		return doctor;
+		return doctorRepo.findByClinicId(clinicId);
 	}
 	
-	public void deleteDoctorScheduleById(Integer doctorId) {
-		LOG.info("START : doctor Id  service {}",doctorId);
-		doctorScheduleRepo.deleteDoctorScheduleById(doctorId);
-	}
-	
-	public List<DoctorSchedule> updateDoctorSchedule(List<DoctorSchedule> doctorScheduleList) {	
-		List<DoctorSchedule> doctorschedule = doctorScheduleRepo.saveAllAndFlush(doctorScheduleList);
-		return doctorschedule;
-	
-	}
 
 
-	
-	
+	public List<PatientClinicProfile> getPatientList(Integer clinic){
+		return patientClinicProfileRepo.findByClinicId(clinic);
+	}
+
+	public List <ClinicDate> getClinicDates(Integer clinic){
+		return clinicDateRepo.findByClinicSchedule_ClinicId(clinic);
+	}
+
+	public List <ClinicAppointment> getQueue(Integer clinic_did){
+		return  clinicAppointmentRepo.findByClinicDateId(clinic_did);
+	}
 
 }

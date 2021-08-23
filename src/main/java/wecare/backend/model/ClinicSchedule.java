@@ -6,6 +6,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.sql.Time;
+import java.text.SimpleDateFormat;
 
 @Entity
 @Table(name="clinic_schedule")
@@ -48,9 +49,9 @@ public class ClinicSchedule {
 
 		this.day = day;
 	}
-	public Time getTime() {
+	public String getTime() {
 
-		return time;
+		return new SimpleDateFormat("kk.mm").format(time);
 	}
 	public void setTime(Time time) {
 

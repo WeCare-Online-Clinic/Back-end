@@ -1,143 +1,174 @@
 package wecare.backend.model;
 
+import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import javax.persistence.*;
-
-import org.hibernate.annotations.GenericGenerator;
-
 @Entity
-@Table(name="nurse")
+@Table(name = "nurse")
 public class Nurse {
-	
-	
-	@Id
-	@SequenceGenerator(
-			name = "nurse_id_seq",
-			sequenceName = "nurse_id_seq",
-			allocationSize = 1,
-			initialValue = 1000
-	)
 
-	@GeneratedValue(
-			strategy = GenerationType.SEQUENCE,
-			generator = "nurse_id_seq"
-	)
 
-	@Column(name="id")
-	private Integer id;
+    @Id
+    @SequenceGenerator(
+            name = "nurse_id_seq",
+            sequenceName = "nurse_id_seq",
+            allocationSize = 1,
+            initialValue = 1000
+    )
 
-	@Column(name="name")
-	private String name;
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "nurse_id_seq"
+    )
 
-	@Column(name = "gender")
-	private Character gender;
+    @Column(name = "id")
+    private Integer id;
 
-	@Column(name="email")
-	private String email;
+    @Column(name = "name")
+    private String name;
 
-	@Column(name="contact")
-	private Integer contact;
-	
-	@Column(name="qualification")
-	private String qualification;
-	
-	@Column(name="is_head")
-	private Boolean isHead;
+    @Column(name = "gender")
+    private Character gender;
 
-	@OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "clinic_id", referencedColumnName = "id")
-	private Clinic clinic;
+    @Column(name = "nurse_id")
+    private String nurseId;
 
-	@OneToMany(targetEntity =  NurseSchedule.class,cascade = CascadeType.ALL)
-	@JoinColumn(name="nurse_id",referencedColumnName = "id")
-	private List<NurseSchedule> nurseSchedule;
+    @Column(name = "email")
+    private String email;
 
-	public List<NurseSchedule> getNurseSchedule() {
-		if(nurseSchedule == null) {
-			nurseSchedule = new ArrayList<>();
-		}
-		return nurseSchedule;
-	}
-	public void setNurseSchedule(List<NurseSchedule> nurseSchedule) {
+    @Column(name = "contact")
+    private Integer contact;
 
-		this.nurseSchedule = nurseSchedule;
-	}
-	
-	public Integer getId() {
+    @Column(name = "qualification")
+    private String qualification;
 
-		return id;
-	}
+    @Column(name = "is_head")
+    private Boolean isHead;
 
-	public void setId(Integer id) {
+    @Column(name = "registered_date")
+    private Date registeredDate;
 
-		this.id = id;
-	}
+    @Column(name = "status")
+    private Boolean status;
 
-	public String getName() {
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "clinic_id", referencedColumnName = "id")
+    private Clinic clinic;
 
-		return name;
-	}
+    @OneToMany(targetEntity = NurseSchedule.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "nurse_id", referencedColumnName = "id")
+    private List<NurseSchedule> nurseSchedule;
 
-	public void setName(String name) {
+    public List<NurseSchedule> getNurseSchedule() {
+        if (nurseSchedule == null) {
+            nurseSchedule = new ArrayList<>();
+        }
+        return nurseSchedule;
+    }
 
-		this.name = name;
-	}
+    public void setNurseSchedule(List<NurseSchedule> nurseSchedule) {
 
-	public String getEmail() {
+        this.nurseSchedule = nurseSchedule;
+    }
 
-		return email;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setEmail(String email) {
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-		this.email = email;
-	}
+    public String getNurse_id() { return nurseId; }
 
-	public Integer getContact() {
+    public void setNurse_id(String nurse_id) { this.nurseId = nurse_id;}
 
-		return contact;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setContact(Integer contact) {
+    public void setName(String name) {
+        this.name = name;
+    }
 
-		this.contact = contact;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public Boolean getIsHead() {
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-		return isHead;
-	}
+    public Integer getContact() {
+        return contact;
+    }
 
-	public void setIsHead(Boolean isHead) {
+    public void setContact(Integer contact) {
 
-		this.isHead = isHead;
-	}
+        this.contact = contact;
+    }
 
-	public Clinic getClinic() {
+    public Boolean getIsHead() {
+        return isHead;
+    }
 
-		return clinic;
-	}
-	public Character getGender() {
-		return gender;
-	}
-	public void setGender(Character gender) {
-		this.gender = gender;
-	}
-	public String getQualification() {
-		return qualification;
-	}
-	public void setQualification(String qualification) {
-		this.qualification = qualification;
-	}
-	public void setClinic(Clinic clinic) {
-		this.clinic = clinic;
-	}
+    public void setIsHead(Boolean isHead) {
+        this.isHead = isHead;
+    }
 
-	@Override
-	public String toString() {
-		return "Nurse [id=" + id + ", name=" + name + ", email=" + email + ", contact=" + contact + ", isHead=" + isHead + ", clinicId="
-				+ clinic.getName() + ", nurseSchedule=" + nurseSchedule + "]";
-	}
+    public Clinic getClinic() {
+        return clinic;
+    }
+
+    public Character getGender() {
+        return gender;
+    }
+
+    public void setGender(Character gender) {
+        this.gender = gender;
+    }
+
+    public String getQualification() {
+        return qualification;
+    }
+
+    public void setQualification(String qualification) {
+        this.qualification = qualification;
+    }
+
+    public void setClinic(Clinic clinic) {
+        this.clinic = clinic;
+    }
+
+    public Boolean getHead() {
+        return isHead;
+    }
+
+    public void setHead(Boolean head) {
+        isHead = head;
+    }
+
+    public Date getRegisteredDate() {
+        return registeredDate;
+    }
+
+    public void setRegisteredDate(Date registeredDate) {
+        this.registeredDate = registeredDate;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Nurse [id=" + id + ", name=" + name + ", email=" + email + ", contact=" + contact + ", isHead=" + isHead + ", clinicId="
+                + clinic.getName() + ", nurseSchedule=" + nurseSchedule + "]";
+    }
 }

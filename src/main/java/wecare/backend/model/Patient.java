@@ -1,6 +1,9 @@
 package wecare.backend.model;
+
 import javax.persistence.*;
+
 import org.hibernate.annotations.GenericGenerator;
+
 import java.util.Date;
 
 @Entity
@@ -151,3 +154,4 @@ public class Patient {
 	}
 
 }
+

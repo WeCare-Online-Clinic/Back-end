@@ -19,10 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import wecare.backend.exception.UserCollectionException;
-import wecare.backend.model.Clinic;
-import wecare.backend.model.ClinicSchedule;
-import wecare.backend.model.Doctor;
-import wecare.backend.model.DoctorSchedule;
+import wecare.backend.model.*;
 import wecare.backend.service.DoctorService;
 
 import javax.mail.MessagingException;
@@ -49,25 +46,25 @@ public class DoctorController {
 	
 	@GetMapping("/getDoctorSchedule/{id}")
 	public List<ClinicSchedule> getDoctorSchedules(@PathVariable Integer id){
-		List<ClinicSchedule> docterSchedule =doctorService.getDoctorScheduleById(id);
-		return docterSchedule;
+		List<ClinicSchedule> doctorSchedule =doctorService.getDoctorScheduleById(id);
+		return doctorSchedule;
 	}
 	
 	@GetMapping("/getDoctorProfile/{id}") 
-	public  List<Doctor> getDocterProfileById(@PathVariable Integer id){
+	public  List<Doctor> getDoctorProfileById(@PathVariable Integer id){
 		List<Doctor> doctor = doctorService.getDoctorProfileById(id);
 		return doctor;
 		
 	}
 	@GetMapping("/getDoctorProfileByName/{name}")
-	public List<Doctor> getDocterProfileByName(@PathVariable String name){
+	public List<Doctor> getDoctorProfileByName(@PathVariable String name){
 		List<Doctor> doctor=doctorService.getDoctorProfileByName(name);
 		return doctor;
 		
 	}
 	
 	@GetMapping("/getDoctorProfileDetailsByClinic/{clinicId}")
-	public List<Doctor> getDocterProfileByClinic(@PathVariable Integer clinicId){
+	public List<Doctor> getDoctorProfileByClinic(@PathVariable Integer clinicId){
 		List<Doctor> doctor=doctorService.getDoctorProfileByClinic(clinicId);
 		return doctor;
 		
@@ -78,17 +75,20 @@ public class DoctorController {
 		return doctorService.getDoctor(id);
 	}
 	
-	@DeleteMapping("/deleteDoctorSchedule/{doctorId}")
-	public void deleteDoctorScheduleById(@PathVariable Integer doctorId) {
-	    	LOG.info("START : doctor Id {}",doctorId);
-			doctorService.deleteDoctorScheduleById(doctorId);
+
+
+	@GetMapping("/patient/list/{id}")
+	public List<PatientClinicProfile> getPatients(@PathVariable Integer id){
+		return doctorService.getPatientList(id);
 	}
-	
-	@PostMapping("/updateDoctorSchedule")
-	public List<DoctorSchedule> updateDoctorSchedule(@RequestBody List<DoctorSchedule> doctorSchedulelist){
-		LOG.info("START : doctor Schedule {}",doctorSchedulelist);
-		List<DoctorSchedule> doctorSchedule = doctorService.updateDoctorSchedule(doctorSchedulelist);
-		return doctorSchedule;
+
+	@GetMapping("/clinic/history/{id}")
+	public List <ClinicDate> getClinicDates(@PathVariable Integer id){
+		return doctorService.getClinicDates(id);
 	}
-	
+
+	@GetMapping("/clinic/queue/{id}")
+	public List <ClinicAppointment> getQueue(@PathVariable Integer id){
+		return doctorService.getQueue(id);
+	}
  }

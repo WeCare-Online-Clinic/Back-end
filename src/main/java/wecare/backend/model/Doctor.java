@@ -1,160 +1,166 @@
 package wecare.backend.model;
 
 import javax.persistence.*;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.GenericGenerators;
-import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name="doctor")
+@Table(name = "doctor")
 public class Doctor {
-		@Id
-		@SequenceGenerator(
-				name = "doctor_id_seq",
-				sequenceName = "doctor_id_seq",
-				allocationSize = 1,
-				initialValue = 100000
-		)
 
-		@GeneratedValue(
-				strategy = GenerationType.SEQUENCE,
-				generator = "doctor_id_seq"
-		)
+    @Id
+    @SequenceGenerator(
+            name = "doctor_id_seq",
+            sequenceName = "doctor_id_seq",
+            allocationSize = 1,
+            initialValue = 100000
+    )
 
-		@Column(name="id")
-		private Integer id;
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "doctor_id_seq"
+    )
 
-		@Column(name="name")
-		private String name;
+    @Column(name = "id")
+    private Integer id;
 
-		@Column(name="email")
-		private String email;
-		
-		@Column(name="doctor_id")
-		private String doctorId;
-		
-		@Column(name="contact")
-		private Integer contact;
-		
-		@Column(name="qualification")
-		private String qualification;
-		
-		@Column(name="specialization")
-		private String specialization;
+    @Column(name = "name")
+    private String name;
 
-		@OneToOne(fetch = FetchType.EAGER)
-		@JoinColumn(name = "clinic_id", referencedColumnName = "id")
-		private Clinic clinic;
+    @Column(name = "email")
+    private String email;
 
-		@OneToMany(targetEntity = DoctorSchedule.class, cascade = CascadeType.ALL)
-		@JoinColumn(name="doctor_id",referencedColumnName = "id")
-		private List<DoctorSchedule> doctorSchedules;
+    @Column(name = "doctor_id")
+    private String doctorId;
 
-		public List<DoctorSchedule> getDoctorSchedules(){
-			if(doctorSchedules == null){
-				doctorSchedules = new ArrayList<>();
-			}
-			return  doctorSchedules;
-		}
+    @Column(name = "contact")
+    private Integer contact;
 
-		public void setDoctorSchedules(List<DoctorSchedule> doctorSchedules){
+    @Column(name = "qualification")
+    private String qualification;
 
-			this.doctorSchedules = doctorSchedules;
-		}
+    @Column(name = "specialization")
+    private String specialization;
 
-		public Integer getId() {
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "clinic_id", referencedColumnName = "id")
+    private Clinic clinic;
 
-			return id;
-		}
+    @Column(name = "registered_date")
+    private Date registeredDate;
 
-		public void setId(Integer id) {
+    @Column(name = "status")
+    private Boolean status;
 
-			this.id = id;
-		}
+    @OneToMany(targetEntity = DoctorSchedule.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "doctor_id", referencedColumnName = "id")
+    private List<DoctorSchedule> doctorSchedules;
 
-		public String getName() {
+    public List<DoctorSchedule> getDoctorSchedules() {
+        if (doctorSchedules == null) {
+            doctorSchedules = new ArrayList<>();
+        }
+        return doctorSchedules;
+    }
 
-			return name;
-		}
+    public void setDoctorSchedules(List<DoctorSchedule> doctorSchedules) {
 
-		public void setName(String name) {
+        this.doctorSchedules = doctorSchedules;
+    }
 
-			this.name = name;
-		}
-		public String getEmail() {
+    public Integer getId() {
+        return id;
+    }
 
-			return email;
-		}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-		public void setEmail(String email) {
+    public String getName() {
+        return name;
+    }
 
-			this.email = email;
-		}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-		public String getDoctorId() {
+    public String getEmail() {
+        return email;
+    }
 
-			return doctorId;
-		}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-		public void setDoctorId(String doctorId) {
+    public String getDoctorId() {
+        return doctorId;
+    }
 
-			this.doctorId = doctorId;
-		}
+    public void setDoctorId(String doctorId) {
+        this.doctorId = doctorId;
+    }
 
-		public Integer getContact() {
+    public Integer getContact() {
+        return contact;
+    }
 
-			return contact;
-		}
+    public void setContact(Integer contact) {
+        this.contact = contact;
+    }
 
-		public void setContact(Integer contact) {
+    public String getQualification() {
+        return qualification;
+    }
 
-			this.contact = contact;
-		}
+    public void setQualification(String qualification) {
+        this.qualification = qualification;
+    }
 
-		public String getQualification() {
+    public String getSpecialization() {
+        return specialization;
+    }
 
-			return qualification;
-		}
+    public void setSpecialization(String specialization) {
+        this.specialization = specialization;
+    }
 
-		public void setQualification(String qualification) {
+    public Clinic getClinic() {
+        return clinic;
+    }
 
-			this.qualification = qualification;
-		}
+    public Date getRegisteredDate() {
+        return registeredDate;
+    }
 
-		public String getSpecialization() {
+    public void setRegisteredDate(Date registeredDate) {
+        this.registeredDate = registeredDate;
+    }
 
-			return specialization;
-		}
+    public Boolean getStatus() {
+        return status;
+    }
 
-		public void setSpecialization(String specialization) {
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
 
-			this.specialization = specialization;
-		}
+    @Override
+    public String toString() {
+        return "Doctor{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", doctorId='" + doctorId + '\'' +
+                ", contact=" + contact +
+                ", qualification='" + qualification + '\'' +
+                ", specialization='" + specialization + '\'' +
+                ", clinic=" + clinic +
+                ", registeredDate=" + registeredDate +
+                ", status=" + status +
+                ", doctorSchedules=" + doctorSchedules +
+                '}';
+    }
 
-		public Clinic getClinic() {
 
-			return clinic;
-		}
-
-		@Override
-		public String toString() {
-			return "Doctor{" +
-					"id=" + id +
-					", name='" + name + '\'' +
-					", email='" + email + '\'' +
-					", doctor_id='" + doctorId + '\'' +
-					", contact=" + contact +
-					", qualification='" + qualification + '\'' +
-					", specialization='" + specialization + '\'' +
-					", clinic='" + clinic.getName() + '\'' +
-					'}';
-		}
-
-	
-
-		
 }

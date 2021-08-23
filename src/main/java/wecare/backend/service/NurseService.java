@@ -48,7 +48,7 @@ public class NurseService {
 
 	
 	public List<Nurse> getAllNurses(){
-		List<Nurse> nurses = nurseRepo.findAll();
+		List<Nurse> nurses = nurseRepo.findAllNurses();
 		return nurses;
 	}
 	
@@ -68,14 +68,5 @@ public class NurseService {
 		return nurse;
 	}
 	
-	public void deleteNurseScheduleById(Integer nurseId) {
-		nurseSchedulesRepo.deleteNurseScheduleById(nurseId);
-		
-	}
-	
-	public List<NurseSchedule> updateNurseSchedule(List<NurseSchedule> nurseSchedulelist) {	
-		List<NurseSchedule> nurseSchedule = nurseSchedulesRepo.saveAllAndFlush(nurseSchedulelist);
-		return nurseSchedule;
-	
-	}
+
 }
