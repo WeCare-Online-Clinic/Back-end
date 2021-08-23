@@ -4,6 +4,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import wecare.backend.exception.UserCollectionException;
+import wecare.backend.model.Nurse;
 import wecare.backend.model.Patient;
 import wecare.backend.model.User;
 import wecare.backend.repository.PatientRepository;
@@ -56,5 +57,8 @@ public class PatientService {
 		return patient;
 	}
 
-
+	public List<Patient> getPatientProfileByClinic(Integer clinicId){
+		List<Patient> patient=patientRepo.findByClinicId(clinicId);
+		return patient;
+	}
 }
