@@ -13,25 +13,25 @@ public class Report {
     private Integer ID;
 
     @Column(name = "test_date")
-    private Date test_date;
+    private Date testDate;
 
     @Column(name = "test_time")
-    private Time test_time;
+    private Time testTime;
 
     @Column(name = "availability")
     private String availability;
 
     @Column(name = "issued_date")
-    private Date issued_date;
+    private Date issuedDate;
 
     @Column(name = "data")
     private String data;
 
     @Column(name = "test_id")
-    private Integer test_id;
+    private Integer testId;
 
     @Column(name = "patient_id")
-    private Integer patient_id;
+    private Integer patientId;
 
 	public Integer getID() {
 		return ID;
@@ -41,20 +41,20 @@ public class Report {
 		ID = iD;
 	}
 
-	public Date getTest_date() {
-		return test_date;
+	public Date getTestDate() {
+		return testDate;
 	}
 
-	public void setTest_date(Date test_date) {
-		this.test_date = test_date;
+	public void setTestDate(Date testDate) {
+		this.testDate = testDate;
 	}
 
-	public Time getTest_time() {
-		return test_time;
+	public Time getTestTime() {
+		return testTime;
 	}
 
-	public void setTest_time(Time test_time) {
-		this.test_time = test_time;
+	public void setTestTime(Time testTime) {
+		this.testTime = testTime;
 	}
 
 	public String getAvailability() {
@@ -65,12 +65,12 @@ public class Report {
 		this.availability = availability;
 	}
 
-	public Date getIssued_date() {
-		return issued_date;
+	public Date getIssuedDate() {
+		return issuedDate;
 	}
 
-	public void setIssued_date(Date issued_date) {
-		this.issued_date = issued_date;
+	public void setIssuedDate(Date issuedDate) {
+		this.issuedDate = issuedDate;
 	}
 
 	public String getData() {
@@ -81,28 +81,30 @@ public class Report {
 		this.data = data;
 	}
 
-	public Integer getTest_id() {
-		return test_id;
+	public Integer getTestId() {
+		return testId;
 	}
 
-	public void setTest_id(Integer test_id) {
-		this.test_id = test_id;
+	public void setTestId(Integer testId) {
+		this.testId = testId;
 	}
 
-	public Integer getPatient_id() {
-		return patient_id;
+	public Integer getPatientId() {
+		return patientId;
 	}
 
-	public void setPatient_id(Integer patient_id) {
-		this.patient_id = patient_id;
+	public void setPatientId(Integer patientId) {
+		this.patientId = patientId;
 	}
 
 	@Override
 	public String toString() {
-		return "Report [ID=" + ID + ", test_date=" + test_date + ", test_time=" + test_time + ", availability="
-				+ availability + ", issued_date=" + issued_date + ", data=" + data + ", test_id=" + test_id
-				+ ", patient_id=" + patient_id + "]";
+		return "Report [ID=" + ID + ", testDate=" + testDate + ", testTime=" + testTime + ", availability="
+				+ availability + ", issuedDate=" + issuedDate + ", data=" + data + ", testId=" + testId + ", patientId="
+				+ patientId + "]";
 	}
 
+	
+	
     
 }
