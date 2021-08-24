@@ -3,6 +3,7 @@ package wecare.backend.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,5 +38,16 @@ public class UserController {
 	@PostMapping("user/set_password")
 	public ResponseEntity<User> setPassword(@RequestBody User user){
 		return new ResponseEntity<>(userService.setPassword(user), HttpStatus.OK);
+	}
+
+	@GetMapping("/userLogout/{userId}")
+	public String setUserLogoutStatus(@PathVariable Integer userId){
+		Integer number = userService.setUserLogoutStatus(userId);
+		if(number.equals(1)){
+			return "successfully log out";
+		}
+		else{
+			return "log out unsuccesful";
+		}
 	}
 }

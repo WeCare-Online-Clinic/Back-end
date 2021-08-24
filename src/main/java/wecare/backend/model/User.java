@@ -12,119 +12,145 @@ import java.util.Date;
 
 @Component
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class User {
 
-	@Id
-	@Column(name="id")
-	private Integer id;
+    @Id
+    @Column(name = "id")
+    private Integer id;
 
-	@Column(name="role")
-	private String role;
-	
-	@Column(name="verification_string")
-	private String verificationString; 
+    @Column(name = "role")
+    private String role;
 
-	@Column(name="verified")
-	private Boolean verified;
+    @Column(name = "verification_string")
+    private String verificationString;
 
-	@Column(name="password")
-	private String password; 
+    @Column(name = "verified")
+    private Boolean verified;
 
-	@Column(name="email")
-	private String email;
+    @Column(name = "password")
+    private String password;
 
-	@Column(name="registered_date")
-	private Date registeredDate;
+    @Column(name = "email")
+    private String email;
 
-	@Column(name="status")
-	private boolean status;
+    @Column(name = "registered_date")
+    private Date registeredDate;
 
-	public User() {
-	}
+    @Column(name = "status")
+    private boolean status;
 
-	public Integer getId() {
-		return id;
-	}
+    @Column(name = "name")
+    private String name;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    @Column(name = "login_status")
+    private Boolean loginStatus;
 
-	public String getUserRole() {
-		return role;
-	}
+    public User() {
+    }
 
-	public void setUserRole(String role) {
-		this.role = role;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public String getVerificationString() {
-		return verificationString;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setVerificationString(String verificationString) {
-		this.verificationString = verificationString;
-	}
+    public String getUserRole() {
+        return role;
+    }
 
-	public Boolean getVerified() {
-		return verified;
-	}
+    public void setUserRole(String role) {
+        this.role = role;
+    }
 
-	public void setVerified(Boolean verified) {
-		this.verified = verified;
-	}
+    public String getVerificationString() {
+        return verificationString;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public void setVerificationString(String verificationString) {
+        this.verificationString = verificationString;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public Boolean getVerified() {
+        return verified;
+    }
 
-	public String getEmail() {
-		return email;
-	}
-	public String getRole() {
-		return role;
-	}
+    public void setVerified(Boolean verified) {
+        this.verified = verified;
+    }
 
-	public void setRole(String role) {
-		this.role = role;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public Date getRegisteredDate() {
-		return registeredDate;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public void setRegisteredDate(Date registeredDate) {
-		this.registeredDate = registeredDate;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public boolean isStatus() {
-		return status;
-	}
+    public String getRole() {
+        return role;
+    }
 
-	public void setStatus(boolean status) {
-		this.status = status;
-	}
+    public void setRole(String role) {
+        this.role = role;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public Date getRegisteredDate() {
+        return registeredDate;
+    }
 
-	@Override
-	public String toString() {
-		return "User{" +
-				"id=" + id +
-				", role='" + role + '\'' +
-				", verificationString='" + verificationString + '\'' +
-				", verified=" + verified +
-				", password='" + password + '\'' +
-				", email='" + email + '\'' +
-				", registeredDate=" + registeredDate +
-				", status=" + status +
-				'}';
-	}
+    public void setRegisteredDate(Date registeredDate) {
+        this.registeredDate = registeredDate;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Boolean getLoginStatus() {
+        return loginStatus;
+    }
+
+    public void setLoginStatus(Boolean loginStatus) {
+        this.loginStatus = loginStatus;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", role='" + role + '\'' +
+                ", verificationString='" + verificationString + '\'' +
+                ", verified=" + verified +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", registeredDate=" + registeredDate +
+                ", status=" + status +
+                ", name='" + name + '\'' +
+                ", loginStatus=" + loginStatus +
+                '}';
+    }
+
 }

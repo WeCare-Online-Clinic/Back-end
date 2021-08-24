@@ -61,6 +61,7 @@ public class DoctorService {
 
 			newUser.setId(newDoctor.getId());
 			newUser.setUserRole("doctor");
+            newUser.setName(doctor.getName());
 			newUser.setVerificationString(verificationString);
 			newUser.setVerified(false);
 			newUser.setPassword("");

@@ -33,6 +33,7 @@ public class NurseService {
 		if(resultedNurse==null) {
 			newNurse =  nurseRepo.saveAndFlush(nurse);
 			newUser.setId(newNurse.getId());
+			newUser.setName(nurse.getName());
 			newUser.setUserRole(newNurse.getIsHead().equals(true)?"headnurse":"nurse");
 			newUser.setVerificationString("");
 			newUser.setVerified(true);

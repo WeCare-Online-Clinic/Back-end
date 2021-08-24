@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import wecare.backend.model.Doctor;
-import wecare.backend.model.DoctorSchedule;
-import wecare.backend.model.Nurse;
-import wecare.backend.model.NurseSchedule;
+import wecare.backend.model.*;
 import wecare.backend.model.dto.UserCount;
 import wecare.backend.service.AdminService;
 
@@ -34,8 +31,6 @@ public class AdminController {
             return ResponseEntity.ok(result);
         }
         return ResponseEntity.badRequest().build();
-
-
     }
 
     @GetMapping("/changeNurseStatus/{nurseId}")
@@ -89,6 +84,12 @@ public class AdminController {
         } else {
             return "successfuly updated";
         }
+    }
+
+    @GetMapping("/getOnlineUsers")
+    public List<User> getOnlineUsers(){
+        List<User> users =adminService.getOnlineUsers();
+        return users;
     }
 
 }

@@ -48,15 +48,15 @@ public class AdminService {
 		patientObject.setValue(patientCount);
 		
 		UserCount doctorObject =new UserCount();
-		doctorObject.setName("Doctors");
+		doctorObject.setName("Registered Doctors");
 		doctorObject.setValue(doctorCount);
 		
 		UserCount nurseObject =new UserCount();
-		nurseObject.setName("Nurses");
+		nurseObject.setName("Registered Nurses");
 		nurseObject.setValue(nurseCount);
 		
 		UserCount labTechObject =new UserCount();
-		labTechObject.setName("Lab Technicians");
+		labTechObject.setName("Registered Lab Technicians");
 		labTechObject.setValue(labtechCount);
 		
 		userCount.add(patientObject);
@@ -86,6 +86,7 @@ public class AdminService {
 			return 0;
 		}
 	}
+
 	public Integer changeNurseStatus(Integer nurseId){
 		Optional<Nurse> nurseOptional=nurseRepo.findById(nurseId);
 		if(nurseOptional.isPresent()){
@@ -108,10 +109,10 @@ public class AdminService {
 	public List<Doctor> getDoctorProfileByDoctorId(String doctorId) {
 		return doctorRepo.getDoctorProfileByDoctorId(doctorId);
 	}
+
 	public List<Nurse> getNurseProfileByNurseId(String nurseId) {
 		return nurseRepo.getNurseProfileByNurseId(nurseId);
 	}
-
 
 	public void deleteDoctorScheduleById(Integer doctorId) {
 		doctorScheduleRepo.deleteDoctorScheduleById(doctorId);
@@ -140,8 +141,11 @@ public class AdminService {
 		else{
 			return 1;
 		}
+	}
 
-
+	public List<User> getOnlineUsers(){
+		List<User> users=userRepo.getOnlineUsers();
+		return  users;
 	}
 
 }

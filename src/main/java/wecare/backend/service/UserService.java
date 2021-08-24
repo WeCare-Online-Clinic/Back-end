@@ -9,6 +9,8 @@ import wecare.backend.exception.UserCollectionException;
 import wecare.backend.model.User;
 import wecare.backend.repository.*;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
 	
@@ -42,6 +44,8 @@ public class UserService {
 		}
 		else {
 			if (passwordEncoder().matches(user.getPassword(), resultUser.getPassword())) {
+				resultUser.setLoginStatus(true);
+				userRepo.saveAndFlush(resultUser);
 				return resultUser;
 			}
 			else{
@@ -64,6 +68,18 @@ public class UserService {
 	public User setPassword(User user){
 		user.setPassword(passwordEncoder().encode(user.getPassword()));
 		return userRepo.save(user);
+	}
+
+	public Integer setUserLogoutStatus(Integer userId) {
+		User resultUser=userRepo.findById(userId).get(); //find the user by userid and assgin user t resultuser
+		if(resultUser==null){
+			return 0;
+		}
+		else{
+			resultUser.setLoginStatus(false); //set login status to false
+			userRepo.saveAndFlush(resultUser);  //save the user
+			return 1;
+		}
 	}
 
 }

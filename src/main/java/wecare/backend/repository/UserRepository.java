@@ -14,8 +14,6 @@ import wecare.backend.model.User;
 public interface UserRepository extends JpaRepository<User, Integer> {
 	
 	User findByEmail(String email);
-
-
 	
 	@Query("SELECT COUNT(*) FROM User u WHERE u.role = 'patient' ")
 	Integer  getPatientCount();
@@ -28,4 +26,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	
 	@Query("SELECT COUNT(*) FROM User u WHERE u.role = 'labtech' ")
 	Integer getLabtechCount();
+
+	@Query("SELECT u FROM User u WHERE u.loginStatus=true ")
+	List<User> getOnlineUsers();
 }
