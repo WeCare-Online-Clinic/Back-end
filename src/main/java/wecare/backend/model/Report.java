@@ -1,110 +1,174 @@
 package wecare.backend.model;
-import org.hibernate.annotations.GenericGenerator;
-import javax.persistence.*;
 
-import java.sql.Time;
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
-@Table(name = "lab_report")
+@Table(name = "nurse")
 public class Report {
 
-    @Column(name="ID")
-    private Integer ID;
 
-    @Column(name = "test_date")
-    private Date testDate;
+    @Id
+    @SequenceGenerator(
+            name = "nurse_id_seq",
+            sequenceName = "nurse_id_seq",
+            allocationSize = 1,
+            initialValue = 1000
+    )
 
-    @Column(name = "test_time")
-    private Time testTime;
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "nurse_id_seq"
+    )
 
-    @Column(name = "availability")
-    private String availability;
+    @Column(name = "id")
+    private Integer id;
 
-    @Column(name = "issued_date")
-    private Date issuedDate;
+    @Column(name = "name")
+    private String name;
 
-    @Column(name = "data")
-    private String data;
+    @Column(name = "gender")
+    private Character gender;
 
-    @Column(name = "test_id")
-    private Integer testId;
+    @Column(name = "nurse_id")
+    private String nurseId;
 
-    @Column(name = "patient_id")
-    private Integer patientId;
+    @Column(name = "email")
+    private String email;
 
-	public Integer getID() {
-		return ID;
-	}
+    @Column(name = "contact")
+    private Integer contact;
 
-	public void setID(Integer iD) {
-		ID = iD;
-	}
+    @Column(name = "qualification")
+    private String qualification;
 
-	public Date getTestDate() {
-		return testDate;
-	}
+    @Column(name = "is_head")
+    private Boolean isHead;
 
-	public void setTestDate(Date testDate) {
-		this.testDate = testDate;
-	}
+    @Column(name = "registered_date")
+    private Date registeredDate;
 
-	public Time getTestTime() {
-		return testTime;
-	}
+    @Column(name = "status")
+    private Boolean status;
 
-	public void setTestTime(Time testTime) {
-		this.testTime = testTime;
-	}
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "clinic_id", referencedColumnName = "id")
+    private Clinic clinic;
 
-	public String getAvailability() {
-		return availability;
-	}
+    @OneToMany(targetEntity = NurseSchedule.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "nurse_id", referencedColumnName = "id")
+    private List<NurseSchedule> nurseSchedule;
 
-	public void setAvailability(String availability) {
-		this.availability = availability;
-	}
+    public List<NurseSchedule> getNurseSchedule() {
+        if (nurseSchedule == null) {
+            nurseSchedule = new ArrayList<>();
+        }
+        return nurseSchedule;
+    }
 
-	public Date getIssuedDate() {
-		return issuedDate;
-	}
+    public void setNurseSchedule(List<NurseSchedule> nurseSchedule) {
 
-	public void setIssuedDate(Date issuedDate) {
-		this.issuedDate = issuedDate;
-	}
+        this.nurseSchedule = nurseSchedule;
+    }
 
-	public String getData() {
-		return data;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setData(String data) {
-		this.data = data;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public Integer getTestId() {
-		return testId;
-	}
+    public String getNurse_id() { return nurseId; }
 
-	public void setTestId(Integer testId) {
-		this.testId = testId;
-	}
+    public void setNurse_id(String nurse_id) { this.nurseId = nurse_id;}
 
-	public Integer getPatientId() {
-		return patientId;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setPatientId(Integer patientId) {
-		this.patientId = patientId;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	@Override
-	public String toString() {
-		return "Report [ID=" + ID + ", testDate=" + testDate + ", testTime=" + testTime + ", availability="
-				+ availability + ", issuedDate=" + issuedDate + ", data=" + data + ", testId=" + testId + ", patientId="
-				+ patientId + "]";
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	
-	
-    
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Integer getContact() {
+        return contact;
+    }
+
+    public void setContact(Integer contact) {
+
+        this.contact = contact;
+    }
+
+    public Boolean getIsHead() {
+        return isHead;
+    }
+
+    public void setIsHead(Boolean isHead) {
+        this.isHead = isHead;
+    }
+
+    public Clinic getClinic() {
+        return clinic;
+    }
+
+    public Character getGender() {
+        return gender;
+    }
+
+    public void setGender(Character gender) {
+        this.gender = gender;
+    }
+
+    public String getQualification() {
+        return qualification;
+    }
+
+    public void setQualification(String qualification) {
+        this.qualification = qualification;
+    }
+
+    public void setClinic(Clinic clinic) {
+        this.clinic = clinic;
+    }
+
+    public Boolean getHead() {
+        return isHead;
+    }
+
+    public void setHead(Boolean head) {
+        isHead = head;
+    }
+
+    public Date getRegisteredDate() {
+        return registeredDate;
+    }
+
+    public void setRegisteredDate(Date registeredDate) {
+        this.registeredDate = registeredDate;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Nurse [id=" + id + ", name=" + name + ", email=" + email + ", contact=" + contact + ", isHead=" + isHead + ", clinicId="
+                + clinic.getName() + ", nurseSchedule=" + nurseSchedule + "]";
+    }
 }
