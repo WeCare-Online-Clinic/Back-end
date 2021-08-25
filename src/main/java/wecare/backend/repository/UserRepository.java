@@ -1,6 +1,7 @@
 package wecare.backend.repository;
 
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -29,4 +30,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
 	@Query("SELECT u FROM User u WHERE u.loginStatus=true ")
 	List<User> getOnlineUsers();
+
+	@Query("SELECT u.registeredDate FROM User u ")
+	List<Date> getRegisteredDates();
 }

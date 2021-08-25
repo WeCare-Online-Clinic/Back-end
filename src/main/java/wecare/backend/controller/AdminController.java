@@ -1,5 +1,6 @@
 package wecare.backend.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,6 +91,12 @@ public class AdminController {
     public List<User> getOnlineUsers(){
         List<User> users =adminService.getOnlineUsers();
         return users;
+    }
+
+    @GetMapping("/getRegisteredUsers")
+    public ArrayList<Integer> getRegisteredUsers(){
+        ArrayList<Integer> registeredList=adminService.getRegisteredUsers();
+        return  registeredList;
     }
 
 }
