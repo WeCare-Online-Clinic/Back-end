@@ -50,11 +50,12 @@ public class DoctorService {
 	private ClinicAppointmentRepository clinicAppointmentRepo;
 	
 	public Doctor addDoctor(Doctor doctor) throws UserCollectionException, MessagingException, UnsupportedEncodingException {
-		Doctor resultDoctor=doctorRepo.findByEmail(doctor.getEmail());
+		User resultDoctor=userRepo.findByEmail(doctor.getEmail());
 		Doctor newDoctor = null;
 		User newUser = new User();
 		if(resultDoctor==null) {
 //			doctor.getDoctorSchedules();
+			doctor.setRegisteredDate(new Date());
 			newDoctor = doctorRepo.saveAndFlush(doctor);
 
 			String verificationString = RandomString.make(64);
@@ -66,6 +67,9 @@ public class DoctorService {
 			newUser.setVerified(false);
 			newUser.setPassword("");
 			newUser.setEmail(newDoctor.getEmail());
+			newUser.setRegisteredDate(new Date());
+			newUser.setLoginStatus(false);
+			newUser.setStatus(true);
 
 			userRepo.save(newUser);
 			sendVerificationEmail(newDoctor, newUser);

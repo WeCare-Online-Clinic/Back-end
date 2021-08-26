@@ -2,6 +2,7 @@ package wecare.backend.service;
 
 
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +28,11 @@ public class NurseService {
 	private NurseSchedulesRepository nurseSchedulesRepo;
 	
 	public Nurse addNurse(Nurse nurse) throws UserCollectionException{
-		Nurse resultedNurse = nurseRepo.findByEmail(nurse.getEmail());
+		User resultedNurse = userRepo.findByEmail(nurse.getEmail());
 		Nurse newNurse = null;
 		User newUser = new User();
 		if(resultedNurse==null) {
+			nurse.setRegisteredDate(new Date());
 			newNurse =  nurseRepo.saveAndFlush(nurse);
 			newUser.setId(newNurse.getId());
 			newUser.setName(nurse.getName());
@@ -39,6 +41,9 @@ public class NurseService {
 			newUser.setVerified(true);
 			newUser.setPassword("");
 			newUser.setEmail(newNurse.getEmail());
+			newUser.setStatus(true);
+			newUser.setLoginStatus(false);
+			newUser.setRegisteredDate(new Date());
 			userRepo.save(newUser);
 			return newNurse;
 		}

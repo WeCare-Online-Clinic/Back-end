@@ -29,9 +29,9 @@ public class ClinicSchedule {
 	
 	@Column(name="day")
 	private String day;
-	
+
 	@Column(name="time")
-	private Time time;
+	private String time;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "clinic_id", referencedColumnName = "id")
@@ -50,12 +50,20 @@ public class ClinicSchedule {
 		this.day = day;
 	}
 	public String getTime() {
-
-		return new SimpleDateFormat("kk.mm").format(time);
+		return time;
 	}
-	public void setTime(Time time) {
 
+	public void setTime(String time) {
 		this.time = time;
 	}
+
+//	public String getTime() {
+//
+//		return new SimpleDateFormat("kk.mm").format(time);
+//	}
+//	public void setTime(Time time) {
+//
+//		this.time = time;
+//	}
 
 }

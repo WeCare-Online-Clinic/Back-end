@@ -81,9 +81,14 @@ public class Nurse {
         this.id = id;
     }
 
-    public String getNurse_id() { return nurseId; }
+    public String getNurseId() {
+        return nurseId;
+    }
 
-    public void setNurse_id(String nurse_id) { this.nurseId = nurse_id;}
+    public void setNurseId(String nurseId) {
+        this.nurseId = nurseId;
+    }
+
 
     public String getName() {
         return name;
