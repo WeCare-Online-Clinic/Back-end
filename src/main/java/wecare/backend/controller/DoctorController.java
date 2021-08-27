@@ -1,6 +1,7 @@
 package wecare.backend.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -90,5 +91,20 @@ public class DoctorController {
 	@GetMapping("/clinic/queue/{id}")
 	public List <ClinicAppointment> getQueue(@PathVariable Integer id){
 		return doctorService.getQueue(id);
+	}
+
+	@GetMapping("/patient/clinic/data/{id}")
+	public PatientClinicData getPatientClinicData(@PathVariable Integer id){
+		return doctorService.getPatientClinicData(id);
+	}
+
+	@GetMapping("/patient/clinic/data/list/{id}")
+	public List<PatientClinicData> getPatientClinicDataList(@PathVariable Integer id){
+		return doctorService.getPatientClinicDataList(id);
+	}
+
+	@GetMapping("/consultation/available/{id}")
+	public ClinicDate getClinicDate(@PathVariable Integer id) throws ParseException {
+		return doctorService.getClinicDate(id);
 	}
  }

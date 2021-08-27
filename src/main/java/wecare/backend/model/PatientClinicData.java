@@ -6,6 +6,7 @@ import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Entity
@@ -36,7 +37,11 @@ public class PatientClinicData {
 
     @Type(type = "json")
     @Column(name = "prescription", columnDefinition = "jsonb")
-    private final Map<String,String> prescription = new HashMap<>();
+    private final Map<String, List<Map<String, String>>> prescription;
+
+    {
+        prescription = new HashMap<>();
+    }
 
     @Column(name = "lab_tests")
     private String labTests;
@@ -54,7 +59,7 @@ public class PatientClinicData {
         return  note;
     }
 
-    public Map<String, String> getPrescription(){
+    public Map<String, List<Map<String, String>>> getPrescription(){
 
         return  prescription;
     }

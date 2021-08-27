@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import wecare.backend.model.Doctor;
 import wecare.backend.model.Nurse;
+import wecare.backend.model.PatientClinicData;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -35,6 +36,4 @@ public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
 
 	@Query("SELECT d FROM Doctor d WHERE d.doctorId = :doctorId AND d.status=true")
 	List<Doctor> getDoctorProfileByDoctorId(@Param("doctorId") String doctorId);
-	
-	
 }

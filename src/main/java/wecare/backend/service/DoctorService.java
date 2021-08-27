@@ -2,6 +2,9 @@ package wecare.backend.service;
 
 
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 
 import net.bytebuddy.utility.RandomString;
@@ -48,6 +51,9 @@ public class DoctorService {
 
 	@Autowired
 	private ClinicAppointmentRepository clinicAppointmentRepo;
+
+	@Autowired
+	private PatientClinicDataRepository patientClinicDataRepo;
 	
 	public Doctor addDoctor(Doctor doctor) throws UserCollectionException, MessagingException, UnsupportedEncodingException {
 		User resultDoctor=userRepo.findByEmail(doctor.getEmail());
@@ -148,4 +154,20 @@ public class DoctorService {
 		return  clinicAppointmentRepo.findByClinicDateId(clinic_did);
 	}
 
+	public PatientClinicData getPatientClinicData(Integer id){
+		Date date = new Date();
+		return patientClinicDataRepo.findFirstByClinicAppointment_PatientIdAndClinicAppointment_ClinicDateDateLessThan(id, date);
+	}
+
+	public List<PatientClinicData> getPatientClinicDataList(Integer id){
+		Date date = new Date();
+		return patientClinicDataRepo.findAllByClinicAppointment_PatientIdAndClinicAppointment_ClinicDateDateLessThan(id, date);
+	}
+
+	public ClinicDate getClinicDate(Integer id) throws ParseException {
+		String date_string = "13-09-2021";
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+		Date date = formatter.parse(date_string);
+		return clinicDateRepo.findFirstByClinicSchedule_ClinicIdAndDate(id, date);
+	}
 }

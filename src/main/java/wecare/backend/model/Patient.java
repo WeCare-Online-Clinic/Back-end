@@ -101,12 +101,12 @@ public class Patient {
 		this.contact = contact;
 	}
 
-	public String getAddr() {
+	public String getAddress() {
 
 		return address;
 	}
 
-	public void setAddr(String address) {
+	public void setAddress(String address) {
 
 		this.address = address;
 	}
@@ -120,12 +120,12 @@ public class Patient {
 		this.nic = nic;
 	}
 	
-	public Date getDOB() {
+	public Date getBirthdate() {
 
 		return birthdate;
 	}
 
-	public void setDOB(Date birthdate) {
+	public void setBirthdate(Date birthdate) {
 
 		this.birthdate = birthdate;
 	}
