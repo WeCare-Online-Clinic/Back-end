@@ -71,6 +71,12 @@ public class ClinicDate {
     @Column(name = "end_time")
     private Time endTime;
 
+    @Column(name = "started")
+    private Boolean started;
+
+    @Column(name = "curr_queue")
+    private Integer currQueue;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "nurse_id", referencedColumnName = "id")
     private Nurse nurse;
@@ -105,6 +111,14 @@ public class ClinicDate {
 
     public Integer getNoPatients() {
         return noPatients;
+    }
+
+    public Boolean getStarted() {
+        return  started;
+    }
+
+    public Integer getCurrQueue() {
+        return currQueue;
     }
 
     public Nurse getNurse() {
