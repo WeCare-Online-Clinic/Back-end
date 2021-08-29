@@ -107,4 +107,14 @@ public class DoctorController {
 	public ClinicDate getClinicDate(@PathVariable Integer id) throws ParseException {
 		return doctorService.getClinicDate(id);
 	}
+
+	@GetMapping("/consultation/queue/no/{id}")
+	public Integer getCurrQueueNo(@PathVariable Integer id){
+		return doctorService.getCurrQueueNo(id);
+	}
+
+	@GetMapping("/clinic/profile/{id}/{cid}")
+	public PatientClinicProfile getClinicProfile(@PathVariable Integer id, @PathVariable Integer cid){
+		return doctorService.getClinicProfile(id, cid);
+	}
  }

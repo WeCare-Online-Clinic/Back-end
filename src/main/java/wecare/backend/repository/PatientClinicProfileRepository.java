@@ -12,5 +12,6 @@ import java.util.List;
 public interface PatientClinicProfileRepository extends JpaRepository<PatientClinicProfile, Integer> {
 
     List<PatientClinicProfile> findByClinicId(Integer id);
+    PatientClinicProfile findFirstByPatientIdAndClinicId(Integer id, Integer cid);
 
 }

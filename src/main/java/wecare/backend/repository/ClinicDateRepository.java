@@ -1,6 +1,8 @@
 package wecare.backend.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import wecare.backend.model.ClinicDate;
 
@@ -13,4 +15,7 @@ public interface ClinicDateRepository extends JpaRepository<ClinicDate, Integer>
 
     List <ClinicDate> findByClinicSchedule_ClinicId(Integer id);
     ClinicDate findFirstByClinicSchedule_ClinicIdAndDate(Integer id, Date date);
+
+    @Query("SELECT c.currQueue FROM ClinicDate c WHERE c.id = :Id")
+    Integer getCurrQueueNo(@Param("Id") Integer id);
 }

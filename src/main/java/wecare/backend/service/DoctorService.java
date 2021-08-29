@@ -170,4 +170,12 @@ public class DoctorService {
 		Date date = formatter.parse(date_string);
 		return clinicDateRepo.findFirstByClinicSchedule_ClinicIdAndDate(id, date);
 	}
+
+	public Integer getCurrQueueNo(Integer id){
+		return clinicDateRepo.getCurrQueueNo(id);
+	}
+
+	public PatientClinicProfile getClinicProfile(Integer id, Integer cid){
+		return patientClinicProfileRepo.findFirstByPatientIdAndClinicId(id, cid);
+	}
 }
