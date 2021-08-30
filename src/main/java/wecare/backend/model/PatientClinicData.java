@@ -35,13 +35,12 @@ public class PatientClinicData {
     @Column(name = "note")
     private String note;
 
-    @Type(type = "json")
-    @Column(name = "prescription", columnDefinition = "jsonb")
-    private final Map<String, List<Map<String, String>>> prescription;
+    @Column(name = "diagnosis")
+    private String diagnosis;
 
-    {
-        prescription = new HashMap<>();
-    }
+    @OneToMany(targetEntity = Prescription.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "patient_clinic_data_id", referencedColumnName = "id")
+    private List<Prescription> prescription;
 
     @Column(name = "lab_tests")
     private String labTests;
@@ -59,9 +58,24 @@ public class PatientClinicData {
         return  note;
     }
 
-    public Map<String, List<Map<String, String>>> getPrescription(){
+    public String getDiagnosis() {
+        return diagnosis;
+    }
 
-        return  prescription;
+    public void setDiagnosis(String diagnosis) {
+        this.diagnosis = diagnosis;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public List<Prescription> getPrescription() {
+        return prescription;
+    }
+
+    public void setPrescription(List<Prescription> prescription) {
+        this.prescription = prescription;
     }
 
     public String getLabTests(){
@@ -69,9 +83,17 @@ public class PatientClinicData {
         return  labTests;
     }
 
+    public void setLabTests(String labTests) {
+        this.labTests = labTests;
+    }
+
     public ClinicAppointment getClinicAppointment(){
 
         return clinicAppointment;
+    }
+
+    public void setClinicAppointment(ClinicAppointment clinicAppointment) {
+        this.clinicAppointment = clinicAppointment;
     }
 
     public Doctor getDoctor(){
@@ -79,4 +101,7 @@ public class PatientClinicData {
         return  doctor;
     }
 
+    public void setDoctor(Doctor doctor) {
+        this.doctor = doctor;
+    }
 }

@@ -41,14 +41,17 @@ public class ClinicSchedule {
 
 		return id;
 	}
+
 	public String getDay() {
 
 		return day;
 	}
+
 	public void setDay(String day) {
 
 		this.day = day;
 	}
+
 	public String getTime() {
 		return time;
 	}

@@ -11,4 +11,6 @@ import java.util.List;
 public interface ClinicAppointmentRepository extends JpaRepository<ClinicAppointment, Integer> {
 
     List <ClinicAppointment> findByClinicDateId(Integer clinic_did);
+
+    ClinicAppointment findFirstByPatientIdAndClinicDateId(Integer pid, Integer did);
 }

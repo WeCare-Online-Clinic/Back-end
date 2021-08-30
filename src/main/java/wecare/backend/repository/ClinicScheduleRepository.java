@@ -23,11 +23,5 @@ public interface ClinicScheduleRepository extends JpaRepository<ClinicSchedule, 
     @Query("FROM ClinicSchedule")
     public List<ClinicSchedule> getClinicShedule(@Param(value="doctor_id") Integer id);
     
-   
-
-
-
-	
-	
-
+    ClinicSchedule findByClinicIdAndDay(Integer id, String day);
 }

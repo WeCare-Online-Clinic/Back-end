@@ -1,13 +1,22 @@
 package wecare.backend.controller;
 
+import lombok.extern.slf4j.Slf4j;
+
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jackson.JsonObjectDeserializer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,8 +28,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import wecare.backend.exception.ClinicAppointmentException;
+import wecare.backend.exception.ClinicDateException;
 import wecare.backend.exception.UserCollectionException;
 import wecare.backend.model.*;
+import wecare.backend.model.dto.ClinicDataPost;
+import wecare.backend.model.dto.Medicine;
 import wecare.backend.service.DoctorService;
 
 import javax.mail.MessagingException;
@@ -116,5 +129,10 @@ public class DoctorController {
 	@GetMapping("/clinic/profile/{id}/{cid}")
 	public PatientClinicProfile getClinicProfile(@PathVariable Integer id, @PathVariable Integer cid){
 		return doctorService.getClinicProfile(id, cid);
+	}
+
+	@PostMapping("/consultation/form/")
+	public Boolean addClinicData(@RequestBody ClinicDataPost obj) throws ParseException, ClinicAppointmentException, ClinicDateException, IOException {
+		return doctorService.addClinicData(obj.getPatientClinicData(), obj.getNextClinic(), obj.getPatientId(), obj.getClinicDId(), obj.getClinicId());
 	}
  }
