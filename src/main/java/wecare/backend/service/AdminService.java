@@ -7,16 +7,10 @@ import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import wecare.backend.model.*;
 import wecare.backend.model.dto.UserCount;
 import wecare.backend.repository.*;
 
-import javax.persistence.criteria.CriteriaBuilder;
 
 @Service
 public class AdminService {
@@ -159,7 +153,7 @@ public class AdminService {
             months.add(month);
         }
 
-        int countJan= Collections.frequency(months,1);
+        int countJan= Collections.frequency(months,1); //count duplicate values in array
         monthsCount.add(countJan);
         int countFeb= Collections.frequency(months,2);
         monthsCount.add(countFeb);

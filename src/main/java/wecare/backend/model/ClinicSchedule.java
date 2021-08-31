@@ -60,13 +60,6 @@ public class ClinicSchedule {
 		this.time = time;
 	}
 
-//	public String getTime() {
-//
-//		return new SimpleDateFormat("kk.mm").format(time);
-//	}
-//	public void setTime(Time time) {
-//
-//		this.time = time;
-//	}
+
 
 }

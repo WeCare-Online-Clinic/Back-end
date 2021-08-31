@@ -3,7 +3,6 @@ package wecare.backend.model;
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 @Entity
@@ -37,7 +36,7 @@ public class PatientClinicProfile {
     private String diagnosis;
 
     @Column(name="admission_date")
-    private Date admissionDate;
+    private LocalDate admissionDate;
 
     public Integer getId(){
 
@@ -59,7 +58,16 @@ public class PatientClinicProfile {
         return  diagnosis;
     }
 
-    public String getAdmissionDate(){
-        return new SimpleDateFormat("yyyy-MM-dd").format(admissionDate);
+
+    public LocalDate getAdmissionDate() {
+        return admissionDate;
     }
+
+    public void setAdmissionDate(LocalDate admissionDate) {
+        this.admissionDate = admissionDate;
+    }
+
+//    public String getAdmissionDate(){
+//        return new SimpleDateFormat("yyyy-MM-dd").format(admissionDate);
+//    }
 }
