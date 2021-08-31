@@ -2,6 +2,7 @@ package wecare.backend.service;
 
 
 import java.io.UnsupportedEncodingException;
+import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -169,7 +170,7 @@ public class DoctorService {
 	}
 
 	public ClinicDate getClinicDate(Integer id) throws ParseException {
-		String date_string = "13-09-2021";
+		String date_string = "16-08-2021";
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		Date date = formatter.parse(date_string);
 		return clinicDateRepo.findFirstByClinicSchedule_ClinicIdAndDate(id, date);
@@ -184,18 +185,44 @@ public class DoctorService {
 	}
 
 	public Boolean addClinicData(PatientClinicData clinicData, Date nextDate, Integer pid, Integer did, Integer cid) throws ParseException, ClinicAppointmentException, ClinicDateException {
+
+		Date date = new Date();
+		Time time = new Time(date.getTime());
+
+		ClinicDate clinicDate = clinicDateRepo.findById(did).get();
 		ClinicAppointment clinicAppointment = clinicAppointmentRepo.findFirstByPatientIdAndClinicDateId(pid, did);
 		if(clinicAppointment == null){
 			throw new ClinicAppointmentException(ClinicAppointmentException.NotFoundExeption());
 		}
+		else{
+			if(clinicAppointment.getQueueNo() == 1){
+				clinicDate.setStartTime(time);
+			}
+			else{
+				if(clinicAppointment.getQueueNo().equals(clinicDate.getNoPatients())){
+					List<ClinicAppointment> clinicAppointments = clinicAppointmentRepo.findByClinicDateIdAndVisited(did, true);
+					Integer visitedPatients = clinicAppointments.size();
+					clinicDate.setEndTime(time);
+					clinicDate.setEnded(true);
+					clinicDate.setStarted(false);
+					clinicDate.setVisitedPatients(visitedPatients);
+				}
+			}
+			clinicAppointment.setVisited(true);
+			clinicAppointment.setTime(time);
+		}
 		clinicData.setClinicAppointment(clinicAppointment);
 		patientClinicDataRepo.saveAndFlush(clinicData);
-		ClinicDate clinicDate = clinicDateRepo.findById(did).get();
 		if(clinicDate == null){
 			throw new ClinicDateException(ClinicDateException.NotFoundExeption());
 		}
-		clinicDate.setCurrQueue(clinicDate.getCurrQueue() + 1);
-		clinicDateRepo.saveAndFlush(clinicDate);
+		if(clinicDate.getNoPatients() > clinicDate.getCurrQueue()) {
+			clinicDate.setCurrQueue(clinicDate.getCurrQueue() + 1);
+			clinicDateRepo.saveAndFlush(clinicDate);
+		}
+		else{
+			clinicDate.setEnded(true);
+		}
 
 		ClinicDate nextClinicDate = clinicDateRepo.findFirstByClinicSchedule_ClinicIdAndDate(cid, nextDate);
 
@@ -205,6 +232,13 @@ public class DoctorService {
 			nextClinicDate.setQueue(queue);
 			nextClinicDate.setNoPatients(nextClinicDate.getNoPatients() + 1);
 			clinicDateRepo.saveAndFlush(nextClinicDate);
+
+			ClinicAppointment newClinicAppointment = new ClinicAppointment();
+			newClinicAppointment.setQueueNo(nextClinicDate.getNoPatients());
+			newClinicAppointment.setPatient(clinicAppointment.getPatient());
+			newClinicAppointment.setClinicDate(nextClinicDate);
+			newClinicAppointment.setVisited(false);
+			clinicAppointmentRepo.saveAndFlush(newClinicAppointment);
 		}
 		else{
 			Calendar c = Calendar.getInstance();
@@ -220,7 +254,16 @@ public class DoctorService {
 			ClinicSchedule clinicSchedule = clinicScheduleRepo.findByClinicIdAndDay(cid, weekFormatter.format(nextDate));
 			newClinicDate.setClinicSchedule(clinicSchedule);
 			newClinicDate.setNoPatients(1);
-			clinicDateRepo.saveAndFlush(newClinicDate);
+			newClinicDate.setStarted(false);
+			newClinicDate.setCurrQueue(1);
+			newClinicDate = clinicDateRepo.saveAndFlush(newClinicDate);
+
+			ClinicAppointment newClinicAppointment = new ClinicAppointment();
+			newClinicAppointment.setQueueNo(nextClinicDate.getNoPatients());
+			newClinicAppointment.setPatient(clinicAppointment.getPatient());
+			newClinicAppointment.setClinicDate(nextClinicDate);
+			newClinicAppointment.setVisited(false);
+			clinicAppointmentRepo.saveAndFlush(newClinicAppointment);
 		}
 
 		return true;

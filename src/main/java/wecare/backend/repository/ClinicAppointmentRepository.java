@@ -13,4 +13,6 @@ public interface ClinicAppointmentRepository extends JpaRepository<ClinicAppoint
     List <ClinicAppointment> findByClinicDateId(Integer clinic_did);
 
     ClinicAppointment findFirstByPatientIdAndClinicDateId(Integer pid, Integer did);
+
+    List<ClinicAppointment> findByClinicDateIdAndVisited(Integer id, boolean b);
 }

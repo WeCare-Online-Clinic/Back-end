@@ -41,23 +41,53 @@ public class ClinicAppointment {
     @Column(name = "queue_no")
     private Integer queueNo;
 
+    @Column(name = "visited")
+    private Boolean visited;
+
     public Integer getId(){
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Patient getPatient(){
         return patient;
     }
 
+    public void setPatient(Patient patient) {
+        this.patient = patient;
+    }
+
     public ClinicDate getClinicDate(){
         return clinicDate;
+    }
+
+    public void setClinicDate(ClinicDate clinicDate) {
+        this.clinicDate = clinicDate;
     }
 
     public String getTime(){
         return new SimpleDateFormat("kk.mm").format(time);    }
 
+    public void setTime(Time time) {
+        this.time = time;
+    }
+
     public Integer getQueueNo(){
         return queueNo;
     }
 
+    public void setQueueNo(Integer queueNo) {
+        this.queueNo = queueNo;
+    }
+
+    public Boolean getVisited() {
+        return visited;
+    }
+
+    public void setVisited(Boolean visited) {
+        this.visited = visited;
+    }
 }

@@ -58,21 +58,14 @@ public class ClinicDate {
     )
     private List<Integer> queue;
 
-    @Type(type = "json")
-    @Column(name = "summary", columnDefinition = "jsonb")
-    private Map<String, String> summary = new HashMap<>();
-
     @Column(name = "no_patients")
     private Integer noPatients;
 
-    @Column(name = "start_time")
-    private Time startTime;
-
-    @Column(name = "end_time")
-    private Time endTime;
-
     @Column(name = "started")
     private Boolean started;
+
+    @Column(name = "ended")
+    private Boolean ended;
 
     @Column(name = "curr_queue")
     private Integer currQueue;
@@ -80,6 +73,15 @@ public class ClinicDate {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "nurse_id", referencedColumnName = "id")
     private Nurse nurse;
+
+   @Column(name = "start_time")
+   private Time startTime;
+
+    @Column(name = "end_time")
+    private Time endTime;
+
+    @Column(name = "visited_patients")
+    private Integer visitedPatients;
 
     public ClinicDate() {
     }
@@ -110,22 +112,6 @@ public class ClinicDate {
         this.date = date;
     }
 
-    public String getStartTime() {
-        return new SimpleDateFormat("kk.mm").format(startTime);
-    }
-
-    public void setStartTime(Time startTime) {
-        this.startTime = startTime;
-    }
-
-    public String getEndTime() {
-        return new SimpleDateFormat("kk.mm").format(endTime);
-    }
-
-    public void setEndTime(Time endTime) {
-        this.endTime = endTime;
-    }
-
     public Integer getNoPatients() {
         return noPatients;
     }
@@ -140,6 +126,14 @@ public class ClinicDate {
 
     public void setStarted(Boolean started) {
         this.started = started;
+    }
+
+    public Boolean getEnded() {
+        return ended;
+    }
+
+    public void setEnded(Boolean ended) {
+        this.ended = ended;
     }
 
     public Integer getCurrQueue() {
@@ -167,12 +161,27 @@ public class ClinicDate {
         this.queue = queue;
     }
 
-    public Map<String, String> getSummary() {
-
-        return summary;
+    public Time getStartTime() {
+        return startTime;
     }
 
-    public void setSummary(Map<String, String> summary) {
-        this.summary = summary;
+    public void setStartTime(Time startTime) {
+        this.startTime = startTime;
+    }
+
+    public Time getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Time endTime) {
+        this.endTime = endTime;
+    }
+
+    public Integer getVisitedPatients() {
+        return visitedPatients;
+    }
+
+    public void setVisitedPatients(Integer visitedPatients) {
+        this.visitedPatients = visitedPatients;
     }
 }

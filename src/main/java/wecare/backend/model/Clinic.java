@@ -35,6 +35,9 @@ public class Clinic {
     @OneToMany(targetEntity = ClinicSchedule.class, cascade = CascadeType.ALL, mappedBy = "clinic")
     private List<ClinicSchedule> clinicSchedules;
 
+    public Clinic() {
+    }
+
     public List<ClinicSchedule> getClinicSchedules(){
         if(clinicSchedules == null){
             clinicSchedules = new ArrayList<>();
