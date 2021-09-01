@@ -58,6 +58,9 @@ public class PatientClinicProfile {
         return  diagnosis;
     }
 
+    public void setDiagnosis(String diagnosis) {
+        this.diagnosis = diagnosis;
+    }
 
     public LocalDate getAdmissionDate() {
         return admissionDate;

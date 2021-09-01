@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import wecare.backend.exception.ClinicDateException;
 import wecare.backend.exception.UserCollectionException;
 import wecare.backend.model.*;
+import wecare.backend.model.dto.ClinicSummary;
 import wecare.backend.repository.*;
 
 import javax.mail.MessagingException;
@@ -170,9 +171,12 @@ public class DoctorService {
 	}
 
 	public ClinicDate getClinicDate(Integer id) throws ParseException {
-		String date_string = "16-08-2021";
+		String date_string = "27-09-2021";
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		Date date = formatter.parse(date_string);
+
+		//Date date = new Date();
+
 		return clinicDateRepo.findFirstByClinicSchedule_ClinicIdAndDate(id, date);
 	}
 
@@ -190,11 +194,30 @@ public class DoctorService {
 		Time time = new Time(date.getTime());
 
 		ClinicDate clinicDate = clinicDateRepo.findById(did).get();
+		if(clinicDate == null){
+			throw new ClinicDateException(ClinicDateException.NotFoundExeption());
+		}
+		else{
+			if(clinicDate.getNoPatients() > clinicDate.getCurrQueue()) {
+				clinicDate.setCurrQueue(clinicDate.getCurrQueue() + 1);
+				clinicDateRepo.saveAndFlush(clinicDate);
+			}
+			else{
+				clinicDate.setEnded(true);
+			}
+		}
+
 		ClinicAppointment clinicAppointment = clinicAppointmentRepo.findFirstByPatientIdAndClinicDateId(pid, did);
 		if(clinicAppointment == null){
 			throw new ClinicAppointmentException(ClinicAppointmentException.NotFoundExeption());
 		}
 		else{
+			clinicData.setClinicAppointment(clinicAppointment);
+			patientClinicDataRepo.saveAndFlush(clinicData);
+
+			clinicAppointment.setVisited(true);
+			clinicAppointment.setTime(time);
+
 			if(clinicAppointment.getQueueNo() == 1){
 				clinicDate.setStartTime(time);
 			}
@@ -208,20 +231,6 @@ public class DoctorService {
 					clinicDate.setVisitedPatients(visitedPatients);
 				}
 			}
-			clinicAppointment.setVisited(true);
-			clinicAppointment.setTime(time);
-		}
-		clinicData.setClinicAppointment(clinicAppointment);
-		patientClinicDataRepo.saveAndFlush(clinicData);
-		if(clinicDate == null){
-			throw new ClinicDateException(ClinicDateException.NotFoundExeption());
-		}
-		if(clinicDate.getNoPatients() > clinicDate.getCurrQueue()) {
-			clinicDate.setCurrQueue(clinicDate.getCurrQueue() + 1);
-			clinicDateRepo.saveAndFlush(clinicDate);
-		}
-		else{
-			clinicDate.setEnded(true);
 		}
 
 		ClinicDate nextClinicDate = clinicDateRepo.findFirstByClinicSchedule_ClinicIdAndDate(cid, nextDate);
@@ -266,7 +275,26 @@ public class DoctorService {
 			clinicAppointmentRepo.saveAndFlush(newClinicAppointment);
 		}
 
+		PatientClinicProfile clinicProfile = patientClinicProfileRepo.findFirstByPatientIdAndClinicId(pid, cid);
+		if(!clinicProfile.getDiagnosis().equals(clinicData.getDiagnosis())){
+			clinicProfile.setDiagnosis(clinicData.getDiagnosis());
+			patientClinicProfileRepo.save(clinicProfile);
+		}
+
 		return true;
+	}
+
+	public ClinicSummary getClinicSummary(Integer id) throws ParseException {
+		ClinicDate clinicDate = getClinicDate(id);
+		List<ClinicAppointment> visitedPatients = clinicAppointmentRepo.findByClinicDateIdAndVisited(id, true);
+		List<ClinicAppointment> notVisitedPatients = clinicAppointmentRepo.findByClinicDateIdAndVisited(id, false);
+
+		ClinicSummary clinicSummary = new ClinicSummary();
+		clinicSummary.setClinicDate(clinicDate);
+		clinicSummary.setVisitedPatients(visitedPatients);
+		clinicSummary.setNotVisitedPatients(notVisitedPatients);
+
+		return  clinicSummary;
 	}
 
 }

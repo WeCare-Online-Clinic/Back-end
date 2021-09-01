@@ -33,6 +33,7 @@ import wecare.backend.exception.ClinicDateException;
 import wecare.backend.exception.UserCollectionException;
 import wecare.backend.model.*;
 import wecare.backend.model.dto.ClinicDataPost;
+import wecare.backend.model.dto.ClinicSummary;
 import wecare.backend.model.dto.Medicine;
 import wecare.backend.service.DoctorService;
 
@@ -134,5 +135,10 @@ public class DoctorController {
 	@PostMapping("/consultation/form/")
 	public Boolean addClinicData(@RequestBody ClinicDataPost obj) throws ParseException, ClinicAppointmentException, ClinicDateException, IOException {
 		return doctorService.addClinicData(obj.getPatientClinicData(), obj.getNextClinic(), obj.getPatientId(), obj.getClinicDId(), obj.getClinicId());
+	}
+
+	@GetMapping("/consultation/summary/{id}")
+	public ClinicSummary getClinicSummary(@PathVariable Integer id) throws ParseException {
+		return doctorService.getClinicSummary(id);
 	}
  }
