@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import wecare.backend.model.ClinicDate;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -18,4 +19,7 @@ public interface ClinicDateRepository extends JpaRepository<ClinicDate, Integer>
 
     @Query("SELECT c.currQueue FROM ClinicDate c WHERE c.id = :Id")
     Integer getCurrQueueNo(@Param("Id") Integer id);
+
+    @Query("SELECT COUNT(*) FROM ClinicDate c WHERE (c.date= :utilDate AND c.clinicSchedule.clinic.id= :clinicId) ")
+    Integer getPatientCountOfNextClnic(@Param("utilDate") Date utilDate,@Param("clinicId") Integer clinicId);
 }

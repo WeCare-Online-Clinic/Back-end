@@ -144,7 +144,6 @@ public class AdminService {
 
     public ArrayList<Integer> getRegisteredUsers() {
         ArrayList<Date> regDates = (ArrayList<Date>) userRepo.getRegisteredDates();
-        //System.out.println(regDates);
         ArrayList<Integer> months = new ArrayList<>(); //for store the months
         ArrayList<Integer> monthsCount=new ArrayList<>();//for store the month count
         for (int i = 0; i < regDates.size(); i++) {
