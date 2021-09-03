@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import wecare.backend.model.Doctor;
 import wecare.backend.model.DoctorSchedule;
 import wecare.backend.model.PatientClinicProfile;
+import wecare.backend.model.dto.ConsultedPatientsCount;
 import wecare.backend.model.dto.DoctorDataCard;
 import wecare.backend.repository.ClinicDateRepository;
 import wecare.backend.repository.DoctorRepository;
@@ -70,7 +71,7 @@ public class DoctorDashboardService {
             for (int i = 0; i < scheduleDays.size(); i++) {
                 if (day.name().equals(scheduleDays.get(i))) { //check if the next day is included in the schedule array
                     nextClinicDateObject.setName("Next clinic Date");
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy LLLL dd");
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-LL-dd");
                     String formattedString = nextDate.format(formatter);
                     nextClinicDateObject.setValue(formattedString); //convert date into string (because doctor data card values are not in same data type)
 
@@ -186,6 +187,7 @@ public class DoctorDashboardService {
         return patientAgeData;
     }
 
+    //Patient clinic chart
     public ArrayList<Integer> getPatientsInClinic(Integer clinicId) {
 
         ArrayList<Integer> patientsInClinic = new ArrayList<>();
@@ -225,6 +227,49 @@ public class DoctorDashboardService {
         return patientsInClinic;
     }
 
+    //Consulted Patients data
+    public ArrayList<ConsultedPatientsCount> getConsultedPatientsData(Integer doctorId) {
+        ArrayList<ConsultedPatientsCount> consultedPatients = new ArrayList<>(); // this is the array which return finally
+
+        Optional<Doctor> doctor = doctorRpo.findById(doctorId);
+        Doctor resultDoctor = doctor.get();
+        Integer clinicId = resultDoctor.getClinic().getId(); //get the clinic id
+
+        List<DoctorSchedule> doctorSchedule = resultDoctor.getDoctorSchedules(); //get doctor schedule details of the doctor
+        ArrayList scheduleDays = new ArrayList(); //make an array to store the schedule days
+        for (int k = 0; k < doctorSchedule.size(); k++) {
+            scheduleDays.add(doctorSchedule.get(k).getClinicSchedule().getDay().toUpperCase()); //[MONDAY,WEDNESSDAY,FRIDAY]
+        }
+
+        LocalDate toDay = new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(); //convert the current date to a simple format
+        LocalDate MonthBeforeToday = LocalDate.now().minusDays(30); //get the date month before today
+
+        for (int i = 0; i < 30; i++) {
+            LocalDate nextDate = MonthBeforeToday.plusDays(i);
+            DayOfWeek dayOfWeekNextDay = nextDate.getDayOfWeek(); //get the next from day which past 30 days- ( 2021-9-1)=>WEDNESSDAY
+            for (int j = 0; j < scheduleDays.size(); j++) {
+                if (dayOfWeekNextDay.name().equals(scheduleDays.get(j))) { //check if the next day is included in the schedule array
+                    //convert LocalDate to Date
+                    ZoneId systemTimeZone = ZoneId.systemDefault();
+                    ZonedDateTime zoneDateTime = nextDate.atStartOfDay(systemTimeZone);
+                    Date utilDate = Date.from(zoneDateTime.toInstant()); //utilDate means Date type of nextClinicDate
+
+                    //get the consulted patients of the perticular date
+                    Integer consultedCount=clinicDateRepo.getConsultedPatients(clinicId,utilDate);
+                    ConsultedPatientsCount consultedPatientsCountObject= new ConsultedPatientsCount();
+                    consultedPatientsCountObject.setClinicDate(nextDate);
+                    consultedPatientsCountObject.setCount(consultedCount);
+
+                    consultedPatients.add(consultedPatientsCountObject);
+
+                }
+            }
+
+        }
+
+
+        return consultedPatients;
+    }
 
 
 }

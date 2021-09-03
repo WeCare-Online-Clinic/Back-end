@@ -22,4 +22,7 @@ public interface ClinicDateRepository extends JpaRepository<ClinicDate, Integer>
 
     @Query("SELECT COUNT(*) FROM ClinicDate c WHERE (c.date= :utilDate AND c.clinicSchedule.clinic.id= :clinicId) ")
     Integer getPatientCountOfNextClnic(@Param("utilDate") Date utilDate,@Param("clinicId") Integer clinicId);
+
+    @Query("SELECT c.visitedPatients FROM ClinicDate c WHERE (c.date= :utilDate AND c.clinicSchedule.clinic.id= :clinicId) ")
+    Integer getConsultedPatients(@Param("clinicId") Integer clinicId,@Param("utilDate") Date utilDate);
 }

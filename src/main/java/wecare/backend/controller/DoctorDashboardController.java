@@ -2,6 +2,7 @@ package wecare.backend.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import wecare.backend.model.dto.ConsultedPatientsCount;
 import wecare.backend.model.dto.DoctorDataCard;
 import wecare.backend.service.DoctorDashboardService;
 
@@ -36,5 +37,11 @@ public class DoctorDashboardController {
             ArrayList<Integer> patientsCountInClinic=doctorDashboardService.getPatientsInClinic(clinicId);
             return  patientsCountInClinic;
     }
+    @GetMapping("/getConsultedPatientsData/{doctorId}")
+    public ArrayList<ConsultedPatientsCount>  getConsultedPatientsData(@PathVariable Integer doctorId){
+        ArrayList<ConsultedPatientsCount> consultedPatients=doctorDashboardService.getConsultedPatientsData(doctorId);
+        return  consultedPatients;
+    }
+
 
 }
