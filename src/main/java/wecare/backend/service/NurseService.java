@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import wecare.backend.exception.UserCollectionException;
+import wecare.backend.model.Doctor;
 import wecare.backend.model.Nurse;
 import wecare.backend.model.NurseSchedule;
 import wecare.backend.model.User;
@@ -73,6 +74,11 @@ public class NurseService {
 		List<Nurse> nurse=nurseRepo.findByClinicId(clinicId);
 		return nurse;
 	}
+
+	public Nurse getNurse(Integer id){
+		return nurseRepo.findById(id).get();
+	}
+
 	
 
 }

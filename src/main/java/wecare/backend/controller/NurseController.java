@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import wecare.backend.exception.UserCollectionException;
+import wecare.backend.model.Doctor;
 import wecare.backend.model.Nurse;
 import wecare.backend.model.NurseSchedule;
 import wecare.backend.service.NurseService;
@@ -57,6 +58,11 @@ public class NurseController {
 		List<Nurse> nurse = nurseService.getNurseProfileByClinic(clinicId);
 		return nurse;
 
+	}
+
+	@GetMapping("/nurse/info/{id}")
+	public Nurse getNurseInfo(@PathVariable Integer id){
+		return nurseService.getNurse(id);
 	}
 
 
