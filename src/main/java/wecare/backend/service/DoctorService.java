@@ -171,7 +171,7 @@ public class DoctorService {
 	}
 
 	public ClinicDate getClinicDate(Integer id) throws ParseException {
-		String date_string = "27-09-2021";
+		String date_string = "13-09-2021";
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		Date date = formatter.parse(date_string);
 
@@ -218,10 +218,7 @@ public class DoctorService {
 			clinicAppointment.setVisited(true);
 			clinicAppointment.setTime(time);
 
-			if(clinicAppointment.getQueueNo() == 1){
-				clinicDate.setStartTime(time);
-			}
-			else{
+			if(clinicAppointment.getQueueNo() != 1){
 				if(clinicAppointment.getQueueNo().equals(clinicDate.getNoPatients())){
 					List<ClinicAppointment> clinicAppointments = clinicAppointmentRepo.findByClinicDateIdAndVisited(did, true);
 					Integer visitedPatients = clinicAppointments.size();

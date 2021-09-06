@@ -1,12 +1,12 @@
 package wecare.backend.controller;
 
+import java.text.ParseException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,9 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import wecare.backend.exception.UserCollectionException;
-import wecare.backend.model.Doctor;
+import wecare.backend.model.ClinicAppointment;
+import wecare.backend.model.ClinicDate;
 import wecare.backend.model.Nurse;
-import wecare.backend.model.NurseSchedule;
+import wecare.backend.model.PatientClinicProfile;
 import wecare.backend.service.NurseService;
 
 @RestController
@@ -65,5 +66,38 @@ public class NurseController {
 		return nurseService.getNurse(id);
 	}
 
+	@GetMapping("/manage/queue/list/{id}")
+	public List<ClinicAppointment> getQueue(@PathVariable Integer id){
+		return nurseService.getQueue(id);
+	}
 
+	@GetMapping("/manage/queue/available/{id}")
+	public ClinicDate getClinicDate(@PathVariable Integer id) throws ParseException {
+		return nurseService.getClinicDate(id);
+	}
+
+	@GetMapping("/manage/queue/no/{id}")
+	public Integer getCurrQueueNo(@PathVariable Integer id){
+		return nurseService.getCurrQueueNo(id);
+	}
+
+	@GetMapping("/nurse/clinic/profile/{id}/{cid}")
+	public PatientClinicProfile getClinicProfile(@PathVariable Integer id, @PathVariable Integer cid){
+		return nurseService.getClinicProfile(id, cid);
+	}
+
+	@GetMapping("/manage/queue/start/{id}")
+	public Boolean startClinic(@PathVariable Integer id){
+		return nurseService.startClinic(id);
+	}
+
+	@GetMapping("/manage/queue/skip/{id}")
+	public Boolean skipPatient(@PathVariable Integer id){
+		return nurseService.skipPatient(id);
+	}
+
+	@GetMapping("/manage/queue/end/{id}")
+	public Boolean endClinic(@PathVariable Integer id){
+		return nurseService.endClinic(id);
+	}
 }

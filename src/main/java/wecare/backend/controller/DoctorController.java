@@ -89,8 +89,6 @@ public class DoctorController {
 	public Doctor getDoctorInfo(@PathVariable Integer id){
 		return doctorService.getDoctor(id);
 	}
-	
-
 
 	@GetMapping("/patient/list/{id}")
 	public List<PatientClinicProfile> getPatients(@PathVariable Integer id){
