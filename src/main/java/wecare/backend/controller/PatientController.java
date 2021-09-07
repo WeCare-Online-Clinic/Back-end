@@ -1,7 +1,6 @@
 package wecare.backend.controller;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
-import java.util.Optional;
 import javax.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,8 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import wecare.backend.exception.UserCollectionException;
-import wecare.backend.model.Doctor;
-import wecare.backend.model.Nurse;
+import wecare.backend.model.ClinicAppointment;
 import wecare.backend.model.Patient;
 import wecare.backend.service.PatientService;
 
@@ -58,6 +56,17 @@ public class PatientController {
 		List<Patient> patient = patientService.getPatientProfileByClinic(clinicId);
 		return patient;
 
+	}
+
+	@GetMapping("/patient/info/{id}")
+	public Patient getPatientInfo(@PathVariable Integer id){
+		return patientService.getPatientInfo(id);
+	}
+
+	@GetMapping("/getNextClinicDetails/{patientId}")
+	public ClinicAppointment getNextClinicDetails(@PathVariable Integer patientId){
+		ClinicAppointment clinicAppointment= patientService.getNextClinicDetails(patientId);
+		return  clinicAppointment;
 	}
 	
 }

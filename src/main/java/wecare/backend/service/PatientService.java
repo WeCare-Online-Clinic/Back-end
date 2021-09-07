@@ -1,12 +1,13 @@
 package wecare.backend.service;
+import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import wecare.backend.exception.UserCollectionException;
-import wecare.backend.model.Nurse;
+import wecare.backend.model.ClinicAppointment;
 import wecare.backend.model.Patient;
 import wecare.backend.model.User;
+import wecare.backend.repository.ClinicAppointmentRepository;
 import wecare.backend.repository.PatientRepository;
 import wecare.backend.repository.UserRepository;
 
@@ -20,6 +21,9 @@ public class PatientService {
 
 	@Autowired
 	private UserRepository userRepo;
+
+	@Autowired
+	private ClinicAppointmentRepository clinicAppointmentRepository;
 	
 	public Patient addPatient(Patient patient) throws UserCollectionException{
     Patient resultedPatient = patientRepo.findByEmail(patient.getEmail());
@@ -60,5 +64,13 @@ public class PatientService {
 	public List<Patient> getPatientProfileByClinic(Integer clinicId){
 		List<Patient> patient=patientRepo.findByClinicId(clinicId);
 		return patient;
+	}
+	public Patient getPatientInfo(Integer id){
+		return patientRepo.findById(id).get();
+	}
+
+	public ClinicAppointment getNextClinicDetails(Integer patientId){
+		ClinicAppointment clinicAppointment=clinicAppointmentRepository.getNextClinicDetails(patientId);
+		return clinicAppointment;
 	}
 }
