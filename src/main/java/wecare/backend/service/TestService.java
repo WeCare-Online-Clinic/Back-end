@@ -27,13 +27,13 @@ public class TestService {
 		return test;
 	}
 	
-	public List<Test> getReportProfileById(Integer id) {
+	public List<Test> getTestProfileById(Integer id) {
 		List<Test> test = testRepo.getTestProfileById(id);
 		return test;
 	
 	}
 	
-	public List<Test> getReportProfileByName(String name){
+	public List<Test> getTestProfileByName(String name){
 		List<Test> test=testRepo.findByFirstNameLike(name);
 		return test;
 	}
