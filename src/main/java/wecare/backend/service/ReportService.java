@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import wecare.backend.exception.UserCollectionException;
+import wecare.backend.model.Patient;
 import wecare.backend.model.Report;
 import wecare.backend.model.User;
 import wecare.backend.repository.ReportRepository;
@@ -22,7 +23,7 @@ public class ReportService {
 	private UserRepository userRepo;
 		
 	public List<Report> getAllReport(){
-		List<Report> report = reportRepo.findAllReport();
+		List<Report> report = reportRepo.findAll();
 		return report;
 	}
 	
