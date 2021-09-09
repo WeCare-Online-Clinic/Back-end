@@ -87,13 +87,5 @@ public class PatientService {
 		Date date = new Date();
 		return patientClinicDataRepo.findAllByClinicAppointment_PatientIdAndClinicAppointment_ClinicDateDateLessThan(id, date);
 	}	
-	public List<LocalDate> getRequestDates(Integer clinicId, Date currentClinicDate){
-		List<LocalDate> requestedDates = null;
 
-		List<String> clinicDays=clinicScheduleRepository.getClinicShceduleByClinicId(clinicId);
-		for(int i=0; i<clinicDays.size(); i++){
-			System.out.println("Day   :"+clinicDays.get(i));
-		}
-		return  requestedDates;
-	}
 }
