@@ -11,11 +11,8 @@ import wecare.backend.model.Patient;
 import wecare.backend.model.PatientClinicData;
 import wecare.backend.model.User;
 import wecare.backend.repository.ClinicAppointmentRepository;
-<<<<<<< HEAD
 import wecare.backend.repository.PatientClinicDataRepository;
-=======
 import wecare.backend.repository.ClinicScheduleRepository;
->>>>>>> working
 import wecare.backend.repository.PatientRepository;
 import wecare.backend.repository.UserRepository;
 
@@ -34,11 +31,8 @@ public class PatientService {
 	private ClinicAppointmentRepository clinicAppointmentRepository;
 
 	@Autowired
-<<<<<<< HEAD
 	private PatientClinicDataRepository patientClinicDataRepo;
-=======
 	private ClinicScheduleRepository clinicScheduleRepository;
->>>>>>> working
 	
 	public Patient addPatient(Patient patient) throws UserCollectionException{
     Patient resultedPatient = patientRepo.findByEmail(patient.getEmail());
@@ -89,11 +83,9 @@ public class PatientService {
 		return clinicAppointment;
 	}
 
-<<<<<<< HEAD
 	public List<PatientClinicData> getPatientClinicDataList(Integer id){
 		Date date = new Date();
 		return patientClinicDataRepo.findAllByClinicAppointment_PatientIdAndClinicAppointment_ClinicDateDateLessThan(id, date);
-=======
 	public List<LocalDate> getRequestDates(Integer clinicId, Date currentClinicDate){
 		List<LocalDate> requestedDates = null;
 
@@ -102,6 +94,5 @@ public class PatientService {
 			System.out.println("Day   :"+clinicDays.get(i));
 		}
 		return  requestedDates;
->>>>>>> working
 	}
 }
