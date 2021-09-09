@@ -1,5 +1,7 @@
 package wecare.backend.controller;
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import javax.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,9 +72,16 @@ public class PatientController {
 		return  clinicAppointment;
 	}
 
+<<<<<<< HEAD
 	@GetMapping("/patient/clinic/history/list/{id}")
 	public List<PatientClinicData> getPatientClinicDataList(@PathVariable Integer id){
 		return patientService.getPatientClinicDataList(id);
+=======
+	@GetMapping("/getRequestDates/{clinicId}/{currentClinicDate}")
+	public List<LocalDate> getRequestDates(@PathVariable Integer clinicId, @PathVariable Date currentClinicDate){
+		List<LocalDate> reqestedDates=patientService.getRequestDates(clinicId,currentClinicDate);
+		return reqestedDates;
+>>>>>>> working
 	}
 	
 }
