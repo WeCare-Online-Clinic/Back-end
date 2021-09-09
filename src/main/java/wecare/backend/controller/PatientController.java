@@ -75,6 +75,7 @@ public class PatientController {
 	@GetMapping("/patient/clinic/history/list/{id}")
 	public List<PatientClinicData> getPatientClinicDataList(@PathVariable Integer id){
 		return patientService.getPatientClinicDataList(id);
+		
 	@GetMapping("/getRequestDates/{clinicId}/{currentClinicDate}")
 	public List<LocalDate> getRequestDates(@PathVariable Integer clinicId, @PathVariable Date currentClinicDate){
 		List<LocalDate> reqestedDates=patientService.getRequestDates(clinicId,currentClinicDate);

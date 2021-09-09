@@ -86,6 +86,7 @@ public class PatientService {
 	public List<PatientClinicData> getPatientClinicDataList(Integer id){
 		Date date = new Date();
 		return patientClinicDataRepo.findAllByClinicAppointment_PatientIdAndClinicAppointment_ClinicDateDateLessThan(id, date);
+	}	
 	public List<LocalDate> getRequestDates(Integer clinicId, Date currentClinicDate){
 		List<LocalDate> requestedDates = null;
 
