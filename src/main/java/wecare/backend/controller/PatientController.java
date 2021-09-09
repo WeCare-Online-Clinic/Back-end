@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import wecare.backend.exception.UserCollectionException;
 import wecare.backend.model.ClinicAppointment;
 import wecare.backend.model.Patient;
+import wecare.backend.model.PatientClinicData;
 import wecare.backend.service.PatientService;
 
 @RestController
@@ -71,6 +72,10 @@ public class PatientController {
 		return  clinicAppointment;
 	}
 
+	@GetMapping("/patient/clinic/history/list/{id}")
+	public List<PatientClinicData> getPatientClinicDataList(@PathVariable Integer id){
+		return patientService.getPatientClinicDataList(id);
+		
 	@GetMapping("/getRequestDates/{clinicId}/{currentClinicDate}")
 	public List<LocalDate> getRequestDates(@PathVariable Integer clinicId, @PathVariable Date currentClinicDate){
 		List<LocalDate> reqestedDates=patientService.getRequestDates(clinicId,currentClinicDate);
