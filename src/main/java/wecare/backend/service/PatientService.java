@@ -1,13 +1,16 @@
 package wecare.backend.service;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import wecare.backend.exception.UserCollectionException;
 import wecare.backend.model.ClinicAppointment;
+import wecare.backend.model.ClinicSchedule;
 import wecare.backend.model.Patient;
 import wecare.backend.model.User;
 import wecare.backend.repository.ClinicAppointmentRepository;
+import wecare.backend.repository.ClinicScheduleRepository;
 import wecare.backend.repository.PatientRepository;
 import wecare.backend.repository.UserRepository;
 
@@ -24,6 +27,9 @@ public class PatientService {
 
 	@Autowired
 	private ClinicAppointmentRepository clinicAppointmentRepository;
+
+	@Autowired
+	private ClinicScheduleRepository clinicScheduleRepository;
 	
 	public Patient addPatient(Patient patient) throws UserCollectionException{
     Patient resultedPatient = patientRepo.findByEmail(patient.getEmail());
@@ -72,5 +78,15 @@ public class PatientService {
 	public ClinicAppointment getNextClinicDetails(Integer patientId){
 		ClinicAppointment clinicAppointment=clinicAppointmentRepository.getNextClinicDetails(patientId);
 		return clinicAppointment;
+	}
+
+	public List<LocalDate> getRequestDates(Integer clinicId, Date currentClinicDate){
+		List<LocalDate> requestedDates = null;
+
+		List<String> clinicDays=clinicScheduleRepository.getClinicShceduleByClinicId(clinicId);
+		for(int i=0; i<clinicDays.size(); i++){
+			System.out.println("Day   :"+clinicDays.get(i));
+		}
+		return  requestedDates;
 	}
 }
