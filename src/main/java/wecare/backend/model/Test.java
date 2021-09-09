@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "lab_test")
+@Table(name = "nurse")
 public class Test {
 
 
