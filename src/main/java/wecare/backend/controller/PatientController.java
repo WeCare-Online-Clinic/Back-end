@@ -1,6 +1,7 @@
 package wecare.backend.controller;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.mail.MessagingException;
@@ -19,6 +20,7 @@ import wecare.backend.exception.UserCollectionException;
 import wecare.backend.model.ClinicAppointment;
 import wecare.backend.model.Patient;
 import wecare.backend.model.PatientClinicData;
+import wecare.backend.model.dto.ChangeClinicDate;
 import wecare.backend.service.PatientService;
 
 @RestController
@@ -75,6 +77,12 @@ public class PatientController {
 	@GetMapping("/patient/clinic/history/list/{id}")
 	public List<PatientClinicData> getPatientClinicDataList(@PathVariable Integer id){
 		return patientService.getPatientClinicDataList(id);
+	}
+
+	@PostMapping("/getRequestDates/")
+	public ArrayList<LocalDate> getRequestDates(@RequestBody ChangeClinicDate changeClinicDate){
+		ArrayList<LocalDate> reqestedDates=patientService.getRequestDates(changeClinicDate);
+		return reqestedDates;
 	}
 
 	
