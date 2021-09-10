@@ -7,17 +7,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import wecare.backend.exception.UserCollectionException;
-import wecare.backend.model.ClinicAppointment;
-import wecare.backend.model.ClinicSchedule;
-import wecare.backend.model.Patient;
-import wecare.backend.model.PatientClinicData;
-import wecare.backend.model.User;
+import wecare.backend.model.*;
 import wecare.backend.model.dto.ChangeClinicDate;
-import wecare.backend.repository.ClinicAppointmentRepository;
-import wecare.backend.repository.PatientClinicDataRepository;
-import wecare.backend.repository.ClinicScheduleRepository;
-import wecare.backend.repository.PatientRepository;
-import wecare.backend.repository.UserRepository;
+import wecare.backend.repository.*;
 
 @Service
 public class PatientService {
@@ -38,6 +30,9 @@ public class PatientService {
 
 	@Autowired
 	private ClinicScheduleRepository clinicScheduleRepository;
+
+	@Autowired
+	private PatientRequestRepository patientRequestRepo;
 	
 	public Patient addPatient(Patient patient) throws UserCollectionException{
     Patient resultedPatient = patientRepo.findByEmail(patient.getEmail());
@@ -83,8 +78,8 @@ public class PatientService {
 		return patientRepo.findById(id).get();
 	}
 
-	public ClinicAppointment getNextClinicDetails(Integer patientId){
-		ClinicAppointment clinicAppointment=clinicAppointmentRepository.getNextClinicDetails(patientId);
+	public List<ClinicAppointment> getNextClinicDetails(Integer patientId){
+		List<ClinicAppointment> clinicAppointment=clinicAppointmentRepository.getNextClinicDetails(patientId);
 		return clinicAppointment;
 	}
 
@@ -113,4 +108,13 @@ public class PatientService {
 		return requestedDates;
 	}
 
+    public Integer savePatientRequest(PatientRequest patientRequest) {
+		PatientRequest resultPatientRequest=patientRequestRepo.saveAndFlush(patientRequest);
+		if(resultPatientRequest!=null){
+			return 1;
+		}
+		else{
+			return 0;
+		}
+    }
 }
