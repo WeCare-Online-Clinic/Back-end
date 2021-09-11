@@ -19,6 +19,7 @@ import wecare.backend.model.ClinicAppointment;
 import wecare.backend.model.ClinicDate;
 import wecare.backend.model.Nurse;
 import wecare.backend.model.PatientClinicProfile;
+import wecare.backend.model.dto.CheckPatient;
 import wecare.backend.service.NurseService;
 
 @RestController
@@ -99,5 +100,10 @@ public class NurseController {
 	@GetMapping("/manage/queue/end/{id}")
 	public Boolean endClinic(@PathVariable Integer id){
 		return nurseService.endClinic(id);
+	}
+
+	@GetMapping("/check/patient/available/{nic}/{cid}")
+	public CheckPatient checkPatient(@PathVariable String nic, @PathVariable Integer cid){
+		return nurseService.checkPatient(nic, cid);
 	}
 }

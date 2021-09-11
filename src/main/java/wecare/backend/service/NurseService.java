@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import wecare.backend.exception.ClinicDateException;
 import wecare.backend.exception.UserCollectionException;
 import wecare.backend.model.*;
+import wecare.backend.model.dto.CheckPatient;
 import wecare.backend.repository.*;
 
 @Service
@@ -35,6 +36,9 @@ public class NurseService {
 
 	@Autowired
 	private PatientClinicProfileRepository patientClinicProfileRepo;
+
+	@Autowired
+	private PatientRepository patientRepo;
 
 	public Nurse addNurse(Nurse nurse) throws UserCollectionException {
 		User resultedNurse = userRepo.findByEmail(nurse.getEmail());
@@ -147,6 +151,22 @@ public class NurseService {
 		}
 
 		return true;
+	}
+
+	public CheckPatient checkPatient(String nic, Integer cid){
+		CheckPatient checkPatient = new CheckPatient();
+		Patient patient = patientRepo.findByNic(nic);
+		checkPatient.setPatient(patient);
+
+		if(patient != null){
+			PatientClinicProfile patientClinicProfile = patientClinicProfileRepo.findFirstByPatientIdAndClinicId(patient.getId(),cid);
+			checkPatient.setPatientClinicProfile(patientClinicProfile);
+		}
+		else{
+			checkPatient.setPatientClinicProfile(null);
+		}
+
+		return checkPatient;
 	}
 
 }

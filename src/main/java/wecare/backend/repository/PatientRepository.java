@@ -24,4 +24,5 @@ public interface PatientRepository extends JpaRepository<Patient, Integer> {
 	@Query("SELECT p FROM Patient p WHERE p.id = :id")
 	List<Patient> getPatientProfileById(@Param("id") Integer id);
 
+	Patient findByNic(String nic);
 }
