@@ -25,4 +25,6 @@ public interface PatientRepository extends JpaRepository<Patient, Integer> {
 	List<Patient> getPatientProfileById(@Param("id") Integer id);
 
 	Patient findByNic(String nic);
+
+	Patient findTopByOrderByIdDesc();
 }
