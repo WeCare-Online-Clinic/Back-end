@@ -1,5 +1,6 @@
 package wecare.backend.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.util.List;
 
@@ -19,7 +20,11 @@ import wecare.backend.model.ClinicAppointment;
 import wecare.backend.model.ClinicDate;
 import wecare.backend.model.Nurse;
 import wecare.backend.model.PatientClinicProfile;
+import wecare.backend.model.dto.CheckPatient;
+import wecare.backend.model.dto.PatientRegister;
 import wecare.backend.service.NurseService;
+
+import javax.mail.MessagingException;
 
 @RestController
 @RequestMapping(value = "wecare")
@@ -100,4 +105,15 @@ public class NurseController {
 	public Boolean endClinic(@PathVariable Integer id){
 		return nurseService.endClinic(id);
 	}
+
+	@GetMapping("/check/patient/available/{nic}/{cid}")
+	public CheckPatient checkPatient(@PathVariable String nic, @PathVariable Integer cid){
+		return nurseService.checkPatient(nic, cid);
+	}
+
+	@PostMapping("/patient/registration/form/")
+	public Boolean addPatient(@RequestBody PatientRegister obj) throws MessagingException, UnsupportedEncodingException {
+		return nurseService.addPatient(obj);
+	}
+
 }

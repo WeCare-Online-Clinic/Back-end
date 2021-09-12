@@ -2,18 +2,31 @@ package wecare.backend.service;
 
 
 
+import java.io.UnsupportedEncodingException;
 import java.sql.Time;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import wecare.backend.exception.ClinicDateException;
 import wecare.backend.exception.UserCollectionException;
 import wecare.backend.model.*;
+import wecare.backend.model.dto.CheckPatient;
+import wecare.backend.model.dto.PatientRegister;
 import wecare.backend.repository.*;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import javax.transaction.Transactional;
 
 @Service
 public class NurseService {
@@ -35,6 +48,15 @@ public class NurseService {
 
 	@Autowired
 	private PatientClinicProfileRepository patientClinicProfileRepo;
+
+	@Autowired
+	private PatientRepository patientRepo;
+
+	@Autowired
+	private ClinicScheduleRepository clinicScheduleRepo;
+
+	@Autowired
+	private JavaMailSender mailSender;
 
 	public Nurse addNurse(Nurse nurse) throws UserCollectionException {
 		User resultedNurse = userRepo.findByEmail(nurse.getEmail());
@@ -121,24 +143,24 @@ public class NurseService {
 		return true;
 	}
 
-	public Boolean skipPatient(Integer id){
+	public Boolean skipPatient(Integer id) {
 		ClinicDate clinicDate = clinicDateRepo.findById(id).get();
 
-		if(clinicDate.getNoPatients() > clinicDate.getCurrQueue()){
-		clinicDate.setCurrQueue(clinicDate.getCurrQueue() + 1);
-		clinicDateRepo.saveAndFlush(clinicDate);
+		if (clinicDate.getNoPatients() > clinicDate.getCurrQueue()) {
+			clinicDate.setCurrQueue(clinicDate.getCurrQueue() + 1);
+			clinicDateRepo.saveAndFlush(clinicDate);
 		}
 
 		return true;
 	}
 
-	public Boolean endClinic(Integer id){
+	public Boolean endClinic(Integer id) {
 		Date date = new Date();
 		Time time = new Time(date.getTime());
 
 		ClinicDate clinicDate = clinicDateRepo.findById(id).get();
 
-		if(!clinicDate.getEnded()){
+		if (!clinicDate.getEnded()) {
 			clinicDate.setStarted(false);
 			clinicDate.setEnded(true);
 			clinicDate.setEndTime(time);
@@ -149,4 +171,156 @@ public class NurseService {
 		return true;
 	}
 
+	public CheckPatient checkPatient(String nic, Integer cid) {
+		CheckPatient checkPatient = new CheckPatient();
+		Patient patient = patientRepo.findByNic(nic);
+		checkPatient.setPatient(patient);
+
+		if (patient != null) {
+			PatientClinicProfile patientClinicProfile = patientClinicProfileRepo.findFirstByPatientIdAndClinicId(patient.getId(), cid);
+			checkPatient.setPatientClinicProfile(patientClinicProfile);
+		} else {
+			checkPatient.setPatientClinicProfile(null);
+		}
+
+		return checkPatient;
+	}
+
+	public Boolean addPatient(PatientRegister patientRegister) throws MessagingException, UnsupportedEncodingException {
+
+		LocalDate date = LocalDate.now();
+
+		CheckPatient checkPatient = checkPatient(patientRegister.getPatient().getNIC(), patientRegister.getPatient().getClinic().getId());
+		Integer lastPatient = patientRepo.findTopByOrderByIdDesc().getId();
+		Integer lastProfile = patientClinicProfileRepo.findTopByOrderByIdDesc().getId();
+
+		if (checkPatient.getPatient() == null) {
+			Patient patient = new Patient();
+			patient = patientRegister.getPatient();
+			patient.setId(lastPatient + 1);
+
+			User newUser = new User();
+			String verificationString = RandomString.make(64);
+
+			newUser.setUserRole("patient");
+			newUser.setName(patient.getName());
+			newUser.setVerificationString(verificationString);
+			newUser.setVerified(false);
+			newUser.setPassword("");
+			newUser.setEmail(patient.getEmail());
+			newUser.setRegisteredDate(new Date());
+			newUser.setLoginStatus(false);
+			newUser.setStatus(true);
+
+			PatientClinicProfile patientClinicProfile = new PatientClinicProfile();
+			patientClinicProfile.setId(lastPatient + 1);
+			patientClinicProfile.setClinic(patient.getClinic());
+			patientClinicProfile.setAdmissionDate(date);
+
+			Patient patient1 = addData(newUser,patient,patientClinicProfile);
+
+			addClinicAppointment(patient1);
+		} else {
+			if (checkPatient.getPatientClinicProfile() == null) {
+				PatientClinicProfile patientClinicProfile = new PatientClinicProfile();
+				Patient patient = checkPatient.getPatient();
+				patientClinicProfile.setPatient(patient);
+				patientClinicProfile.setClinic(patient.getClinic());
+				patientClinicProfile.setAdmissionDate(date);
+
+				patientClinicProfileRepo.save(patientClinicProfile);
+				addClinicAppointment(patient);
+			}
+		}
+
+		return true;
+	}
+
+	@Transactional
+	public Patient addData(User user, Patient patient, PatientClinicProfile patientClinicProfile) throws MessagingException, UnsupportedEncodingException {
+		Patient patient1 = patientRepo.save(patient);
+		user.setId(patient1.getId());
+		userRepo.save(user);
+		patientClinicProfile.setPatient(patient1);
+		patientClinicProfileRepo.save(patientClinicProfile);
+
+		sendVerificationEmail(patient1,  user);
+
+		return patient1;
+	}
+
+	public Boolean addClinicAppointment(Patient patient) {
+		Date date = new Date();
+
+		ClinicDate nextClinicDate = clinicDateRepo.findFirstByClinicSchedule_ClinicIdAndDate(patient.getClinic().getId(), date);
+
+		if (nextClinicDate != null) {
+			List<Integer> queue = nextClinicDate.getQueue();
+			queue.add(patient.getId());
+			nextClinicDate.setQueue(queue);
+			nextClinicDate.setNoPatients(nextClinicDate.getNoPatients() + 1);
+			clinicDateRepo.saveAndFlush(nextClinicDate);
+
+			ClinicAppointment newClinicAppointment = new ClinicAppointment();
+			newClinicAppointment.setQueueNo(nextClinicDate.getNoPatients());
+			newClinicAppointment.setPatient(patient);
+			newClinicAppointment.setClinicDate(nextClinicDate);
+			newClinicAppointment.setVisited(false);
+			clinicAppointmentRepo.saveAndFlush(newClinicAppointment);
+		} else {
+			Calendar c = Calendar.getInstance();
+			c.setTime(date);
+			DateFormat weekFormatter = new SimpleDateFormat("EEEE");
+
+			ClinicDate newClinicDate = new ClinicDate();
+			newClinicDate.setDate(date);
+			List<Integer> queue = new ArrayList<Integer>();
+			queue.add(patient.getId());
+			newClinicDate.setQueue(queue);
+
+			ClinicSchedule clinicSchedule = clinicScheduleRepo.findByClinicIdAndDay(patient.getClinic().getId(), weekFormatter.format(date));
+			newClinicDate.setClinicSchedule(clinicSchedule);
+			newClinicDate.setNoPatients(1);
+			newClinicDate.setStarted(false);
+			newClinicDate.setCurrQueue(1);
+			ClinicDate newClinicDate1 = clinicDateRepo.saveAndFlush(newClinicDate);
+
+			ClinicAppointment newClinicAppointment = new ClinicAppointment();
+			newClinicAppointment.setQueueNo(1);
+			newClinicAppointment.setPatient(patient);
+			newClinicAppointment.setClinicDate(newClinicDate1);
+			newClinicAppointment.setVisited(false);
+			clinicAppointmentRepo.saveAndFlush(newClinicAppointment);
+		}
+
+		return true;
+	}
+
+	public void sendVerificationEmail(Patient patient, User newUser) throws MessagingException, UnsupportedEncodingException {
+
+		String toAddress = patient.getEmail();
+		String fromAddress = "wecare.hospitals.info@gmail.com";
+		String senderName = "WeCare Hospitals";
+		String subject = "Please verify email and finish registration";
+		String body = "Mr/Mrs. [[name]], <br>"
+				+ "Please click the link below to proceed to setting up the account. <br>"
+				+ "<h4><href='[[link]]'>[[link]]</h4>"
+				+ "Thank you, <br>"
+				+ "Wecare Hospitals";
+
+		MimeMessage message = mailSender.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(message);
+
+		helper.setFrom(fromAddress, senderName);
+		helper.setTo(toAddress);
+		helper.setSubject(subject);
+
+		String link = "localhost:3000/setup/account/" + newUser.getId() + "/" + newUser.getVerificationString();
+
+		body = body.replace("[[name]]", patient.getName());
+		body = body.replace("[[link]]", link);
+		helper.setText(body, true);
+
+		mailSender.send(message);
+	}
 }

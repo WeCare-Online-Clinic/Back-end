@@ -91,8 +91,12 @@ public class Patient {
 
         return  registeredDate;
     }
-    
-    public Integer getContact(){
+
+	public void setRegisteredDate(Date registeredDate) {
+		this.registeredDate = registeredDate;
+	}
+
+	public Integer getContact(){
 
         return  contact;
     }

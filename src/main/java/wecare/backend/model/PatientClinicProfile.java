@@ -43,6 +43,10 @@ public class PatientClinicProfile {
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public Clinic getClinic(){
 
         return clinic;
@@ -70,7 +74,15 @@ public class PatientClinicProfile {
         this.admissionDate = admissionDate;
     }
 
-//    public String getAdmissionDate(){
+    public void setPatient(Patient patient) {
+        this.patient = patient;
+    }
+
+    public void setClinic(Clinic clinic) {
+        this.clinic = clinic;
+    }
+
+    //    public String getAdmissionDate(){
 //        return new SimpleDateFormat("yyyy-MM-dd").format(admissionDate);
 //    }
 }
