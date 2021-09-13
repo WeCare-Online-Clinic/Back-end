@@ -16,8 +16,7 @@ public interface PatientRepository extends JpaRepository<Patient, Integer> {
 	Patient findByEmail(String email);
 	Optional <Patient> findById(Integer id);
 	
-	List<Patient> findByClinicId(Integer clinicId);
-	
+
 	@Query("SELECT p FROM Patient p WHERE p.name LIKE %:name% ")
 	List<Patient> findByFirstNameLike(@Param("name") String name);
 	

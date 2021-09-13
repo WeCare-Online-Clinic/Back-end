@@ -50,10 +50,6 @@ public class Patient {
 
     @Column(name = "registered_date")
     private Date registeredDate;
-    
-    @OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "clinic_id", referencedColumnName = "id")
-	private Clinic clinic;
 
     public Integer getId() {
 
@@ -141,20 +137,10 @@ public class Patient {
 	public void setGender(Character gender) {
 		this.gender = gender;
 	}
-	
-	public Clinic getClinic() {
-
-		return clinic;
-	}
-	
-	public void setClinic(Clinic clinic) {
-		this.clinic = clinic;
-	}
-	
 
 	@Override
 	public String toString() {
-		return "Patient [id=" + id + ", name=" + name + ", email=" + email + ", contact=" + contact + ", address=" + address + ", nic=" + nic + ", birthdate=" + birthdate + ", clinicId="+ clinic.getName() + "]";
+		return "Patient [id=" + id + ", name=" + name + ", email=" + email + ", contact=" + contact + ", address=" + address + ", nic=" + nic + ", birthdate=" + birthdate + "]";
 	}
 
 }

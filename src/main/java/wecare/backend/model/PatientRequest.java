@@ -26,6 +26,9 @@ public class PatientRequest {
     @JoinColumn(name = "clinic_did", referencedColumnName = "id")
     private ClinicDate clinicDate;
 
+    @Column(name = "changed")
+    private Boolean changed;
+
     public Integer getRequestId() {
         return requestId;
     }
@@ -56,6 +59,14 @@ public class PatientRequest {
 
     public void setClinicDate(ClinicDate clinicDate) {
         this.clinicDate = clinicDate;
+    }
+
+    public Boolean getChanged() {
+        return changed;
+    }
+
+    public void setChanged(Boolean changed) {
+        this.changed = changed;
     }
 
     @Override

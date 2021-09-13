@@ -20,8 +20,10 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import wecare.backend.exception.UserCollectionException;
 import wecare.backend.model.*;
+import wecare.backend.model.dto.ChangeAppointment;
 import wecare.backend.model.dto.CheckPatient;
 import wecare.backend.model.dto.PatientRegister;
+import wecare.backend.model.dto.RequestChange;
 import wecare.backend.repository.*;
 
 import javax.mail.MessagingException;
@@ -54,6 +56,9 @@ public class NurseService {
 
 	@Autowired
 	private ClinicScheduleRepository clinicScheduleRepo;
+
+	@Autowired
+	private PatientRequestRepository patientRequestRepo;
 
 	@Autowired
 	private JavaMailSender mailSender;
@@ -189,8 +194,9 @@ public class NurseService {
 	public Boolean addPatient(PatientRegister patientRegister) throws MessagingException, UnsupportedEncodingException {
 
 		LocalDate date = LocalDate.now();
+		Date date1 = new Date();
 
-		CheckPatient checkPatient = checkPatient(patientRegister.getPatient().getNIC(), patientRegister.getPatient().getClinic().getId());
+		CheckPatient checkPatient = checkPatient(patientRegister.getPatient().getNIC(), patientRegister.getClinic().getId());
 		Integer lastPatient = patientRepo.findTopByOrderByIdDesc().getId();
 		Integer lastProfile = patientClinicProfileRepo.findTopByOrderByIdDesc().getId();
 
@@ -214,22 +220,22 @@ public class NurseService {
 
 			PatientClinicProfile patientClinicProfile = new PatientClinicProfile();
 			patientClinicProfile.setId(lastPatient + 1);
-			patientClinicProfile.setClinic(patient.getClinic());
+			patientClinicProfile.setClinic(patientRegister.getClinic());
 			patientClinicProfile.setAdmissionDate(date);
 
 			Patient patient1 = addData(newUser,patient,patientClinicProfile);
 
-			addClinicAppointment(patient1);
+			addClinicAppointment(patient1, patientRegister.getClinic(), date1);
 		} else {
 			if (checkPatient.getPatientClinicProfile() == null) {
 				PatientClinicProfile patientClinicProfile = new PatientClinicProfile();
 				Patient patient = checkPatient.getPatient();
 				patientClinicProfile.setPatient(patient);
-				patientClinicProfile.setClinic(patient.getClinic());
+				patientClinicProfile.setClinic(patientRegister.getClinic());
 				patientClinicProfile.setAdmissionDate(date);
 
 				patientClinicProfileRepo.save(patientClinicProfile);
-				addClinicAppointment(patient);
+				addClinicAppointment(patient, patientRegister.getClinic(), date1);
 			}
 		}
 
@@ -249,10 +255,10 @@ public class NurseService {
 		return patient1;
 	}
 
-	public Boolean addClinicAppointment(Patient patient) {
-		Date date = new Date();
+	public ClinicAppointment addClinicAppointment(Patient patient, Clinic clinic, Date date) {
 
-		ClinicDate nextClinicDate = clinicDateRepo.findFirstByClinicSchedule_ClinicIdAndDate(patient.getClinic().getId(), date);
+		ClinicDate nextClinicDate = clinicDateRepo.findFirstByClinicSchedule_ClinicIdAndDate(clinic.getId(), date);
+		ClinicAppointment newClinicAppointment = new ClinicAppointment();
 
 		if (nextClinicDate != null) {
 			List<Integer> queue = nextClinicDate.getQueue();
@@ -261,7 +267,6 @@ public class NurseService {
 			nextClinicDate.setNoPatients(nextClinicDate.getNoPatients() + 1);
 			clinicDateRepo.saveAndFlush(nextClinicDate);
 
-			ClinicAppointment newClinicAppointment = new ClinicAppointment();
 			newClinicAppointment.setQueueNo(nextClinicDate.getNoPatients());
 			newClinicAppointment.setPatient(patient);
 			newClinicAppointment.setClinicDate(nextClinicDate);
@@ -278,14 +283,13 @@ public class NurseService {
 			queue.add(patient.getId());
 			newClinicDate.setQueue(queue);
 
-			ClinicSchedule clinicSchedule = clinicScheduleRepo.findByClinicIdAndDay(patient.getClinic().getId(), weekFormatter.format(date));
+			ClinicSchedule clinicSchedule = clinicScheduleRepo.findByClinicIdAndDay(clinic.getId(), weekFormatter.format(date));
 			newClinicDate.setClinicSchedule(clinicSchedule);
 			newClinicDate.setNoPatients(1);
 			newClinicDate.setStarted(false);
 			newClinicDate.setCurrQueue(1);
 			ClinicDate newClinicDate1 = clinicDateRepo.saveAndFlush(newClinicDate);
 
-			ClinicAppointment newClinicAppointment = new ClinicAppointment();
 			newClinicAppointment.setQueueNo(1);
 			newClinicAppointment.setPatient(patient);
 			newClinicAppointment.setClinicDate(newClinicDate1);
@@ -293,7 +297,7 @@ public class NurseService {
 			clinicAppointmentRepo.saveAndFlush(newClinicAppointment);
 		}
 
-		return true;
+		return newClinicAppointment;
 	}
 
 	public void sendVerificationEmail(Patient patient, User newUser) throws MessagingException, UnsupportedEncodingException {
@@ -322,5 +326,64 @@ public class NurseService {
 		helper.setText(body, true);
 
 		mailSender.send(message);
+	}
+
+	public void sendAppointmentEmail(ClinicAppointment clinicAppointment) throws MessagingException, UnsupportedEncodingException {
+
+		String toAddress = clinicAppointment.getPatient().getEmail();
+		String fromAddress = "wecare.hospitals.info@gmail.com";
+		String senderName = "WeCare Hospitals";
+		String subject = "Clinic Appointment";
+		String body = "Mr/Mrs. [[name]], <br>"
+				+ "Please click the link below to proceed to setting up the account. <br>"
+				+ "Clinic Date: [[date]] <br>"
+				+ "Queue No: [[no]] <br>"
+				+ "Thank you, <br>"
+				+ "Wecare Hospitals";
+
+		MimeMessage message = mailSender.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(message);
+
+		helper.setFrom(fromAddress, senderName);
+		helper.setTo(toAddress);
+		helper.setSubject(subject);
+
+		body = body.replace("[[name]]", clinicAppointment.getPatient().getName());
+		body = body.replace("[[date]]", clinicAppointment.getClinicDate().getDate());
+		body = body.replace("[[no]]", toString(clinicAppointment.getQueueNo()));
+		helper.setText(body, true);
+
+		mailSender.send(message);
+	}
+
+	private String toString(Integer queueNo) {
+		return ""+queueNo;
+	}
+
+	public RequestChange getPatientRequest(Integer cid) {
+		Date date = new Date();
+		RequestChange requestChange = new RequestChange();
+
+		 requestChange.setRequestList(patientRequestRepo.findByClinicIdAndChangedAndClinicDateDateGreaterThan(cid, false, date));
+		 requestChange.setAvailableDates(clinicDateRepo.findByClinicSchedule_ClinicIdAndDateGreaterThan(cid, date));
+
+		 return requestChange;
+	}
+
+	public Boolean changeAppointment(ChangeAppointment obj) throws MessagingException, UnsupportedEncodingException {
+		PatientRequest patientRequest = obj.getPatientRequest();
+		ClinicAppointment clinicAppointment = addClinicAppointment(patientRequest.getPatient(), patientRequest.getClinic(), obj.getDate());
+		ClinicDate clinicDate = patientRequest.getClinicDate();
+		List<Integer> queue = clinicDate.getQueue();
+		queue.remove(new Integer(patientRequest.getPatient().getId()));
+		clinicDate.setQueue(queue);
+		clinicDate.setNoPatients(clinicDate.getNoPatients() - 1);
+		patientRequest.setChanged(true);
+		patientRequestRepo.save(patientRequest);
+		clinicDateRepo.save(clinicDate);
+
+		sendAppointmentEmail(clinicAppointment);
+
+		return true;
 	}
 }

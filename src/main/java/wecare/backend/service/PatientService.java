@@ -70,10 +70,6 @@ public class PatientService {
 		return patient;
 	}
 
-	public List<Patient> getPatientProfileByClinic(Integer clinicId){
-		List<Patient> patient=patientRepo.findByClinicId(clinicId);
-		return patient;
-	}
 	public Patient getPatientInfo(Integer id){
 		return patientRepo.findById(id).get();
 	}

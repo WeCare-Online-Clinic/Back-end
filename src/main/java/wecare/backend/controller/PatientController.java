@@ -56,13 +56,6 @@ public class PatientController {
 		return patient;
 		
 	}
-	
-	@GetMapping("/getPatientProfileDetailsByClinic/{clinicId}")
-	public List<Patient> getPatientProfileByClinic(@PathVariable Integer clinicId) {
-		List<Patient> patient = patientService.getPatientProfileByClinic(clinicId);
-		return patient;
-
-	}
 
 	@GetMapping("/patient/info/{id}")
 	public Patient getPatientInfo(@PathVariable Integer id){
