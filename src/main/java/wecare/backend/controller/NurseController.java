@@ -90,9 +90,9 @@ public class NurseController {
 		return nurseService.getClinicProfile(id, cid);
 	}
 
-	@GetMapping("/manage/queue/start/{id}")
-	public Boolean startClinic(@PathVariable Integer id){
-		return nurseService.startClinic(id);
+	@GetMapping("/manage/queue/start/{id}/{nurseId}")
+	public Boolean startClinic(@PathVariable Integer id, @PathVariable Integer nurseId){
+		return nurseService.startClinic(id, nurseId);
 	}
 
 	@GetMapping("/manage/queue/skip/{id}")

@@ -8,6 +8,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -135,7 +136,7 @@ public class NurseService {
 		return patientClinicProfileRepo.findFirstByPatientIdAndClinicId(id, cid);
 	}
 
-	public Boolean startClinic(Integer id) {
+	public Boolean startClinic(Integer id, Integer nurseId) {
 		Date date = new Date();
 		Time time = new Time(date.getTime());
 
@@ -143,6 +144,7 @@ public class NurseService {
 
 		clinicDate.setStarted(true);
 		clinicDate.setStartTime(time);
+		clinicDate.setNurse(nurseRepo.findById(nurseId).get());
 		clinicDateRepo.save(clinicDate);
 
 		return true;
@@ -260,13 +262,20 @@ public class NurseService {
 		ClinicDate nextClinicDate = clinicDateRepo.findFirstByClinicSchedule_ClinicIdAndDate(clinic.getId(), date);
 		ClinicAppointment newClinicAppointment = new ClinicAppointment();
 
+		Time scheduleTime = new Time(Long.parseLong(nextClinicDate.getClinicSchedule().getTime()));
+		LocalTime localTime = scheduleTime.toLocalTime();
+
 		if (nextClinicDate != null) {
+
 			List<Integer> queue = nextClinicDate.getQueue();
 			queue.add(patient.getId());
 			nextClinicDate.setQueue(queue);
 			nextClinicDate.setNoPatients(nextClinicDate.getNoPatients() + 1);
 			clinicDateRepo.saveAndFlush(nextClinicDate);
 
+			localTime = localTime.plusMinutes(5 * nextClinicDate.getNoPatients());
+
+			newClinicAppointment.setTime(Time.valueOf(localTime));
 			newClinicAppointment.setQueueNo(nextClinicDate.getNoPatients());
 			newClinicAppointment.setPatient(patient);
 			newClinicAppointment.setClinicDate(nextClinicDate);
@@ -291,6 +300,7 @@ public class NurseService {
 			ClinicDate newClinicDate1 = clinicDateRepo.saveAndFlush(newClinicDate);
 
 			newClinicAppointment.setQueueNo(1);
+			newClinicAppointment.setTime(scheduleTime);
 			newClinicAppointment.setPatient(patient);
 			newClinicAppointment.setClinicDate(newClinicDate1);
 			newClinicAppointment.setVisited(false);
@@ -379,6 +389,8 @@ public class NurseService {
 		clinicDate.setQueue(queue);
 		clinicDate.setNoPatients(clinicDate.getNoPatients() - 1);
 		patientRequest.setChanged(true);
+
+		clinicAppointmentRepo.deleteByPatientIdAndClinicDateId(patientRequest.getPatient().getId(),patientRequest.getClinicDate().getId());
 		patientRequestRepo.save(patientRequest);
 		clinicDateRepo.save(clinicDate);
 

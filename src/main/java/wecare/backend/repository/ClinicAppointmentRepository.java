@@ -19,4 +19,6 @@ public interface ClinicAppointmentRepository extends JpaRepository<ClinicAppoint
 
     @Query("SELECT c FROM ClinicAppointment c WHERE c.patient.id = :patientId AND c.clinicDate.date>CURRENT_DATE ")
     List<ClinicAppointment> getNextClinicDetails(@Param("patientId") Integer patientId);
+
+    void deleteByPatientIdAndClinicDateId(Integer id, Integer id1);
 }
