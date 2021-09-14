@@ -105,8 +105,10 @@ public class PatientService {
 	}
 
     public Integer savePatientRequest(PatientRequest patientRequest) {
-		PatientRequest resultPatientRequest=patientRequestRepo.saveAndFlush(patientRequest);
-		if(resultPatientRequest!=null){
+
+		PatientRequest resultPatientRequest=patientRequestRepo.findIsRequestIsExisting(patientRequest.getPatient(),patientRequest.getClinicDate(),patientRequest.getClinic());
+		if(resultPatientRequest==null){
+			patientRequestRepo.saveAndFlush(patientRequest);
 			return 1;
 		}
 		else{

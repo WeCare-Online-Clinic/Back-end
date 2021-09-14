@@ -86,7 +86,7 @@ public class PatientController {
 				return "Patient Request save pass";
 			}
 			else{
-				return "Patient Request save fail";
+				return "You have already sent the request";
 			}
 
 
