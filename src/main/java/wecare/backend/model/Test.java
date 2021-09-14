@@ -1,14 +1,16 @@
 package wecare.backend.model;
 
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 @Entity
-@Table(name = "lab_test")
+@Table(name="lab_test")
 public class Test {
-
 	@Id
     @SequenceGenerator(
             name = "test_id_seq",
@@ -80,13 +82,4 @@ public class Test {
 		return "Test [id=" + id + ", name=" + name + ", description=" + description + ", field1=" + field1 + ", field2="
 				+ field2 + "]";
 	}
-    
-
-
-
-
-
-
-	
-    
 }
