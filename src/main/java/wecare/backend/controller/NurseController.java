@@ -63,6 +63,7 @@ public class NurseController {
 
 	@GetMapping("/nurse/info/{id}")
 	public Nurse getNurseInfo(@PathVariable Integer id){
+		System.out.println("Nurse Id"+id);
 		return nurseService.getNurse(id);
 	}
 
