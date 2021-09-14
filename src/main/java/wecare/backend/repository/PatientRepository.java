@@ -16,12 +16,14 @@ public interface PatientRepository extends JpaRepository<Patient, Integer> {
 	Patient findByEmail(String email);
 	Optional <Patient> findById(Integer id);
 	
-	List<Patient> findByClinicId(Integer clinicId);
-	
+
 	@Query("SELECT p FROM Patient p WHERE p.name LIKE %:name% ")
 	List<Patient> findByFirstNameLike(@Param("name") String name);
 	
 	@Query("SELECT p FROM Patient p WHERE p.id = :id")
 	List<Patient> getPatientProfileById(@Param("id") Integer id);
 
+	Patient findByNic(String nic);
+
+	Patient findTopByOrderByIdDesc();
 }

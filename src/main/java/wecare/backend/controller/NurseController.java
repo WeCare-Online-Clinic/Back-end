@@ -1,5 +1,6 @@
 package wecare.backend.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.util.List;
 
@@ -15,11 +16,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import wecare.backend.exception.UserCollectionException;
-import wecare.backend.model.ClinicAppointment;
-import wecare.backend.model.ClinicDate;
-import wecare.backend.model.Nurse;
-import wecare.backend.model.PatientClinicProfile;
+import wecare.backend.model.*;
+import wecare.backend.model.dto.ChangeAppointment;
+import wecare.backend.model.dto.CheckPatient;
+import wecare.backend.model.dto.PatientRegister;
+import wecare.backend.model.dto.RequestChange;
 import wecare.backend.service.NurseService;
+
+import javax.mail.MessagingException;
 
 @RestController
 @RequestMapping(value = "wecare")
@@ -87,9 +91,9 @@ public class NurseController {
 		return nurseService.getClinicProfile(id, cid);
 	}
 
-	@GetMapping("/manage/queue/start/{id}")
-	public Boolean startClinic(@PathVariable Integer id){
-		return nurseService.startClinic(id);
+	@GetMapping("/manage/queue/start/{id}/{nurseId}")
+	public Boolean startClinic(@PathVariable Integer id, @PathVariable Integer nurseId){
+		return nurseService.startClinic(id, nurseId);
 	}
 
 	@GetMapping("/manage/queue/skip/{id}")
@@ -101,4 +105,25 @@ public class NurseController {
 	public Boolean endClinic(@PathVariable Integer id){
 		return nurseService.endClinic(id);
 	}
+
+	@GetMapping("/check/patient/available/{nic}/{cid}")
+	public CheckPatient checkPatient(@PathVariable String nic, @PathVariable Integer cid){
+		return nurseService.checkPatient(nic, cid);
+	}
+
+	@PostMapping("/patient/registration/form/")
+	public Boolean addPatient(@RequestBody PatientRegister obj) throws MessagingException, UnsupportedEncodingException {
+		return nurseService.addPatient(obj);
+	}
+
+	@GetMapping("/patient/request/list/{cid}")
+	public RequestChange getPatientRequest(@PathVariable Integer cid){
+		return nurseService.getPatientRequest(cid);
+	}
+
+	@PostMapping("/change/appointment/form/")
+	public Boolean changeAppointment(@RequestBody ChangeAppointment obj) throws MessagingException, UnsupportedEncodingException {
+		return nurseService.changeAppointment(obj);
+	}
+
 }

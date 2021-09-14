@@ -6,174 +6,87 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "nurse")
+@Table(name = "lab_test")
 public class Test {
 
-
-    @Id
+	@Id
     @SequenceGenerator(
-            name = "nurse_id_seq",
-            sequenceName = "nurse_id_seq",
-            allocationSize = 1,
-            initialValue = 1000
+            name = "test_id_seq",
+            sequenceName = "test_id_seq",
+            allocationSize = 1
     )
 
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "nurse_id_seq"
+            generator = "test_id_seq"
     )
-
     @Column(name = "id")
     private Integer id;
 
     @Column(name = "name")
     private String name;
 
-    @Column(name = "gender")
-    private Character gender;
+    @Column(name = "description")
+    private String description;
+    
+    @Column(name="filed_1")
+    private String field1;
+    
+    @Column(name="field_2")
+    private String field2;
 
-    @Column(name = "nurse_id")
-    private String nurseId;
+	public Integer getId() {
+		return id;
+	}
 
-    @Column(name = "email")
-    private String email;
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    @Column(name = "contact")
-    private Integer contact;
+	public String getName() {
+		return name;
+	}
 
-    @Column(name = "qualification")
-    private String qualification;
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    @Column(name = "is_head")
-    private Boolean isHead;
+	public String getDescription() {
+		return description;
+	}
 
-    @Column(name = "registered_date")
-    private Date registeredDate;
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    @Column(name = "status")
-    private Boolean status;
+	public String getField1() {
+		return field1;
+	}
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "clinic_id", referencedColumnName = "id")
-    private Clinic clinic;
+	public void setField1(String field1) {
+		this.field1 = field1;
+	}
 
-    @OneToMany(targetEntity = NurseSchedule.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "nurse_id", referencedColumnName = "id")
-    private List<NurseSchedule> nurseSchedule;
+	public String getField2() {
+		return field2;
+	}
 
-    public List<NurseSchedule> getNurseSchedule() {
-        if (nurseSchedule == null) {
-            nurseSchedule = new ArrayList<>();
-        }
-        return nurseSchedule;
-    }
+	public void setField2(String field2) {
+		this.field2 = field2;
+	}
 
-    public void setNurseSchedule(List<NurseSchedule> nurseSchedule) {
-
-        this.nurseSchedule = nurseSchedule;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getNurseId() {
-        return nurseId;
-    }
-
-    public void setNurseId(String nurseId) {
-        this.nurseId = nurseId;
-    }
+	@Override
+	public String toString() {
+		return "Test [id=" + id + ", name=" + name + ", description=" + description + ", field1=" + field1 + ", field2="
+				+ field2 + "]";
+	}
+    
 
 
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
-    public String getEmail() {
-        return email;
-    }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
-    public Integer getContact() {
-        return contact;
-    }
-
-    public void setContact(Integer contact) {
-
-        this.contact = contact;
-    }
-
-    public Boolean getIsHead() {
-        return isHead;
-    }
-
-    public void setIsHead(Boolean isHead) {
-        this.isHead = isHead;
-    }
-
-    public Clinic getClinic() {
-        return clinic;
-    }
-
-    public Character getGender() {
-        return gender;
-    }
-
-    public void setGender(Character gender) {
-        this.gender = gender;
-    }
-
-    public String getQualification() {
-        return qualification;
-    }
-
-    public void setQualification(String qualification) {
-        this.qualification = qualification;
-    }
-
-    public void setClinic(Clinic clinic) {
-        this.clinic = clinic;
-    }
-
-    public Boolean getHead() {
-        return isHead;
-    }
-
-    public void setHead(Boolean head) {
-        isHead = head;
-    }
-
-    public Date getRegisteredDate() {
-        return registeredDate;
-    }
-
-    public void setRegisteredDate(Date registeredDate) {
-        this.registeredDate = registeredDate;
-    }
-
-    public Boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
-
-    @Override
-    public String toString() {
-        return "Nurse [id=" + id + ", name=" + name + ", email=" + email + ", contact=" + contact + ", isHead=" + isHead + ", clinicId="
-                + clinic.getName() + ", nurseSchedule=" + nurseSchedule + "]";
-    }
+	
+    
 }

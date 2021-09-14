@@ -2,8 +2,6 @@ package wecare.backend.model;
 
 import javax.persistence.*;
 
-import org.hibernate.annotations.GenericGenerator;
-
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 

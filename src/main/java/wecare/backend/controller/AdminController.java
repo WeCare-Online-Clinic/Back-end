@@ -98,5 +98,11 @@ public class AdminController {
         ArrayList<Integer> registeredList=adminService.getRegisteredUsers();
         return  registeredList;
     }
+    @GetMapping("/admin/info/{id}")
+    public Admin getAdminInfo(@PathVariable Integer id){
+        return adminService.getAdmin(id);
+    }
+
+
 
 }

@@ -20,6 +20,7 @@ import wecare.backend.exception.UserCollectionException;
 import wecare.backend.model.ClinicAppointment;
 import wecare.backend.model.Patient;
 import wecare.backend.model.PatientClinicData;
+import wecare.backend.model.PatientRequest;
 import wecare.backend.model.dto.ChangeClinicDate;
 import wecare.backend.service.PatientService;
 
@@ -55,13 +56,6 @@ public class PatientController {
 		return patient;
 		
 	}
-	
-	@GetMapping("/getPatientProfileDetailsByClinic/{clinicId}")
-	public List<Patient> getPatientProfileByClinic(@PathVariable Integer clinicId) {
-		List<Patient> patient = patientService.getPatientProfileByClinic(clinicId);
-		return patient;
-
-	}
 
 	@GetMapping("/patient/info/{id}")
 	public Patient getPatientInfo(@PathVariable Integer id){
@@ -69,8 +63,8 @@ public class PatientController {
 	}
 
 	@GetMapping("/getNextClinicDetails/{patientId}")
-	public ClinicAppointment getNextClinicDetails(@PathVariable Integer patientId){
-		ClinicAppointment clinicAppointment= patientService.getNextClinicDetails(patientId);
+	public List<ClinicAppointment> getNextClinicDetails(@PathVariable Integer patientId){
+		List<ClinicAppointment> clinicAppointment= patientService.getNextClinicDetails(patientId);
 		return  clinicAppointment;
 	}
 
@@ -83,6 +77,19 @@ public class PatientController {
 	public ArrayList<LocalDate> getRequestDates(@RequestBody ChangeClinicDate changeClinicDate){
 		ArrayList<LocalDate> reqestedDates=patientService.getRequestDates(changeClinicDate);
 		return reqestedDates;
+	}
+
+	@PostMapping("/savePatientRequest/")
+	public String savePatientRequest(@RequestBody PatientRequest patientRequest){
+			Integer result= patientService.savePatientRequest(patientRequest);
+			if(result==1){
+				return "Patient Request save pass";
+			}
+			else{
+				return "Patient Request save fail";
+			}
+
+
 	}
 
 	

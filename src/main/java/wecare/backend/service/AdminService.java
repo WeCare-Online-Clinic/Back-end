@@ -30,6 +30,9 @@ public class AdminService {
     @Autowired
     private NurseSchedulesRepository nurseSchedulesRepo;
 
+    @Autowired
+    private AdminRepository adminRepo;
+
     public List<UserCount> getUserCounts() {
 
         List<UserCount> userCount = new ArrayList<>();
@@ -178,6 +181,9 @@ public class AdminService {
         monthsCount.add(countDec);
 
         return monthsCount;
+    }
+    public Admin getAdmin(Integer id){
+        return adminRepo.findById(id).get();
     }
 
 }
