@@ -1,16 +1,11 @@
 package wecare.backend.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name="lab_test")
 public class Test {
+
 	@Id
     @SequenceGenerator(
             name = "test_id_seq",
@@ -30,7 +25,11 @@ public class Test {
 
     @Column(name = "description")
     private String description;
-    
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "clinic_id", referencedColumnName = "id")
+    private Clinic clinic;
+
     @Column(name="field_1")
     private String field1;
     
@@ -77,9 +76,21 @@ public class Test {
 		this.field2 = field2;
 	}
 
+	public Clinic getClinic() {	return clinic;}
+
+	public void setClinic(Clinic clinic) {this.clinic = clinic;}
+
 	@Override
 	public String toString() {
-		return "Test [id=" + id + ", name=" + name + ", description=" + description + ", field1=" + field1 + ", field2="
-				+ field2 + "]";
+		return "Test{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", description='" + description + '\'' +
+				", clinic=" + clinic +
+				", field1='" + field1 + '\'' +
+				", field2='" + field2 + '\'' +
+				'}';
 	}
+
+
 }

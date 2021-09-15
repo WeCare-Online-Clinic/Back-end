@@ -50,4 +50,7 @@ public interface PatientClinicProfileRepository extends JpaRepository<PatientCli
     List<LocalDate> getPatientsRegDatesInClinic(@Param("clinicId") Integer clinicId);
 
     PatientClinicProfile findTopByOrderByIdDesc();
+
+    @Query("SELECT p from PatientClinicProfile p WHERE p.patient.nic= :patientNIC")
+    List<PatientClinicProfile> getPatientByNIC(@Param("patientNIC") String patientNIC);
 }

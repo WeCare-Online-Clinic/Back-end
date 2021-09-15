@@ -1,5 +1,6 @@
 package wecare.backend.repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,4 +27,7 @@ public interface TestRepository extends JpaRepository<Test, Integer> {
 	List<Test> getTestProfileById(@Param("id") Integer id);
 
 	Test findTopByOrderByIdDesc();
+
+	@Query("SELECT t FROM Test t WHERE t.clinic.id = :clinicId")
+    ArrayList<Test> getTestListByClinicId(@Param("clinicId") Integer clinicId);
 }

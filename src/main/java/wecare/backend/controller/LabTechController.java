@@ -1,13 +1,14 @@
 package wecare.backend.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
-import wecare.backend.model.LabTechnician;
-import wecare.backend.model.Report;
-import wecare.backend.model.Test;
+import wecare.backend.model.*;
+import wecare.backend.model.dto.PatientForLabTech;
 import wecare.backend.service.LabTechService;
 
 @RestController
@@ -47,6 +48,18 @@ public class LabTechController {
 		List<Report> report = labTechService.getReportProfileById(id);
 		return report;
 
+	}
+
+	@GetMapping("/getPatientProfileByNIC/{patientNIC}")
+	public PatientForLabTech getPatientByNIC(@PathVariable String patientNIC){
+		PatientForLabTech patient=labTechService.getPatientByNIC(patientNIC);
+    	return patient;
+	}
+
+	@PostMapping("/getTestTypes/")
+	public ArrayList<Test> getTestTypes(@RequestBody PatientForLabTech patientProfile){
+		ArrayList<Test> tests=labTechService.getTestTypes(patientProfile);
+		return  tests;
 	}
     
 }
