@@ -1,13 +1,21 @@
 package wecare.backend.service;
 
+import java.sql.Time;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
+import com.zaxxer.hikari.pool.HikariProxyCallableStatement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import wecare.backend.model.*;
 import wecare.backend.model.dto.PatientForLabTech;
+import wecare.backend.model.dto.PatientTest;
 import wecare.backend.repository.*;
+
+import javax.xml.crypto.Data;
 
 
 @Service
@@ -22,6 +30,8 @@ public class LabTechService {
     private PatientRepository patientRepo;
     @Autowired
     private PatientClinicProfileRepository patientClinicProfileRepo;
+
+
 
 
     public LabTechnician getLabTechInfo(Integer id){
@@ -54,6 +64,7 @@ public class LabTechService {
 		Patient patient=patientRepo.findByNic(patientNIC);
 		PatientForLabTech patientForLabTech = new PatientForLabTech();
 		List<PatientClinicProfile> patientClinicProfile= patientClinicProfileRepo.getPatientByNIC(patientNIC);
+		patientForLabTech.setId(patient.getId());
 		patientForLabTech.setContact(patient.getContact());
 		patientForLabTech.setEmail(patient.getEmail());
 		patientForLabTech.setName(patient.getName());
@@ -78,11 +89,35 @@ public class LabTechService {
     		ArrayList<Test> resultTests=testRepo.getTestListByClinicId(patientProfile.getClinics().get(i));
 			for(int j=0; j<resultTests.size(); j++){
 				tests.add(resultTests.get(j));
-				System.out.println("shjkfhdfkjdhfk"+resultTests.get(j));
 			}
 		}
 
     	return  tests;
+	}
+
+	public Integer savePatientTest(PatientTest patientTest) {
+		Patient patient=patientRepo.findByNic(patientTest.getPatientNIC());
+		Optional<Test> resultTest=testRepo.findById(patientTest.getTestType());
+		Test test=resultTest.get();
+
+		Date date = new Date();
+
+		Report report=new Report();
+		report.setTestDate(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+		report.setTestTime(new Time(date.getTime()));
+		report.setAvailability(false);
+		report.setPatient(patient);
+		report.setTest(test);
+
+	    Report savedTest=reportRepo.saveAndFlush(report);
+	    if(savedTest==null){
+	    	return 0;
+		}
+	    else {
+	    	return 1;
+		}
+
+
 	}
 }
 

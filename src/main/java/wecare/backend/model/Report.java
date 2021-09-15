@@ -1,8 +1,11 @@
 package wecare.backend.model;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 
 import java.sql.Time;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,22 +15,13 @@ import java.util.List;
 public class Report {
 
 	@Id
-    @SequenceGenerator(
-            name = "report_id_seq",
-            sequenceName = "report_id_seq",
-            allocationSize = 1
-    )
-
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "report_id_seq"
-    )
-
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+	@GenericGenerator(name="native",strategy = "native")
     @Column(name = "id")
     private Integer id;
 
     @Column(name = "test_date")
-    private Date testDate;
+    private LocalDate testDate;
 
     @Column(name = "test_time")
     private Time testTime;
@@ -36,7 +30,7 @@ public class Report {
     private boolean availability;
 
     @Column(name = "issued_date")
-    private Date issuedDate;
+    private LocalDate issuedDate;
 
     @Column(name = "data_1")
     private Integer data1;
@@ -60,11 +54,11 @@ public class Report {
 		this.id = id;
 	}
 
-	public Date getTestDate() {
+	public LocalDate getTestDate() {
 		return testDate;
 	}
 
-	public void setTestDate(Date testDate) {
+	public void setTestDate(LocalDate testDate) {
 		this.testDate = testDate;
 	}
 
@@ -84,11 +78,11 @@ public class Report {
 		this.availability = availability;
 	}
 
-	public Date getIssuedDate() {
+	public LocalDate getIssuedDate() {
 		return issuedDate;
 	}
 
-	public void setIssuedDate(Date issuedDate) {
+	public void setIssuedDate(LocalDate issuedDate) {
 		this.issuedDate = issuedDate;
 	}
 
@@ -126,11 +120,16 @@ public class Report {
 
 	@Override
 	public String toString() {
-		return "Report [id=" + id + ", testDate=" + testDate + ", testTime=" + testTime + ", availability="
-				+ availability + ", issuedDate=" + issuedDate + ", data1=" + data1 + ", data2=" + data2 + ", test="
-				+ test + ", patient=" + patient + "]";
+		return "Report{" +
+				"id=" + id +
+				", testDate=" + testDate +
+				", testTime=" + testTime +
+				", availability=" + availability +
+				", issuedDate=" + issuedDate +
+				", data1=" + data1 +
+				", data2=" + data2 +
+				", test=" + test +
+				", patient=" + patient +
+				'}';
 	}
-
-   
-    
 }

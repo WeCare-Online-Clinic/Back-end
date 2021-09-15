@@ -9,6 +9,7 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import wecare.backend.model.*;
 import wecare.backend.model.dto.PatientForLabTech;
+import wecare.backend.model.dto.PatientTest;
 import wecare.backend.service.LabTechService;
 
 @RestController
@@ -61,5 +62,18 @@ public class LabTechController {
 		ArrayList<Test> tests=labTechService.getTestTypes(patientProfile);
 		return  tests;
 	}
+
+	@PostMapping("/savePatientTest/")
+	public String savePatientTest(@RequestBody PatientTest patientTest){
+    	Integer result=labTechService.savePatientTest(patientTest);
+    	if(result==1){
+    		return "successfully added the test ";
+		}
+    	else {
+    		return "failed to add the test!! please try again";
+		}
+
+	}
+
     
 }

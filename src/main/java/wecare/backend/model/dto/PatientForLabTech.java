@@ -7,6 +7,7 @@ import java.util.List;
 @Embeddable
 public class PatientForLabTech {
 
+    private Integer id;
 
     private String nic;
 
@@ -20,11 +21,19 @@ public class PatientForLabTech {
 
     private List<Integer> clinics;
 
-    public List<String> getClinicNames() { return clinicNames; }
-
-    public void setClinicNames(List<String> clinicNames) {this.clinicNames = clinicNames; }
-
     private List<String> clinicNames;
+
+    public Integer getId() { return id;}
+
+    public void setId(Integer id) {this.id = id;}
+
+    public List<String> getClinicNames() {
+        return clinicNames;
+    }
+
+    public void setClinicNames(List<String> clinicNames) {
+        this.clinicNames = clinicNames;
+    }
 
     public String getNic() {
         return nic;
@@ -77,7 +86,8 @@ public class PatientForLabTech {
     @Override
     public String toString() {
         return "PatientForLabTech{" +
-                "nic='" + nic + '\'' +
+                "id=" + id +
+                ", nic='" + nic + '\'' +
                 ", name='" + name + '\'' +
                 ", gender=" + gender +
                 ", contact=" + contact +
