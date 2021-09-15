@@ -31,7 +31,7 @@ public class Test {
     @Column(name = "description")
     private String description;
     
-    @Column(name="filed_1")
+    @Column(name="field_1")
     private String field1;
     
     @Column(name="field_2")
