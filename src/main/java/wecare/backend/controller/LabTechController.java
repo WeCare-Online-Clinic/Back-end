@@ -9,6 +9,7 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import wecare.backend.model.*;
 import wecare.backend.model.dto.PatientForLabTech;
+import wecare.backend.model.dto.PatientReportDTO;
 import wecare.backend.model.dto.PatientTest;
 import wecare.backend.service.LabTechService;
 
@@ -74,6 +75,19 @@ public class LabTechController {
 		}
 
 	}
+
+	@PostMapping("/addReport/")
+	public String saveReport(@RequestBody PatientReportDTO patientReportDTO){
+		Integer result=labTechService.saveReport(patientReportDTO);
+		if(result==1){
+			return "successfully added the report ";
+		}
+		else {
+			return "failed to add the report!! please try again";
+		}
+
+	}
+
 
     
 }

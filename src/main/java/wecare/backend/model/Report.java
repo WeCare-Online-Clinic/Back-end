@@ -33,10 +33,10 @@ public class Report {
     private LocalDate issuedDate;
 
     @Column(name = "data_1")
-    private Integer data1;
+    private Float data1;
     
     @Column(name = "data_2")
-    private Integer data2;
+    private Float data2;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "test_id", referencedColumnName = "ID")
@@ -86,19 +86,19 @@ public class Report {
 		this.issuedDate = issuedDate;
 	}
 
-	public Integer getData1() {
+	public Float getData1() {
 		return data1;
 	}
 
-	public void setData1(Integer data1) {
+	public void setData1(Float data1) {
 		this.data1 = data1;
 	}
 
-	public Integer getData2() {
+	public Float getData2() {
 		return data2;
 	}
 
-	public void setData2(Integer data2) {
+	public void setData2(Float data2) {
 		this.data2 = data2;
 	}
 

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import wecare.backend.model.*;
 import wecare.backend.model.dto.PatientForLabTech;
+import wecare.backend.model.dto.PatientReportDTO;
 import wecare.backend.model.dto.PatientTest;
 import wecare.backend.repository.*;
 
@@ -119,5 +120,24 @@ public class LabTechService {
 
 
 	}
+
+    public Integer saveReport(PatientReportDTO patientReportDTO) {
+    	Optional<Report> resultReport=reportRepo.findById(patientReportDTO.getReportId());
+    	Report report=resultReport.get();
+
+    	report.setData1(patientReportDTO.getField1());
+    	report.setData2(patientReportDTO.getField2());
+    	report.setIssuedDate(new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+    	report.setAvailability(true);
+
+    	Report savedReport=reportRepo.saveAndFlush(report);
+    	if(savedReport==null){
+    		return 0;
+		}
+    	else {
+    		return 1;
+		}
+
+    }
 }
 
