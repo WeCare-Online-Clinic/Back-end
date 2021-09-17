@@ -17,10 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import wecare.backend.exception.UserCollectionException;
 import wecare.backend.model.*;
-import wecare.backend.model.dto.ChangeAppointment;
-import wecare.backend.model.dto.CheckPatient;
-import wecare.backend.model.dto.PatientRegister;
-import wecare.backend.model.dto.RequestChange;
+import wecare.backend.model.dto.*;
+import wecare.backend.model.dto.Message;
 import wecare.backend.service.NurseService;
 
 import javax.mail.MessagingException;
@@ -126,4 +124,23 @@ public class NurseController {
 		return nurseService.changeAppointment(obj);
 	}
 
+	@GetMapping("/clinic/available/dates/{id}")
+	public List<ClinicDate> getNextClinicDates(@PathVariable Integer id){
+		return nurseService.getNextClinicDates(id);
+	}
+
+	@PostMapping("/send/clinic/message/")
+	public Boolean setClinicMessage(@RequestBody Message obj){
+		return nurseService.setClinicMessage(obj);
+	}
+
+	@PostMapping("/send/clinic/date/message/")
+	public Boolean setClinicDateMessage(@RequestBody Message obj){
+		return nurseService.setClinicDateMessage(obj);
+	}
+
+	@GetMapping("/nurse/message/list/{id}")
+	public MessageList getMessages(@PathVariable Integer id){
+		return nurseService.getMessages(id);
+	}
 }

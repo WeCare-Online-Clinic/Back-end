@@ -21,10 +21,8 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import wecare.backend.exception.UserCollectionException;
 import wecare.backend.model.*;
-import wecare.backend.model.dto.ChangeAppointment;
-import wecare.backend.model.dto.CheckPatient;
-import wecare.backend.model.dto.PatientRegister;
-import wecare.backend.model.dto.RequestChange;
+import wecare.backend.model.dto.*;
+import wecare.backend.model.dto.Message;
 import wecare.backend.repository.*;
 
 import javax.mail.MessagingException;
@@ -60,6 +58,17 @@ public class NurseService {
 
 	@Autowired
 	private PatientRequestRepository patientRequestRepo;
+
+	@Autowired
+	private ClinicRepository clinicRepo;
+
+	@Autowired
+	private ClinicMessageRepository clinicMessageRepo;
+
+	@Autowired
+	private ClinicDateMessageRepository clinicDateMessageRepo;
+
+	@Autowired PatientMessageRepository patientMessageRepo;
 
 	@Autowired
 	private JavaMailSender mailSender;
@@ -397,5 +406,52 @@ public class NurseService {
 		sendAppointmentEmail(clinicAppointment);
 
 		return true;
+	}
+
+    public List<ClinicDate> getNextClinicDates(Integer id) {
+		Date date = new Date();
+
+		return clinicDateRepo.findByClinicSchedule_ClinicIdAndDateGreaterThan(id, date);
+    }
+
+	public Boolean setClinicMessage(Message obj) {
+		LocalDate localDate = LocalDate.now();
+		LocalTime localTime = LocalTime.now();
+
+		ClinicMessage clinicMessage = new ClinicMessage();
+		clinicMessage.setDate(localDate);
+		clinicMessage.setTime(localTime);
+		clinicMessage.setMessage(obj.getMessage());
+		clinicMessage.setClinic(clinicRepo.findById(obj.getId()).get());
+		clinicMessage.setNurse(nurseRepo.findById(obj.getNurseId()).get());
+
+		clinicMessageRepo.save(clinicMessage);
+
+		return true;
+	}
+
+	public Boolean setClinicDateMessage(Message obj) {
+		LocalDate localDate = LocalDate.now();
+		LocalTime localTime = LocalTime.now();
+
+		ClinicDateMessage clinicDateMessage = new ClinicDateMessage();
+		clinicDateMessage.setDate(localDate);
+		clinicDateMessage.setTime(localTime);
+		clinicDateMessage.setMessage(obj.getMessage());
+		clinicDateMessage.setClinicDate(clinicDateRepo.findById(obj.getId()).get());
+		clinicDateMessage.setNurse(nurseRepo.findById(obj.getNurseId()).get());
+
+		clinicDateMessageRepo.save(clinicDateMessage);
+
+		return true;
+	}
+
+	public MessageList getMessages(Integer id) {
+		MessageList messageList = new MessageList();
+
+		messageList.setClinicMessages(clinicMessageRepo.findAllByClinicIdOrderByDateAsc(id));
+		messageList.setClinicDateMessages(clinicDateMessageRepo.findAllByClinicDate_ClinicSchedule_ClinicIdOrderByDateAsc(id));
+
+		return messageList;
 	}
 }
