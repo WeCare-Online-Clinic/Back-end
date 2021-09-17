@@ -129,15 +129,20 @@ public class LabTechService {
     	report.setData2(patientReportDTO.getField2());
     	report.setIssuedDate(new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
     	report.setAvailability(true);
+    	report.setPdfReport(patientReportDTO.getPdfReport());
 
+    	System.out.println("report...........:"+report.getPdfReport());
     	Report savedReport=reportRepo.saveAndFlush(report);
     	if(savedReport==null){
     		return 0;
+
 		}
     	else {
     		return 1;
 		}
 
     }
+
+
 }
 
