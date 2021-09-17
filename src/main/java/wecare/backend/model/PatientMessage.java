@@ -2,6 +2,7 @@ package wecare.backend.model;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "patient_message")
@@ -23,6 +24,9 @@ public class PatientMessage {
 
     @Column(name = "date")
     private LocalDate date;
+
+    @Column(name = "time")
+    private LocalTime time;
 
     @Column(name = "message")
     private String message;
@@ -48,6 +52,14 @@ public class PatientMessage {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public LocalTime getTime() {
+        return time;
+    }
+
+    public void setTime(LocalTime time) {
+        this.time = time;
     }
 
     public String getMessage() {

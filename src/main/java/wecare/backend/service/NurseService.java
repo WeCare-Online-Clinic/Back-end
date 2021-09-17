@@ -316,6 +316,8 @@ public class NurseService {
 			clinicAppointmentRepo.saveAndFlush(newClinicAppointment);
 		}
 
+
+
 		return newClinicAppointment;
 	}
 
@@ -399,9 +401,21 @@ public class NurseService {
 		clinicDate.setNoPatients(clinicDate.getNoPatients() - 1);
 		patientRequest.setChanged(true);
 
+		LocalDate localDate = LocalDate.now();
+		LocalTime localTime = LocalTime.now();
+
+		String message = "Clinic Appointment on " + clinicDate.getDate() +"changed to " + clinicAppointment.getClinicDate().getDate() ;
+
+		PatientMessage patientMessage = new PatientMessage();
+		patientMessage.setPatient(patientRequest.getPatient());
+		patientMessage.setDate(localDate);
+		patientMessage.setTime(localTime);
+		patientMessage.setMessage(message);
+
 		clinicAppointmentRepo.deleteByPatientIdAndClinicDateId(patientRequest.getPatient().getId(),patientRequest.getClinicDate().getId());
 		patientRequestRepo.save(patientRequest);
 		clinicDateRepo.save(clinicDate);
+		patientMessageRepo.save(patientMessage);
 
 		sendAppointmentEmail(clinicAppointment);
 

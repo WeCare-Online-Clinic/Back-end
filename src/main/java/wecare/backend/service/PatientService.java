@@ -1,14 +1,14 @@
 package wecare.backend.service;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import wecare.backend.exception.UserCollectionException;
 import wecare.backend.model.*;
 import wecare.backend.model.dto.ChangeClinicDate;
+import wecare.backend.model.dto.PatientMessageList;
 import wecare.backend.repository.*;
 
 @Service
@@ -23,7 +23,7 @@ public class PatientService {
 	private UserRepository userRepo;
 
 	@Autowired
-	private ClinicAppointmentRepository clinicAppointmentRepository;
+	private ClinicAppointmentRepository clinicAppointmentRepo;
 
 	@Autowired
 	private PatientClinicDataRepository patientClinicDataRepo;
@@ -33,6 +33,18 @@ public class PatientService {
 
 	@Autowired
 	private PatientRequestRepository patientRequestRepo;
+
+	@Autowired
+	private PatientClinicProfileRepository patientClinicProfileRepo;
+
+	@Autowired
+	private PatientMessageRepository patientMessageRepo;
+
+	@Autowired
+	private ClinicMessageRepository clinicMessageRepo;
+
+	@Autowired
+	private ClinicDateMessageRepository clinicDateMessageRepo;
 	
 	public Patient addPatient(Patient patient) throws UserCollectionException{
     Patient resultedPatient = patientRepo.findByEmail(patient.getEmail());
@@ -75,7 +87,7 @@ public class PatientService {
 	}
 
 	public List<ClinicAppointment> getNextClinicDetails(Integer patientId){
-		List<ClinicAppointment> clinicAppointment=clinicAppointmentRepository.getNextClinicDetails(patientId);
+		List<ClinicAppointment> clinicAppointment= clinicAppointmentRepo.getNextClinicDetails(patientId);
 		return clinicAppointment;
 	}
 
@@ -93,8 +105,8 @@ public class PatientService {
 		for (int j = 1; j <= 7; j++) {
 			LocalDate nextDate = currentClinicDate.plusDays(j);
 			DayOfWeek dayOfWeekNextDay = nextDate.getDayOfWeek(); //get the next from day which past 30 days- ( 2021-9-1)=>WEDNESSDAY
-			for (int i = 0; i < clinicDays.size(); i++) {
-				if (dayOfWeekNextDay.name().equals(clinicDays.get(i).toUpperCase())) { //check if the next day is included in the schedule array
+			for (String clinicDay : clinicDays) {
+				if (dayOfWeekNextDay.name().equals(clinicDay.toUpperCase())) { //check if the next day is included in the schedule array
 					requestedDates.add(nextDate);
 				}
 			}
@@ -114,5 +126,40 @@ public class PatientService {
 		else{
 			return 0;
 		}
+    }
+
+    public PatientMessageList getMessages(Integer id) {
+		Date date = new Date();
+
+		PatientMessageList patientMessageList = new PatientMessageList();
+		patientMessageList.setPatientMessages(patientMessageRepo.findByPatientId(id));
+
+		List<PatientClinicProfile> patientClinicProfiles = patientClinicProfileRepo.findByPatientId(id);
+		List<ClinicMessage> clinicMessages = new ArrayList<>();
+		for (PatientClinicProfile patientClinicProfile : patientClinicProfiles) {
+			List<ClinicMessage> clinicMessages1 = clinicMessageRepo.findAllByClinicIdOrderByDateAsc(patientClinicProfile.getClinic().getId());
+			if (clinicMessages1.size() > 0) {
+				List<ClinicMessage> clinicMessages2 = new ArrayList<>(clinicMessages.size() + clinicMessages1.size());
+				Collections.addAll(clinicMessages);
+				Collections.addAll(clinicMessages1);
+				clinicMessages = clinicMessages2;
+			}
+		}
+		patientMessageList.setClinicMessages(clinicMessages);
+
+		List<ClinicAppointment> clinicAppointments = clinicAppointmentRepo.findByPatientIdAndClinicDateDateGreaterThan(id, date);
+		List<ClinicDateMessage> clinicDateMessages = new ArrayList<>();
+		for (ClinicAppointment clinicAppointment : clinicAppointments) {
+			List<ClinicDateMessage> clinicDateMessages1 = clinicDateMessageRepo.findAllByClinicDateIdOrderByDateAsc(clinicAppointment.getClinicDate().getId());
+			if (clinicDateMessages1.size() > 0) {
+				List<ClinicDateMessage> clinicDateMessages2 = new ArrayList<>(clinicDateMessages.size() + clinicDateMessages1.size());
+				Collections.addAll(clinicDateMessages);
+				Collections.addAll(clinicDateMessages1);
+				clinicDateMessages = clinicDateMessages2;
+			}
+		}
+		patientMessageList.setClinicDateMessages(clinicDateMessages);
+
+		return patientMessageList;
     }
 }
