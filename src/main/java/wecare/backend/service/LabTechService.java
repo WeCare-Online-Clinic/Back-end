@@ -43,8 +43,8 @@ public class LabTechService {
 		return report;
 	}
 	
-	public List<Report> getReportProfileById(Integer id) {
-		List<Report> report = reportRepo.getReportProfileById(id);
+	public Report getReportProfileById(Integer id) {
+		Report report = reportRepo.getReportProfileById(id);
 		return report;
 	
 	}

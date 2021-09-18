@@ -18,7 +18,6 @@ public interface ReportRepository extends JpaRepository<Report, Integer> {
 	
 	@Query("SELECT r FROM Report r WHERE r.id = :id")
 	Report getReportProfileById(@Param("id") Integer id);
-
 	
 
 
