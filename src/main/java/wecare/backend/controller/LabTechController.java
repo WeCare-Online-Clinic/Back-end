@@ -87,6 +87,16 @@ public class LabTechController {
 		}
 
 	}
+	
+	@GetMapping("/getReportProfileDetailsById/{id}") 
+	public  List<Report> getReportProfileDetailsById(@PathVariable Integer id){
+		List<Report> report = labTechService.getReportProfileDetailsById(id);
+		return report;
+		
+	}
+	
+	
+	
 
 
     
