@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import wecare.backend.model.ClinicAppointment;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -21,4 +22,6 @@ public interface ClinicAppointmentRepository extends JpaRepository<ClinicAppoint
     List<ClinicAppointment> getNextClinicDetails(@Param("patientId") Integer patientId);
 
     void deleteByPatientIdAndClinicDateId(Integer id, Integer id1);
+
+    List<ClinicAppointment> findByPatientIdAndClinicDateDateGreaterThan(Integer id, Date date);
 }

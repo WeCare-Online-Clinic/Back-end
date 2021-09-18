@@ -53,4 +53,6 @@ public interface PatientClinicProfileRepository extends JpaRepository<PatientCli
 
     @Query("SELECT p from PatientClinicProfile p WHERE p.patient.nic= :patientNIC")
     List<PatientClinicProfile> getPatientByNIC(@Param("patientNIC") String patientNIC);
+
+    List<PatientClinicProfile> findByPatientId(Integer id);
 }

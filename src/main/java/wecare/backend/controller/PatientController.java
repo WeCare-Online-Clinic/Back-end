@@ -22,6 +22,8 @@ import wecare.backend.model.Patient;
 import wecare.backend.model.PatientClinicData;
 import wecare.backend.model.PatientRequest;
 import wecare.backend.model.dto.ChangeClinicDate;
+import wecare.backend.model.dto.MessageList;
+import wecare.backend.model.dto.PatientMessageList;
 import wecare.backend.service.PatientService;
 
 @RestController
@@ -92,5 +94,8 @@ public class PatientController {
 
 	}
 
-	
+	@GetMapping("/patient/message/list/{id}")
+	public PatientMessageList getMessages(@PathVariable Integer id){
+		return patientService.getMessages(id);
+	}
 }

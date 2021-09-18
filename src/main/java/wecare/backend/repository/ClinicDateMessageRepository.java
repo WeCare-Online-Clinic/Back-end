@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface ClinicDateMessageRepository extends JpaRepository<ClinicDateMessage, Integer> {
     List<ClinicDateMessage> findAllByClinicDate_ClinicSchedule_ClinicIdOrderByDateAsc(Integer id);
+
+    List<ClinicDateMessage> findAllByClinicDateIdOrderByDateAsc(Integer id);
 }

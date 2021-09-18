@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -45,6 +46,10 @@ public class Report {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "patient_id", referencedColumnName = "id")
     private Patient patient;
+
+    @Lob
+    @Column(name="pdf_report")
+    private byte[]  pdfReport;
 
 	public Integer getId() {
 		return id;
@@ -118,6 +123,14 @@ public class Report {
 		this.patient = patient;
 	}
 
+	public byte[] getPdfReport() {
+		return pdfReport;
+	}
+
+	public void setPdfReport(byte[] pdfReport) {
+		this.pdfReport = pdfReport;
+	}
+
 	@Override
 	public String toString() {
 		return "Report{" +
@@ -130,6 +143,7 @@ public class Report {
 				", data2=" + data2 +
 				", test=" + test +
 				", patient=" + patient +
+				", pdfReport=" + pdfReport +
 				'}';
 	}
 }
