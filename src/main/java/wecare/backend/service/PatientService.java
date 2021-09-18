@@ -45,6 +45,9 @@ public class PatientService {
 
 	@Autowired
 	private ClinicDateMessageRepository clinicDateMessageRepo;
+
+	@Autowired
+	private PatientLabReports patientLabReportsRepo;
 	
 	public Patient addPatient(Patient patient) throws UserCollectionException{
     Patient resultedPatient = patientRepo.findByEmail(patient.getEmail());
@@ -162,4 +165,10 @@ public class PatientService {
 
 		return patientMessageList;
     }
+
+	public List<Report> getLabReportDetails(Integer patientId){
+		List<Report> labReports=patientLabReportsRepo.getLabReportDetails(patientId);
+		return labReports;
+	}
+
 }

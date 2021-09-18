@@ -17,10 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import wecare.backend.exception.UserCollectionException;
-import wecare.backend.model.ClinicAppointment;
-import wecare.backend.model.Patient;
-import wecare.backend.model.PatientClinicData;
-import wecare.backend.model.PatientRequest;
+import wecare.backend.model.*;
 import wecare.backend.model.dto.ChangeClinicDate;
 import wecare.backend.model.dto.MessageList;
 import wecare.backend.model.dto.PatientMessageList;
@@ -28,7 +25,7 @@ import wecare.backend.service.PatientService;
 
 @RestController
 @RequestMapping(value = "wecare")
-@CrossOrigin(origins="http://localhost:3000")
+@CrossOrigin(origins="*")
 public class PatientController {
 
 	@Autowired 
@@ -97,5 +94,11 @@ public class PatientController {
 	@GetMapping("/patient/message/list/{id}")
 	public PatientMessageList getMessages(@PathVariable Integer id){
 		return patientService.getMessages(id);
+	}
+
+	@GetMapping("/getLabReportDetails/{patientId}")
+	public List<Report> getLabReportDetails(@PathVariable Integer patientId){
+		List<Report> labReports= patientService.getLabReportDetails(patientId);
+		return  labReports;
 	}
 }
