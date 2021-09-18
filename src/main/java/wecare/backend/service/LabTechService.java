@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import com.zaxxer.hikari.pool.HikariProxyCallableStatement;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import wecare.backend.model.*;
 import wecare.backend.model.dto.PatientForLabTech;
@@ -39,7 +40,7 @@ public class LabTechService {
         return labTechnicianRepo.findById(id).get();
     }
     public List<Report> getAllReport(){
-		List<Report> report = reportRepo.findAll();
+		List<Report> report = reportRepo.findAllByOrderByIdDesc();
 		return report;
 	}
 	
