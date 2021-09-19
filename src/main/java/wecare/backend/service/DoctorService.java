@@ -63,6 +63,9 @@ public class DoctorService {
 
 	@Autowired
 	private PatientClinicDataRepository patientClinicDataRepo;
+
+	@Autowired
+	private ReportRepository reportRepo;
 	
 	public Doctor addDoctor(Doctor doctor) throws UserCollectionException, MessagingException, UnsupportedEncodingException {
 		User resultDoctor=userRepo.findByEmail(doctor.getEmail());
@@ -328,4 +331,7 @@ public class DoctorService {
 
 	}
 
+    public List<Report> getReports(Integer pid, Integer cid) {
+		return reportRepo.findByPatientIdAndTestClinicId(pid, cid);
+    }
 }

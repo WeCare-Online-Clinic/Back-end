@@ -43,4 +43,6 @@ public interface ReportRepository extends JpaRepository<Report, Integer> {
 
 	@Query("SELECT COUNT(*) FROM Report r WHERE r.test.id= :type")
 	Integer getIssuedReportTypeCount(@Param("type") int type);
+
+    List<Report> findByPatientIdAndTestClinicId(Integer pid, Integer cid);
 }

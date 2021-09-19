@@ -139,4 +139,9 @@ public class DoctorController {
 	public ClinicSummary getClinicSummary(@PathVariable Integer id) throws ParseException {
 		return doctorService.getClinicSummary(id);
 	}
+
+	@GetMapping("/clinic/report/list/{pid}/{cid}")
+	public List<Report> getReports(@PathVariable Integer pid, @PathVariable Integer cid) throws ParseException {
+		return doctorService.getReports(pid, cid);
+	}
  }
