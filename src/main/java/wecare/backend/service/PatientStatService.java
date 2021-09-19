@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import wecare.backend.model.PatientClinicProfile;
 import wecare.backend.model.Report;
 import wecare.backend.model.Test;
+import wecare.backend.model.dto.DoctorPatientStats;
 import wecare.backend.model.dto.PatientStatDataDTO;
 import wecare.backend.model.dto.PatientStatTitleDTO;
 import wecare.backend.repository.PatientClinicProfileRepository;
@@ -27,25 +28,25 @@ public class PatientStatService {
     private TestRepository testRepository;
 
     public List<PatientStatTitleDTO> getPatientStatistics(Integer patientId) {
-        List<PatientStatTitleDTO> patientStatData=new ArrayList<PatientStatTitleDTO>(); //array list finally return
+        List<PatientStatTitleDTO> patientStatData = new ArrayList<PatientStatTitleDTO>(); //array list finally return
 
 
-        List<PatientClinicProfile> patientClinicProfile= patientClinicProfileRepo.findByPatientId(patientId);
-        for(int j=0; j<patientClinicProfile.size(); j++){
-            List<Test> testTypes=testRepository.getTestListByClinicId(patientClinicProfile.get(j).getClinic().getId());
-            for(int z=0; z<testTypes.size(); z++){
-                PatientStatTitleDTO newPatientStatTitleDTO=new PatientStatTitleDTO();
+        List<PatientClinicProfile> patientClinicProfile = patientClinicProfileRepo.findByPatientId(patientId);
+        for (int j = 0; j < patientClinicProfile.size(); j++) {
+            List<Test> testTypes = testRepository.getTestListByClinicId(patientClinicProfile.get(j).getClinic().getId());
+            for (int z = 0; z < testTypes.size(); z++) {
+                PatientStatTitleDTO newPatientStatTitleDTO = new PatientStatTitleDTO();
                 newPatientStatTitleDTO.setTestName(testTypes.get(z).getName());
                 newPatientStatTitleDTO.setField1(testTypes.get(z).getField1());
                 newPatientStatTitleDTO.setField2(testTypes.get(z).getField2());
 
-                Integer testId=testTypes.get(z).getId();
-                List<Report> patientsReports=patientLabReportsRepo.getLabReportsByTestIdForStat(patientId,testId);
+                Integer testId = testTypes.get(z).getId();
+                List<Report> patientsReports = patientLabReportsRepo.getLabReportsByTestIdForStat(patientId, testId);
 
-                List<PatientStatDataDTO> dataList=new ArrayList<PatientStatDataDTO>();
-                for(int n=0; n<patientsReports.size(); n++){
+                List<PatientStatDataDTO> dataList = new ArrayList<PatientStatDataDTO>();
+                for (int n = 0; n < patientsReports.size(); n++) {
 
-                    PatientStatDataDTO  patientStatDataDTO=new PatientStatDataDTO();
+                    PatientStatDataDTO patientStatDataDTO = new PatientStatDataDTO();
                     patientStatDataDTO.setData1(patientsReports.get(n).getData1());
                     patientStatDataDTO.setData2(patientsReports.get(n).getData2());
                     patientStatDataDTO.setDate(patientsReports.get(n).getTestDate());
@@ -56,6 +57,42 @@ public class PatientStatService {
                 patientStatData.add(newPatientStatTitleDTO);
             }
         }
-        return  patientStatData;
+        return patientStatData;
+    }
+
+    public List<PatientStatTitleDTO> getPatientClinicStats(DoctorPatientStats doctorPatientStats) {
+        List<PatientStatTitleDTO> patientStatData = new ArrayList<PatientStatTitleDTO>(); //array list finally return
+
+        Integer clinicId = doctorPatientStats.getClinicId();
+        Integer patientId = doctorPatientStats.getPatientId();
+        System.out.println("clinicId"+clinicId);
+        System.out.println("patientId"+patientId);
+
+        List<Test> testTypes = testRepository.getTestListByClinicId(clinicId);
+        for (int z = 0; z < testTypes.size(); z++) {
+            PatientStatTitleDTO newPatientStatTitleDTO = new PatientStatTitleDTO();
+            newPatientStatTitleDTO.setTestName(testTypes.get(z).getName());
+            newPatientStatTitleDTO.setField1(testTypes.get(z).getField1());
+            newPatientStatTitleDTO.setField2(testTypes.get(z).getField2());
+
+            Integer testId = testTypes.get(z).getId();
+            List<Report> patientsReports = patientLabReportsRepo.getLabReportsByTestIdForStat(patientId, testId);
+
+            List<PatientStatDataDTO> dataList = new ArrayList<PatientStatDataDTO>();
+            for (int n = 0; n < patientsReports.size(); n++) {
+
+                PatientStatDataDTO patientStatDataDTO = new PatientStatDataDTO();
+                patientStatDataDTO.setData1(patientsReports.get(n).getData1());
+                patientStatDataDTO.setData2(patientsReports.get(n).getData2());
+                patientStatDataDTO.setDate(patientsReports.get(n).getTestDate());
+
+                dataList.add(patientStatDataDTO);
+            }
+            newPatientStatTitleDTO.setDataList(dataList);
+            patientStatData.add(newPatientStatTitleDTO);
+        }
+
+        return patientStatData;
+
     }
 }
