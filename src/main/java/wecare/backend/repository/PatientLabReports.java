@@ -15,4 +15,9 @@ public interface PatientLabReports extends JpaRepository<Report, Integer> {
     @Query("SELECT c FROM Report c WHERE c.patient.id = :patientId AND c.availability=true")
     List<Report> getLabReportDetails(@Param("patientId") Integer patientId);
 
+    @Query("SELECT c FROM Report c WHERE (c.patient.id= :patientId AND c.test.id= :testId AND availability=true)")
+    List<Report> getLabReportsByTestIdForStat(@Param("patientId") Integer patientId,@Param("testId") Integer testId);
+
+
+
 }
