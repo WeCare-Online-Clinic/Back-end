@@ -66,6 +66,12 @@ public class DoctorService {
 
 	@Autowired
 	private ReportRepository reportRepo;
+
+	@Autowired
+	private PatientRepository patientRepo;
+
+	@Autowired
+	private PatientMessageRepository patientMessageRepo;
 	
 	public Doctor addDoctor(Doctor doctor) throws UserCollectionException, MessagingException, UnsupportedEncodingException {
 		User resultDoctor=userRepo.findByEmail(doctor.getEmail());
@@ -213,6 +219,21 @@ public class DoctorService {
 			}
 		}
 
+		if(clinicDate.getCurrQueue() + 2 < clinicDate.getNoPatients()){
+			LocalDate localDate = LocalDate.now();
+			LocalTime localTime = LocalTime.now();
+			ClinicAppointment nextClinicAppointment = clinicAppointmentRepo.findFirstByClinicDateIdAndQueueNo(clinicDate.getId(), clinicDate.getCurrQueue() + 2);
+			if(nextClinicAppointment != null){
+				Patient nextPatient = nextClinicAppointment.getPatient();
+				PatientMessage patientMessage = new PatientMessage();
+				patientMessage.setPatient(nextPatient);
+				patientMessage.setDate(localDate);
+				patientMessage.setTime(localTime);
+				patientMessage.setMessage("Please visit consultation room for clinic appointment. Current queue no: " + clinicDate.getCurrQueue() + 1);
+				patientMessageRepo.save(patientMessage);
+			}
+		}
+
 		ClinicAppointment clinicAppointment = clinicAppointmentRepo.findFirstByPatientIdAndClinicDateId(pid, did);
 		if(clinicAppointment == null){
 			throw new ClinicAppointmentException(ClinicAppointmentException.NotFoundExeption());
@@ -240,7 +261,12 @@ public class DoctorService {
 
 
 		if(nextClinicDate != null){
-			Time scheduleTime = new Time(Long.parseLong(nextClinicDate.getClinicSchedule().getTime()));
+			ClinicAppointment available = clinicAppointmentRepo.findByPatientIdAndClinicDateId(clinicAppointment.getPatient().getId(), nextClinicDate.getId());
+
+			if(available != null){
+				return false;
+			}
+			Time scheduleTime = nextClinicDate.getClinicSchedule().getTime();
 			LocalTime localTime = scheduleTime.toLocalTime();
 
 			List<Integer> queue = nextClinicDate.getQueue();
@@ -284,7 +310,7 @@ public class DoctorService {
 			newClinicDate.setCurrQueue(1);
 			newClinicDate = clinicDateRepo.saveAndFlush(newClinicDate);
 
-			Time scheduleTime = new Time(Long.parseLong(newClinicDate.getClinicSchedule().getTime()));
+			Time scheduleTime =newClinicDate.getClinicSchedule().getTime();
 			LocalTime localTime = scheduleTime.toLocalTime();
 
 			ClinicAppointment newClinicAppointment = new ClinicAppointment();

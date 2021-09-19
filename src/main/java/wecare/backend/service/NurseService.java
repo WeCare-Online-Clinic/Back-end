@@ -272,10 +272,16 @@ public class NurseService {
 		ClinicDate nextClinicDate = clinicDateRepo.findFirstByClinicSchedule_ClinicIdAndDate(clinic.getId(), date);
 		ClinicAppointment newClinicAppointment = new ClinicAppointment();
 
-		Time scheduleTime = new Time(Long.parseLong(nextClinicDate.getClinicSchedule().getTime()));
+		Time scheduleTime = nextClinicDate.getClinicSchedule().getTime();
 		LocalTime localTime = scheduleTime.toLocalTime();
 
 		if (nextClinicDate != null) {
+
+			ClinicAppointment available = clinicAppointmentRepo.findByPatientIdAndClinicDateId(patient.getId(), nextClinicDate.getId());
+
+			if(available != null){
+				return available;
+			}
 
 			List<Integer> queue = nextClinicDate.getQueue();
 			queue.add(patient.getId());
@@ -292,6 +298,7 @@ public class NurseService {
 			newClinicAppointment.setVisited(false);
 			clinicAppointmentRepo.saveAndFlush(newClinicAppointment);
 		} else {
+
 			Calendar c = Calendar.getInstance();
 			c.setTime(date);
 			DateFormat weekFormatter = new SimpleDateFormat("EEEE");
@@ -477,5 +484,22 @@ public class NurseService {
 		String number = "+94"+phoneNumber;
 		com.twilio.rest.api.v2010.account.Message.creator(new PhoneNumber(number), new PhoneNumber("+13038163922"), message).create();
 
+	}
+
+	public Boolean addNewAppointment(AddAppointment obj) {
+		ClinicAppointment clinicAppointment = addClinicAppointment(obj.getPatient(), obj.getClinic(), obj.getDate());
+		LocalDate localDate = LocalDate.now();
+		LocalTime localTime = LocalTime.now();
+
+
+			PatientMessage patientMessage = new PatientMessage();
+			patientMessage.setPatient(obj.getPatient());
+			patientMessage.setDate(localDate);
+			patientMessage.setTime(localTime);
+			patientMessage.setMessage("New clinic appointment on: " + clinicAppointment.getClinicDate().getDate()
+					+ " Time: " + clinicAppointment.getTime() + " Queue no: " + clinicAppointment.getQueueNo());
+			patientMessageRepo.save(patientMessage);
+
+			return true;
 	}
 }

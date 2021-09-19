@@ -31,7 +31,7 @@ public class ClinicSchedule {
 	private String day;
 
 	@Column(name="time")
-	private String time;
+	private Time time;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "clinic_id", referencedColumnName = "id")
@@ -52,11 +52,11 @@ public class ClinicSchedule {
 		this.day = day;
 	}
 
-	public String getTime() {
+	public Time getTime() {
 		return time;
 	}
 
-	public void setTime(String time) {
+	public void setTime(Time time) {
 		this.time = time;
 	}
 

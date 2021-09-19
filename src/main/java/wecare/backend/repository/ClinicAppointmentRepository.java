@@ -24,4 +24,8 @@ public interface ClinicAppointmentRepository extends JpaRepository<ClinicAppoint
     void deleteByPatientIdAndClinicDateId(Integer id, Integer id1);
 
     List<ClinicAppointment> findByPatientIdAndClinicDateDateGreaterThan(Integer id, Date date);
+
+    ClinicAppointment findFirstByClinicDateIdAndQueueNo(Integer id, Integer currQueue);
+
+    ClinicAppointment findByPatientIdAndClinicDateId(Integer id, Integer id1);
 }
