@@ -138,12 +138,10 @@ public class PatientService {
 		List<ClinicMessage> clinicMessages = new ArrayList<>();
 		for (PatientClinicProfile patientClinicProfile : patientClinicProfiles) {
 			List<ClinicMessage> clinicMessages1 = clinicMessageRepo.findAllByClinicIdOrderByDateAsc(patientClinicProfile.getClinic().getId());
-			if (clinicMessages1.size() > 0) {
 				List<ClinicMessage> clinicMessages2 = new ArrayList<>(clinicMessages.size() + clinicMessages1.size());
-				Collections.addAll(clinicMessages);
-				Collections.addAll(clinicMessages1);
+				clinicMessages2.addAll(clinicMessages);
+				clinicMessages2.addAll(clinicMessages1);
 				clinicMessages = clinicMessages2;
-			}
 		}
 		patientMessageList.setClinicMessages(clinicMessages);
 
@@ -151,12 +149,10 @@ public class PatientService {
 		List<ClinicDateMessage> clinicDateMessages = new ArrayList<>();
 		for (ClinicAppointment clinicAppointment : clinicAppointments) {
 			List<ClinicDateMessage> clinicDateMessages1 = clinicDateMessageRepo.findAllByClinicDateIdOrderByDateAsc(clinicAppointment.getClinicDate().getId());
-			if (clinicDateMessages1.size() > 0) {
 				List<ClinicDateMessage> clinicDateMessages2 = new ArrayList<>(clinicDateMessages.size() + clinicDateMessages1.size());
-				Collections.addAll(clinicDateMessages);
-				Collections.addAll(clinicDateMessages1);
+				clinicDateMessages2.addAll(clinicDateMessages);
+				clinicDateMessages2.addAll(clinicDateMessages1);
 				clinicDateMessages = clinicDateMessages2;
-			}
 		}
 		patientMessageList.setClinicDateMessages(clinicDateMessages);
 

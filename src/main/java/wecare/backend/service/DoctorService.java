@@ -7,8 +7,11 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 
+import com.twilio.Twilio;
+import com.twilio.type.PhoneNumber;
 import net.bytebuddy.utility.RandomString;
 
 import org.slf4j.Logger;
@@ -232,7 +235,11 @@ public class DoctorService {
 
 		ClinicDate nextClinicDate = clinicDateRepo.findFirstByClinicSchedule_ClinicIdAndDate(cid, nextDate);
 
+
 		if(nextClinicDate != null){
+			Time scheduleTime = new Time(Long.parseLong(nextClinicDate.getClinicSchedule().getTime()));
+			LocalTime localTime = scheduleTime.toLocalTime();
+
 			List<Integer> queue = nextClinicDate.getQueue();
 			queue.add(pid);
 			nextClinicDate.setQueue(queue);
@@ -244,7 +251,17 @@ public class DoctorService {
 			newClinicAppointment.setPatient(clinicAppointment.getPatient());
 			newClinicAppointment.setClinicDate(nextClinicDate);
 			newClinicAppointment.setVisited(false);
+
+			localTime = localTime.plusMinutes(5L * nextClinicDate.getNoPatients());
+
+			newClinicAppointment.setTime(Time.valueOf(localTime));
 			clinicAppointmentRepo.saveAndFlush(newClinicAppointment);
+			if(newClinicAppointment.getPatient().getContact() != null){
+				String message = "New clinic appointment on " + newClinicAppointment.getClinicDate().getDate() +
+						". Queue No: " + newClinicAppointment.getQueueNo() + "Time: " + newClinicAppointment.getTime();
+				sendSms(newClinicAppointment.getPatient().getContact(), message);
+			}
+
 		}
 		else{
 			Calendar c = Calendar.getInstance();
@@ -264,12 +281,21 @@ public class DoctorService {
 			newClinicDate.setCurrQueue(1);
 			newClinicDate = clinicDateRepo.saveAndFlush(newClinicDate);
 
+			Time scheduleTime = new Time(Long.parseLong(newClinicDate.getClinicSchedule().getTime()));
+			LocalTime localTime = scheduleTime.toLocalTime();
+
 			ClinicAppointment newClinicAppointment = new ClinicAppointment();
-			newClinicAppointment.setQueueNo(nextClinicDate.getNoPatients());
+			newClinicAppointment.setQueueNo(1);
+			newClinicAppointment.setTime(scheduleTime);
 			newClinicAppointment.setPatient(clinicAppointment.getPatient());
-			newClinicAppointment.setClinicDate(nextClinicDate);
+			newClinicAppointment.setClinicDate(newClinicDate);
 			newClinicAppointment.setVisited(false);
 			clinicAppointmentRepo.saveAndFlush(newClinicAppointment);
+			if(newClinicAppointment.getPatient().getContact() != null){
+				String message = "New clinic appointment on " + newClinicAppointment.getClinicDate().getDate() +
+						". Queue No: " + newClinicAppointment.getQueueNo() + "Time: " + newClinicAppointment.getTime();
+				sendSms(newClinicAppointment.getPatient().getContact(), message);
+			}
 		}
 
 		PatientClinicProfile clinicProfile = patientClinicProfileRepo.findFirstByPatientIdAndClinicId(pid, cid);
@@ -292,6 +318,14 @@ public class DoctorService {
 		clinicSummary.setNotVisitedPatients(notVisitedPatients);
 
 		return  clinicSummary;
+	}
+
+	public void sendSms(Integer phoneNumber, String message){
+
+		Twilio.init("AC7259622d5c4317798e7587a3a2bb72fd", "fce387d1a0fc715f83423a0fef20690d");
+		String number = "+94"+phoneNumber;
+		com.twilio.rest.api.v2010.account.Message.creator(new PhoneNumber(number), new PhoneNumber("+13038163922"), message).create();
+
 	}
 
 }

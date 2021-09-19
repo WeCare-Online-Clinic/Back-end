@@ -1,7 +1,5 @@
 package wecare.backend.service;
 
-
-
 import java.io.UnsupportedEncodingException;
 import java.sql.Time;
 import java.text.DateFormat;
@@ -28,6 +26,9 @@ import wecare.backend.repository.*;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.transaction.Transactional;
+
+import com.twilio.Twilio;
+import com.twilio.type.PhoneNumber;
 
 @Service
 public class NurseService {
@@ -282,7 +283,7 @@ public class NurseService {
 			nextClinicDate.setNoPatients(nextClinicDate.getNoPatients() + 1);
 			clinicDateRepo.saveAndFlush(nextClinicDate);
 
-			localTime = localTime.plusMinutes(5 * nextClinicDate.getNoPatients());
+			localTime = localTime.plusMinutes(5L * nextClinicDate.getNoPatients());
 
 			newClinicAppointment.setTime(Time.valueOf(localTime));
 			newClinicAppointment.setQueueNo(nextClinicDate.getNoPatients());
@@ -316,8 +317,6 @@ public class NurseService {
 			clinicAppointmentRepo.saveAndFlush(newClinicAppointment);
 		}
 
-
-
 		return newClinicAppointment;
 	}
 
@@ -347,6 +346,7 @@ public class NurseService {
 		helper.setText(body, true);
 
 		mailSender.send(message);
+		sendSms(patient.getContact(),body);
 	}
 
 	public void sendAppointmentEmail(ClinicAppointment clinicAppointment) throws MessagingException, UnsupportedEncodingException {
@@ -375,6 +375,7 @@ public class NurseService {
 		helper.setText(body, true);
 
 		mailSender.send(message);
+		sendSms(clinicAppointment.getPatient().getContact(), body);
 	}
 
 	private String toString(Integer queueNo) {
@@ -418,6 +419,7 @@ public class NurseService {
 		patientMessageRepo.save(patientMessage);
 
 		sendAppointmentEmail(clinicAppointment);
+		sendSms(patientRequest.getPatient().getContact(), message);
 
 		return true;
 	}
@@ -467,5 +469,13 @@ public class NurseService {
 		messageList.setClinicDateMessages(clinicDateMessageRepo.findAllByClinicDate_ClinicSchedule_ClinicIdOrderByDateAsc(id));
 
 		return messageList;
+	}
+
+	public void sendSms(Integer phoneNumber, String message){
+
+		Twilio.init("AC7259622d5c4317798e7587a3a2bb72fd", "fce387d1a0fc715f83423a0fef20690d");
+		String number = "+94"+phoneNumber;
+		com.twilio.rest.api.v2010.account.Message.creator(new PhoneNumber(number), new PhoneNumber("+13038163922"), message).create();
+
 	}
 }
