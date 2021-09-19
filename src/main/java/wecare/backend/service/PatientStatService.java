@@ -65,8 +65,6 @@ public class PatientStatService {
 
         Integer clinicId = doctorPatientStats.getClinicId();
         Integer patientId = doctorPatientStats.getPatientId();
-        System.out.println("clinicId"+clinicId);
-        System.out.println("patientId"+patientId);
 
         List<Test> testTypes = testRepository.getTestListByClinicId(clinicId);
         for (int z = 0; z < testTypes.size(); z++) {
