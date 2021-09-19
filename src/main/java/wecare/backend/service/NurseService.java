@@ -129,7 +129,7 @@ public class NurseService {
 	}
 
 	public ClinicDate getClinicDate(Integer id) throws ParseException {
-		String date_string = "13-09-2021";
+		String date_string = "17-09-2021";
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		Date date = formatter.parse(date_string);
 
@@ -176,12 +176,14 @@ public class NurseService {
 		Time time = new Time(date.getTime());
 
 		ClinicDate clinicDate = clinicDateRepo.findById(id).get();
+		List<ClinicAppointment> clinicAppointments = clinicAppointmentRepo.findByClinicDateIdAndVisited(clinicDate.getId(), true);
+		Integer visitedPatients = clinicAppointments.size();
 
 		if (!clinicDate.getEnded()) {
 			clinicDate.setStarted(false);
 			clinicDate.setEnded(true);
 			clinicDate.setEndTime(time);
-
+	clinicDate.setVisitedPatients(visitedPatients);
 			clinicDateRepo.save(clinicDate);
 		}
 
