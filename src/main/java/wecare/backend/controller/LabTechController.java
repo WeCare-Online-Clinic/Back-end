@@ -25,8 +25,8 @@ public class LabTechController {
 
     @GetMapping("/labTech/info/{id}")
     public LabTechnician getLabTechInfo(@PathVariable Integer id) {
-        return labTechService.getLabTechInfo(id);
-    }
+        return labTechService.getLabTechInfo(id);   }
+	
 
     @GetMapping("/getTest")
     public List<Test> getTest() {
@@ -48,8 +48,8 @@ public class LabTechController {
     }
 
     @GetMapping("/getReportProfile/{id}")
-    public List<Report> getReportProfileById(@PathVariable Integer id) {
-        List<Report> report = labTechService.getReportProfileById(id);
+    public Report getReportProfileById(@PathVariable Integer id) {
+        Report report = labTechService.getReportProfileById(id);
         return report;
 
     }
@@ -90,7 +90,6 @@ public class LabTechController {
         } else {
             return "failed to add the report!! please try again";
         }
-
 
 
     }

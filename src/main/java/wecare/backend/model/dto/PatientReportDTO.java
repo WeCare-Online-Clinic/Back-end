@@ -3,6 +3,9 @@ package wecare.backend.model.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.Type;
+
+import javax.persistence.Lob;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -17,6 +20,7 @@ public class PatientReportDTO {
     @JsonProperty("field2")
     private float field2;
 
+    @Type(type="org.hibernate.type.BinaryType")
     private byte[] pdfReport;
 
     @JsonProperty("reportId")

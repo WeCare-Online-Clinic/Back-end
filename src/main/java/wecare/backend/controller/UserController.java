@@ -15,7 +15,7 @@ import wecare.backend.service.UserService;
 
 @RestController
 @RequestMapping(value="/wecare")
-@CrossOrigin(origins="http://localhost:3000")
+@CrossOrigin(origins="*")
 public class UserController {
 	
 	@Autowired 

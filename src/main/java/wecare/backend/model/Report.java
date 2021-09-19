@@ -1,6 +1,7 @@
 package wecare.backend.model;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 
@@ -47,8 +48,8 @@ public class Report {
     @JoinColumn(name = "patient_id", referencedColumnName = "id")
     private Patient patient;
 
-    @Lob
-    @Column(name="pdf_report")
+	@Type(type="org.hibernate.type.BinaryType")
+	@Column(name="pdf_report")
     private byte[]  pdfReport;
 
 	public Integer getId() {
