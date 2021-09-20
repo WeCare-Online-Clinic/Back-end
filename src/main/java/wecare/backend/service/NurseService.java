@@ -490,7 +490,7 @@ public class NurseService {
 
 	}
 
-	public Boolean addNewAppointment(AddAppointment obj) {
+	public Boolean addNewAppointment(AddAppointment obj) throws MessagingException, UnsupportedEncodingException {
 
 		ClinicAppointment available = clinicAppointmentRepo.findByPatientIdAndClinicDateDate(obj.getPatient().getId(), obj.getDate());
 
@@ -502,14 +502,17 @@ public class NurseService {
 			ClinicAppointment clinicAppointment = addClinicAppointment(obj.getPatient(), obj.getClinic(), obj.getDate());
 			LocalDate localDate = LocalDate.now();
 			LocalTime localTime = LocalTime.now();
+			String message = "New " + obj.getClinic() + " clinic appointment on: " + clinicAppointment.getClinicDate().getDate()
+					+ " Time: " + clinicAppointment.getTime() + " Queue no: " + clinicAppointment.getQueueNo();
 
 			PatientMessage patientMessage = new PatientMessage();
 			patientMessage.setPatient(obj.getPatient());
 			patientMessage.setDate(localDate);
 			patientMessage.setTime(localTime);
-			patientMessage.setMessage("New clinic appointment on: " + clinicAppointment.getClinicDate().getDate()
-					+ " Time: " + clinicAppointment.getTime() + " Queue no: " + clinicAppointment.getQueueNo());
+			patientMessage.setMessage(message);
 			patientMessageRepo.save(patientMessage);
+			sendAppointmentEmail(clinicAppointment);
+			sendSms(clinicAppointment.getPatient().getContact(), message);
 		}
 
 		return true;
