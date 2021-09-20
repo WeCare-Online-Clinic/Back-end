@@ -143,7 +143,21 @@ public class LabTechService {
 		}
 
     }
+	//lab report search
 
+    public List<Report> getPatientReportsByPatientName(String patientName) {
+    	List<Report> reports=reportRepo.getPatientReportsByPatientName(patientName);
+    	return  reports;
+    }
 
+	public List<Report> getPatientReportsByPatientNIC(String patientNIC) {
+    	List<Report> reports=reportRepo.getPatientReportsByPatientNIC(patientNIC);
+    	return reports;
+	}
+
+	public List<Report> getPatientReportsByTestType(Integer testType) {
+    	List<Report> reports=reportRepo.getPatientReportsByTestType(testType);
+    	return  reports;
+	}
 }
 

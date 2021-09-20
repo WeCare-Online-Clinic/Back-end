@@ -17,32 +17,44 @@ import wecare.backend.model.Report;
 
 @Repository
 public interface ReportRepository extends JpaRepository<Report, Integer> {
-	
-	
-	@Query("SELECT r FROM Report r WHERE r.id = :id")
-	Report getReportProfileById(@Param("id") Integer id);
 
-	Report findTopByOrderByIdDesc();
 
-	List<Report> findAllByOrderByIdDesc();
+    @Query("SELECT r FROM Report r WHERE r.id = :id")
+    Report getReportProfileById(@Param("id") Integer id);
 
-	@Query("SELECT COUNT(*) FROM Report r WHERE r.testDate= :toDay")
-	Integer getTestCountAddedToday(@Param("toDay") LocalDate toDay);
+    Report findTopByOrderByIdDesc();
 
-	@Query("SELECT COUNT(*) FROM Report r WHERE (r.issuedDate= :toDay AND r.availability=true)")
-	Integer getReportCountIssuedToday(@Param("toDay") LocalDate toDay);
+    List<Report> findAllByOrderByIdDesc();
 
-	@Query("SELECT COUNT(*) FROM Report r WHERE ( YEAR(r.issuedDate) = :year AND MONTH(r.issuedDate)= :month) ")
-	Integer getReportCountIssuedThisMonth(@Param("year") int year,@Param("month") int month);
+    @Query("SELECT COUNT(*) FROM Report r WHERE r.testDate= :toDay")
+    Integer getTestCountAddedToday(@Param("toDay") LocalDate toDay);
 
-	@Query("SELECT COUNT(*) FROM Report r WHERE r.availability=false")
-	Integer getReportCountToBeIssued();
+    @Query("SELECT COUNT(*) FROM Report r WHERE (r.issuedDate= :toDay AND r.availability=true)")
+    Integer getReportCountIssuedToday(@Param("toDay") LocalDate toDay);
 
-	@Query("SELECT COUNT(*) FROM Report r WHERE ( YEAR(r.issuedDate) = :year AND MONTH(r.issuedDate)= :month)")
-	Integer getMonthlyIssuedCount(@Param("year") int year, @Param("month") int month);
+    @Query("SELECT COUNT(*) FROM Report r WHERE ( YEAR(r.issuedDate) = :year AND MONTH(r.issuedDate)= :month) ")
+    Integer getReportCountIssuedThisMonth(@Param("year") int year, @Param("month") int month);
 
-	@Query("SELECT COUNT(*) FROM Report r WHERE r.test.id= :type")
-	Integer getIssuedReportTypeCount(@Param("type") int type);
+    @Query("SELECT COUNT(*) FROM Report r WHERE r.availability=false")
+    Integer getReportCountToBeIssued();
+
+    @Query("SELECT COUNT(*) FROM Report r WHERE ( YEAR(r.issuedDate) = :year AND MONTH(r.issuedDate)= :month)")
+    Integer getMonthlyIssuedCount(@Param("year") int year, @Param("month") int month);
+
+    @Query("SELECT COUNT(*) FROM Report r WHERE r.test.id= :type")
+    Integer getIssuedReportTypeCount(@Param("type") int type);
 
     List<Report> findByPatientIdAndTestClinicId(Integer pid, Integer cid);
+
+    //report search
+    @Query("SELECT r FROM Report r WHERE r.patient.name LIKE %:patientName% ")
+    List<Report> getPatientReportsByPatientName(@Param("patientName") String patientName);
+
+    @Query("SELECT r FROM Report r WHERE r.patient.nic = :patientNIC ")
+    List<Report> getPatientReportsByPatientNIC(@Param("patientNIC") String patientNIC);
+
+    @Query("SELECT r FROM Report r WHERE r.test.id = :testType ")
+    List<Report> getPatientReportsByTestType(@Param("testType") Integer testType);
+
+
 }
