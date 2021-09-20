@@ -28,4 +28,6 @@ public interface ClinicAppointmentRepository extends JpaRepository<ClinicAppoint
     ClinicAppointment findFirstByClinicDateIdAndQueueNo(Integer id, Integer currQueue);
 
     ClinicAppointment findByPatientIdAndClinicDateId(Integer id, Integer id1);
+
+    ClinicAppointment findByPatientIdAndClinicDateDate(Integer id, Date date);
 }

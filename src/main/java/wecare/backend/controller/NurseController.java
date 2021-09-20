@@ -148,4 +148,9 @@ public class NurseController {
 	public Boolean addNewAppointment(@RequestBody AddAppointment obj) throws MessagingException, UnsupportedEncodingException {
 		return nurseService.addNewAppointment(obj);
 	}
+
+	@GetMapping("/patient/profile/list/{id}")
+	public List<PatientClinicProfile> getPatients(@PathVariable Integer id){
+		return nurseService.getPatients(id);
+	}
 }

@@ -183,11 +183,11 @@ public class DoctorService {
 	}
 
 	public ClinicDate getClinicDate(Integer id) throws ParseException {
-		String date_string = "13-09-2021";
-		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-		Date date = formatter.parse(date_string);
+		//String date_string = "13-09-2021";
+		//SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+		//Date date = formatter.parse(date_string);
 
-		//Date date = new Date();
+		Date date = new Date();
 
 		return clinicDateRepo.findFirstByClinicSchedule_ClinicIdAndDate(id, date);
 	}
@@ -264,7 +264,7 @@ public class DoctorService {
 			ClinicAppointment available = clinicAppointmentRepo.findByPatientIdAndClinicDateId(clinicAppointment.getPatient().getId(), nextClinicDate.getId());
 
 			if(available != null){
-				return false;
+				return true;
 			}
 			Time scheduleTime = nextClinicDate.getClinicSchedule().getTime();
 			LocalTime localTime = scheduleTime.toLocalTime();

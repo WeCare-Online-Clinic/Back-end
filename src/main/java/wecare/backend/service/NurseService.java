@@ -129,11 +129,11 @@ public class NurseService {
 	}
 
 	public ClinicDate getClinicDate(Integer id) throws ParseException {
-		String date_string = "17-09-2021";
-		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-		Date date = formatter.parse(date_string);
+		//String date_string = "17-09-2021";
+		//SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+		//Date date = formatter.parse(date_string);
 
-		//Date date = new Date();
+		Date date = new Date();
 
 		return clinicDateRepo.findFirstByClinicSchedule_ClinicIdAndDate(id, date);
 	}
@@ -279,12 +279,6 @@ public class NurseService {
 
 		if (nextClinicDate != null) {
 
-			ClinicAppointment available = clinicAppointmentRepo.findByPatientIdAndClinicDateId(patient.getId(), nextClinicDate.getId());
-
-			if(available != null){
-				return available;
-			}
-
 			List<Integer> queue = nextClinicDate.getQueue();
 			queue.add(patient.getId());
 			nextClinicDate.setQueue(queue);
@@ -402,33 +396,41 @@ public class NurseService {
 	}
 
 	public Boolean changeAppointment(ChangeAppointment obj) throws MessagingException, UnsupportedEncodingException {
-		PatientRequest patientRequest = obj.getPatientRequest();
-		ClinicAppointment clinicAppointment = addClinicAppointment(patientRequest.getPatient(), patientRequest.getClinic(), obj.getDate());
-		ClinicDate clinicDate = patientRequest.getClinicDate();
-		List<Integer> queue = clinicDate.getQueue();
-		queue.remove(new Integer(patientRequest.getPatient().getId()));
-		clinicDate.setQueue(queue);
-		clinicDate.setNoPatients(clinicDate.getNoPatients() - 1);
-		patientRequest.setChanged(true);
 
-		LocalDate localDate = LocalDate.now();
-		LocalTime localTime = LocalTime.now();
+		ClinicAppointment available = clinicAppointmentRepo.findByPatientIdAndClinicDateDate(obj.getPatientRequest().getPatient().getId(), obj.getDate());
 
-		String message = "Clinic Appointment on " + clinicDate.getDate() +"changed to " + clinicAppointment.getClinicDate().getDate() ;
+		if(available != null){
+			return false;
+		}
+		else {
+			PatientRequest patientRequest = obj.getPatientRequest();
+			ClinicAppointment clinicAppointment = addClinicAppointment(patientRequest.getPatient(), patientRequest.getClinic(), obj.getDate());
+			ClinicDate clinicDate = patientRequest.getClinicDate();
+			List<Integer> queue = clinicDate.getQueue();
+			queue.remove(new Integer(patientRequest.getPatient().getId()));
+			clinicDate.setQueue(queue);
+			clinicDate.setNoPatients(clinicDate.getNoPatients() - 1);
+			patientRequest.setChanged(true);
 
-		PatientMessage patientMessage = new PatientMessage();
-		patientMessage.setPatient(patientRequest.getPatient());
-		patientMessage.setDate(localDate);
-		patientMessage.setTime(localTime);
-		patientMessage.setMessage(message);
+			LocalDate localDate = LocalDate.now();
+			LocalTime localTime = LocalTime.now();
 
-		clinicAppointmentRepo.deleteByPatientIdAndClinicDateId(patientRequest.getPatient().getId(),patientRequest.getClinicDate().getId());
-		patientRequestRepo.save(patientRequest);
-		clinicDateRepo.save(clinicDate);
-		patientMessageRepo.save(patientMessage);
+			String message = "Clinic Appointment on " + clinicDate.getDate() + "changed to " + clinicAppointment.getClinicDate().getDate();
 
-		sendAppointmentEmail(clinicAppointment);
-		sendSms(patientRequest.getPatient().getContact(), message);
+			PatientMessage patientMessage = new PatientMessage();
+			patientMessage.setPatient(patientRequest.getPatient());
+			patientMessage.setDate(localDate);
+			patientMessage.setTime(localTime);
+			patientMessage.setMessage(message);
+
+			clinicAppointmentRepo.deleteByPatientIdAndClinicDateId(patientRequest.getPatient().getId(), patientRequest.getClinicDate().getId());
+			patientRequestRepo.save(patientRequest);
+			clinicDateRepo.save(clinicDate);
+			patientMessageRepo.save(patientMessage);
+
+			sendAppointmentEmail(clinicAppointment);
+			sendSms(patientRequest.getPatient().getContact(), message);
+		}
 
 		return true;
 	}
@@ -489,10 +491,17 @@ public class NurseService {
 	}
 
 	public Boolean addNewAppointment(AddAppointment obj) {
-		ClinicAppointment clinicAppointment = addClinicAppointment(obj.getPatient(), obj.getClinic(), obj.getDate());
-		LocalDate localDate = LocalDate.now();
-		LocalTime localTime = LocalTime.now();
 
+		ClinicAppointment available = clinicAppointmentRepo.findByPatientIdAndClinicDateDate(obj.getPatient().getId(), obj.getDate());
+
+		if(available != null){
+			return false;
+		}
+		else {
+
+			ClinicAppointment clinicAppointment = addClinicAppointment(obj.getPatient(), obj.getClinic(), obj.getDate());
+			LocalDate localDate = LocalDate.now();
+			LocalTime localTime = LocalTime.now();
 
 			PatientMessage patientMessage = new PatientMessage();
 			patientMessage.setPatient(obj.getPatient());
@@ -501,7 +510,12 @@ public class NurseService {
 			patientMessage.setMessage("New clinic appointment on: " + clinicAppointment.getClinicDate().getDate()
 					+ " Time: " + clinicAppointment.getTime() + " Queue no: " + clinicAppointment.getQueueNo());
 			patientMessageRepo.save(patientMessage);
+		}
 
-			return true;
+		return true;
 	}
+
+    public List<PatientClinicProfile> getPatients(Integer id) {
+		return patientClinicProfileRepo.findByClinicId(id);
+    }
 }
