@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import wecare.backend.exception.UserCollectionException;
 import wecare.backend.model.*;
 import wecare.backend.model.dto.ChangeClinicDate;
+import wecare.backend.model.dto.NextClinic;
 import wecare.backend.model.dto.PatientMessageList;
 import wecare.backend.repository.*;
 
@@ -48,6 +49,9 @@ public class PatientService {
 
 	@Autowired
 	private PatientLabReports patientLabReportsRepo;
+
+	@Autowired
+	private ClinicRepository clinicRepo;
 	
 	public Patient addPatient(Patient patient) throws UserCollectionException{
     Patient resultedPatient = patientRepo.findByEmail(patient.getEmail());
@@ -89,9 +93,16 @@ public class PatientService {
 		return patientRepo.findById(id).get();
 	}
 
-	public List<ClinicAppointment> getNextClinicDetails(Integer patientId){
-		List<ClinicAppointment> clinicAppointment= clinicAppointmentRepo.getNextClinicDetails(patientId);
-		return clinicAppointment;
+	public List<NextClinic> getNextClinicDetails(Integer patientId){
+		List<ClinicAppointment> clinicAppointments= clinicAppointmentRepo.getNextClinicDetails(patientId);
+		List<NextClinic> nextClinics = new ArrayList<>(clinicAppointments.size());
+		for (ClinicAppointment clinicAppointment : clinicAppointments) {
+			NextClinic nextClinic = new NextClinic();
+			nextClinic.setClinicAppointment(clinicAppointment);
+			nextClinic.setClinic(clinicRepo.findByClinicSchedulesId(clinicAppointment.getClinicDate().getClinicSchedule().getId()));
+			nextClinics.add(nextClinic);
+		}
+		return nextClinics;
 	}
 
 	public List<PatientClinicData> getPatientClinicDataList(Integer id){
@@ -123,6 +134,7 @@ public class PatientService {
 
 		PatientRequest resultPatientRequest=patientRequestRepo.findIsRequestIsExisting(patientRequest.getPatient(),patientRequest.getClinicDate(),patientRequest.getClinic());
 		if(resultPatientRequest==null){
+			patientRequest.setChanged(false);
 			patientRequestRepo.saveAndFlush(patientRequest);
 			return 1;
 		}

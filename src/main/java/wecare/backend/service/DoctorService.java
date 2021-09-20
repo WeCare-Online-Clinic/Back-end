@@ -174,7 +174,7 @@ public class DoctorService {
 
 	public PatientClinicData getPatientClinicData(Integer id){
 		Date date = new Date();
-		return patientClinicDataRepo.findFirstByClinicAppointment_PatientIdAndClinicAppointment_ClinicDateDateLessThan(id, date);
+		return patientClinicDataRepo.findFirstByClinicAppointment_PatientIdAndClinicAppointment_ClinicDateDate(id, date);
 	}
 
 	public List<PatientClinicData> getPatientClinicDataList(Integer id){
@@ -229,7 +229,7 @@ public class DoctorService {
 				patientMessage.setPatient(nextPatient);
 				patientMessage.setDate(localDate);
 				patientMessage.setTime(localTime);
-				patientMessage.setMessage("Please visit consultation room for clinic appointment. Current queue no: " + clinicDate.getCurrQueue() + 1);
+				patientMessage.setMessage("Please visit consultation room for clinic appointment. Current queue no: " + clinicDate.getCurrQueue());
 				patientMessageRepo.save(patientMessage);
 			}
 		}
@@ -307,6 +307,7 @@ public class DoctorService {
 			newClinicDate.setClinicSchedule(clinicSchedule);
 			newClinicDate.setNoPatients(1);
 			newClinicDate.setStarted(false);
+			newClinicDate.setEnded((false));
 			newClinicDate.setCurrQueue(1);
 			newClinicDate = clinicDateRepo.saveAndFlush(newClinicDate);
 
@@ -338,8 +339,8 @@ public class DoctorService {
 
 	public ClinicSummary getClinicSummary(Integer id) throws ParseException {
 		ClinicDate clinicDate = getClinicDate(id);
-		List<ClinicAppointment> visitedPatients = clinicAppointmentRepo.findByClinicDateIdAndVisited(id, true);
-		List<ClinicAppointment> notVisitedPatients = clinicAppointmentRepo.findByClinicDateIdAndVisited(id, false);
+		List<ClinicAppointment> visitedPatients = clinicAppointmentRepo.findByClinicDateIdAndVisited(clinicDate.getId(), true);
+		List<ClinicAppointment> notVisitedPatients = clinicAppointmentRepo.findByClinicDateIdAndVisited(clinicDate.getId(), false);
 
 		ClinicSummary clinicSummary = new ClinicSummary();
 		clinicSummary.setClinicDate(clinicDate);

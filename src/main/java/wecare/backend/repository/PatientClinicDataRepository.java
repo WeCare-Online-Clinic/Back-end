@@ -13,6 +13,10 @@ import java.util.List;
 @Repository
 public interface PatientClinicDataRepository extends JpaRepository<PatientClinicData, Integer> {
 
-    List<PatientClinicData> findAllByClinicAppointment_PatientIdAndClinicAppointment_ClinicDateDateLessThan(Integer id, Date date);
+    // List<PatientClinicData> findAllByClinicAppointment_PatientIdAndClinicAppointment_ClinicDateDateLessThan(Integer id, Date date);
     PatientClinicData findFirstByClinicAppointment_PatientIdAndClinicAppointment_ClinicDateDateLessThan(Integer id, Date date);
+
+    PatientClinicData findFirstByClinicAppointment_PatientIdAndClinicAppointment_ClinicDateDate(Integer id, Date date);
+
+    List<PatientClinicData> findAllByClinicAppointment_PatientIdAndClinicAppointment_ClinicDateDateLessThan(Integer id, Date date);
 }

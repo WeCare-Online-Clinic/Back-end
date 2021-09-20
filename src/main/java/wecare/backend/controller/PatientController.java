@@ -20,6 +20,7 @@ import wecare.backend.exception.UserCollectionException;
 import wecare.backend.model.*;
 import wecare.backend.model.dto.ChangeClinicDate;
 import wecare.backend.model.dto.MessageList;
+import wecare.backend.model.dto.NextClinic;
 import wecare.backend.model.dto.PatientMessageList;
 import wecare.backend.service.PatientService;
 
@@ -62,9 +63,8 @@ public class PatientController {
 	}
 
 	@GetMapping("/getNextClinicDetails/{patientId}")
-	public List<ClinicAppointment> getNextClinicDetails(@PathVariable Integer patientId){
-		List<ClinicAppointment> clinicAppointment= patientService.getNextClinicDetails(patientId);
-		return  clinicAppointment;
+	public List<NextClinic> getNextClinicDetails(@PathVariable Integer patientId){
+		return patientService.getNextClinicDetails(patientId);
 	}
 
 	@GetMapping("/patient/clinic/history/list/{id}")

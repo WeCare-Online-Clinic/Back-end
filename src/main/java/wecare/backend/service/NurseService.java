@@ -152,10 +152,12 @@ public class NurseService {
 
 		ClinicDate clinicDate = clinicDateRepo.findById(id).get();
 
-		clinicDate.setStarted(true);
-		clinicDate.setStartTime(time);
-		clinicDate.setNurse(nurseRepo.findById(nurseId).get());
-		clinicDateRepo.save(clinicDate);
+		if (clinicDate.getStarted() == null || !clinicDate.getStarted()) {
+			clinicDate.setStarted(true);
+			clinicDate.setStartTime(time);
+			clinicDate.setNurse(nurseRepo.findById(nurseId).get());
+			clinicDateRepo.save(clinicDate);
+		}
 
 		return true;
 	}
@@ -179,11 +181,11 @@ public class NurseService {
 		List<ClinicAppointment> clinicAppointments = clinicAppointmentRepo.findByClinicDateIdAndVisited(clinicDate.getId(), true);
 		Integer visitedPatients = clinicAppointments.size();
 
-		if (!clinicDate.getEnded()) {
+		if (clinicDate.getEnded() == null || !clinicDate.getEnded()) {
 			clinicDate.setStarted(false);
 			clinicDate.setEnded(true);
 			clinicDate.setEndTime(time);
-	clinicDate.setVisitedPatients(visitedPatients);
+			clinicDate.setVisitedPatients(visitedPatients);
 			clinicDateRepo.save(clinicDate);
 		}
 
@@ -274,10 +276,9 @@ public class NurseService {
 		ClinicDate nextClinicDate = clinicDateRepo.findFirstByClinicSchedule_ClinicIdAndDate(clinic.getId(), date);
 		ClinicAppointment newClinicAppointment = new ClinicAppointment();
 
-		Time scheduleTime = nextClinicDate.getClinicSchedule().getTime();
-		LocalTime localTime = scheduleTime.toLocalTime();
-
 		if (nextClinicDate != null) {
+			Time scheduleTime = nextClinicDate.getClinicSchedule().getTime();
+			LocalTime localTime = scheduleTime.toLocalTime();
 
 			List<Integer> queue = nextClinicDate.getQueue();
 			queue.add(patient.getId());
@@ -309,8 +310,11 @@ public class NurseService {
 			newClinicDate.setClinicSchedule(clinicSchedule);
 			newClinicDate.setNoPatients(1);
 			newClinicDate.setStarted(false);
+			newClinicDate.setEnded((false));
 			newClinicDate.setCurrQueue(1);
 			ClinicDate newClinicDate1 = clinicDateRepo.saveAndFlush(newClinicDate);
+			Time scheduleTime = newClinicDate1.getClinicSchedule().getTime();
+			LocalTime localTime = scheduleTime.toLocalTime();
 
 			newClinicAppointment.setQueueNo(1);
 			newClinicAppointment.setTime(scheduleTime);
@@ -359,9 +363,10 @@ public class NurseService {
 		String senderName = "WeCare Hospitals";
 		String subject = "Clinic Appointment";
 		String body = "Mr/Mrs. [[name]], <br>"
-				+ "Please click the link below to proceed to setting up the account. <br>"
+				+ "New clinic appointment information <br>"
 				+ "Clinic Date: [[date]] <br>"
 				+ "Queue No: [[no]] <br>"
+				+ "Time: [[time]] <br>"
 				+ "Thank you, <br>"
 				+ "Wecare Hospitals";
 
@@ -375,6 +380,7 @@ public class NurseService {
 		body = body.replace("[[name]]", clinicAppointment.getPatient().getName());
 		body = body.replace("[[date]]", clinicAppointment.getClinicDate().getDate());
 		body = body.replace("[[no]]", toString(clinicAppointment.getQueueNo()));
+		body = body.replace("[[time]]", clinicAppointment.getTime());
 		helper.setText(body, true);
 
 		mailSender.send(message);
@@ -395,6 +401,7 @@ public class NurseService {
 		 return requestChange;
 	}
 
+	@Transactional
 	public Boolean changeAppointment(ChangeAppointment obj) throws MessagingException, UnsupportedEncodingException {
 
 		ClinicAppointment available = clinicAppointmentRepo.findByPatientIdAndClinicDateDate(obj.getPatientRequest().getPatient().getId(), obj.getDate());
@@ -423,13 +430,11 @@ public class NurseService {
 			patientMessage.setTime(localTime);
 			patientMessage.setMessage(message);
 
-			clinicAppointmentRepo.deleteByPatientIdAndClinicDateId(patientRequest.getPatient().getId(), patientRequest.getClinicDate().getId());
 			patientRequestRepo.save(patientRequest);
 			clinicDateRepo.save(clinicDate);
 			patientMessageRepo.save(patientMessage);
+			clinicAppointmentRepo.deleteByPatientIdAndClinicDateId(patientRequest.getPatient().getId(), patientRequest.getClinicDate().getId());
 
-			sendAppointmentEmail(clinicAppointment);
-			sendSms(patientRequest.getPatient().getContact(), message);
 		}
 
 		return true;
@@ -484,7 +489,7 @@ public class NurseService {
 
 	public void sendSms(Integer phoneNumber, String message){
 
-		Twilio.init("AC7259622d5c4317798e7587a3a2bb72fd", "fce387d1a0fc715f83423a0fef20690d");
+		Twilio.init("AC7259622d5c4317798e7587a3a2bb72fd", "be5bc271833c26d586e4fe7fd88594ca");
 		String number = "+94"+phoneNumber;
 		com.twilio.rest.api.v2010.account.Message.creator(new PhoneNumber(number), new PhoneNumber("+13038163922"), message).create();
 

@@ -18,4 +18,5 @@ public interface ClinicRepository extends JpaRepository<Clinic, Integer>{
 	@Query("FROM Clinic")
 	public List<Clinic> getClinic();
 
+    Clinic findByClinicSchedulesId(Integer id);
 }
