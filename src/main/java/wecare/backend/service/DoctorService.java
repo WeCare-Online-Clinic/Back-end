@@ -352,9 +352,9 @@ public class DoctorService {
 
 	public void sendSms(Integer phoneNumber, String message){
 
-		Twilio.init("AC7259622d5c4317798e7587a3a2bb72fd", "fce387d1a0fc715f83423a0fef20690d");
+		Twilio.init("", "");
 		String number = "+94"+phoneNumber;
-		com.twilio.rest.api.v2010.account.Message.creator(new PhoneNumber(number), new PhoneNumber("+13038163922"), message).create();
+		com.twilio.rest.api.v2010.account.Message.creator(new PhoneNumber(number), new PhoneNumber("+"), message).create();
 
 	}
 

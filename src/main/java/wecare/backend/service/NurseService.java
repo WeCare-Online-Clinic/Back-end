@@ -505,9 +505,9 @@ public class NurseService {
 
 	public void sendSms(Integer phoneNumber, String message){
 
-		Twilio.init("AC7259622d5c4317798e7587a3a2bb72fd", "be5bc271833c26d586e4fe7fd88594ca");
+		Twilio.init("", "");
 		String number = "+94"+phoneNumber;
-		com.twilio.rest.api.v2010.account.Message.creator(new PhoneNumber(number), new PhoneNumber("+13038163922"), message).create();
+		com.twilio.rest.api.v2010.account.Message.creator(new PhoneNumber(number), new PhoneNumber("+"), message).create();
 
 	}
 
