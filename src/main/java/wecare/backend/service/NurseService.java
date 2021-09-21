@@ -133,11 +133,11 @@ public class NurseService {
 	}
 
 	public ClinicDate getClinicDate(Integer id) throws ParseException {
-		String date_string = "28-09-2021";
-		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-		Date date = formatter.parse(date_string);
+		//String date_string = "28-09-2021";
+		//SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+		//Date date = formatter.parse(date_string);
 
-		//Date date = new Date();
+		Date date = new Date();
 
 		return clinicDateRepo.findFirstByClinicSchedule_ClinicIdAndDate(id, date);
 	}
