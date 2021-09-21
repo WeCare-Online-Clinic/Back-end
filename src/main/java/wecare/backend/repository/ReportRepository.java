@@ -45,4 +45,6 @@ public interface ReportRepository extends JpaRepository<Report, Integer> {
 	Integer getIssuedReportTypeCount(@Param("type") int type);
 
     List<Report> findByPatientIdAndTestClinicId(Integer pid, Integer cid);
+
+    Report findTopByPatientIdAndTestClinicIdOrderByIssuedDate(Integer pid, Integer cid);
 }

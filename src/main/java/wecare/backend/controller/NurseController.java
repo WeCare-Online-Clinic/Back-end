@@ -153,4 +153,6 @@ public class NurseController {
 	public List<PatientClinicProfile> getPatients(@PathVariable Integer id){
 		return nurseService.getPatients(id);
 	}
+
+
 }

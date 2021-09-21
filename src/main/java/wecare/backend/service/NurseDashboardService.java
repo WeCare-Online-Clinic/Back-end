@@ -80,7 +80,7 @@ public class NurseDashboardService {
                     ZoneId systemTimeZone = ZoneId.systemDefault();
                     ZonedDateTime zoneDateTime = nextDate.atStartOfDay(systemTimeZone);
                     Date utilDate = Date.from(zoneDateTime.toInstant());
-                    Integer noOfPatientInNextClinic = clinicDateRepo.getPatientCountOfNextClnic(utilDate, clinicId);
+                    Integer noOfPatientInNextClinic = clinicDateRepo.findFirstByClinicSchedule_ClinicIdAndDate(clinicId, utilDate).getNoPatients();
                     patientCountInNextClinicObject.setName("Patients in Next Clinic");
                     patientCountInNextClinicObject.setValue(Integer.toString(noOfPatientInNextClinic));
                     nurseDataCardList.add(patientCountInNextClinicObject);

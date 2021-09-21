@@ -183,11 +183,11 @@ public class DoctorService {
 	}
 
 	public ClinicDate getClinicDate(Integer id) throws ParseException {
-		//String date_string = "13-09-2021";
-		//SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-		//Date date = formatter.parse(date_string);
+		String date_string = "28-09-2021";
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+		Date date = formatter.parse(date_string);
 
-		Date date = new Date();
+		//Date date = new Date();
 
 		return clinicDateRepo.findFirstByClinicSchedule_ClinicIdAndDate(id, date);
 	}
@@ -361,4 +361,8 @@ public class DoctorService {
     public List<Report> getReports(Integer pid, Integer cid) {
 		return reportRepo.findByPatientIdAndTestClinicId(pid, cid);
     }
+
+	public Report getRecentReport(Integer pid, Integer cid) {
+		return reportRepo.findTopByPatientIdAndTestClinicIdOrderByIssuedDate(pid, cid);
+	}
 }

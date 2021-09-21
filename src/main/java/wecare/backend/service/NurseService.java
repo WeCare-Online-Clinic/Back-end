@@ -69,7 +69,11 @@ public class NurseService {
 	@Autowired
 	private ClinicDateMessageRepository clinicDateMessageRepo;
 
-	@Autowired PatientMessageRepository patientMessageRepo;
+	@Autowired
+	private PatientMessageRepository patientMessageRepo;
+
+	@Autowired
+	private ReportRepository reportRepo;
 
 	@Autowired
 	private JavaMailSender mailSender;
@@ -129,11 +133,11 @@ public class NurseService {
 	}
 
 	public ClinicDate getClinicDate(Integer id) throws ParseException {
-		//String date_string = "17-09-2021";
-		//SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-		//Date date = formatter.parse(date_string);
+		String date_string = "28-09-2021";
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+		Date date = formatter.parse(date_string);
 
-		Date date = new Date();
+		//Date date = new Date();
 
 		return clinicDateRepo.findFirstByClinicSchedule_ClinicIdAndDate(id, date);
 	}
@@ -370,6 +374,14 @@ public class NurseService {
 				+ "Thank you, <br>"
 				+ "Wecare Hospitals";
 
+		String body1 = "Mr/Mrs. [[name]], "
+				+ "New clinic appointment information. "
+				+ "Clinic Date: [[date]]. "
+				+ "Queue No: [[no]]. "
+				+ "Time: [[time]]. "
+				+ "Thank you. "
+				+ "Wecare Hospitals";
+
 		MimeMessage message = mailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message);
 
@@ -381,10 +393,14 @@ public class NurseService {
 		body = body.replace("[[date]]", clinicAppointment.getClinicDate().getDate());
 		body = body.replace("[[no]]", toString(clinicAppointment.getQueueNo()));
 		body = body.replace("[[time]]", clinicAppointment.getTime());
-		helper.setText(body, true);
+
+		body1 = body1.replace("[[name]]", clinicAppointment.getPatient().getName());
+		body1 = body1.replace("[[date]]", clinicAppointment.getClinicDate().getDate());
+		body1 = body1.replace("[[no]]", toString(clinicAppointment.getQueueNo()));
+		body1 = body1.replace("[[time]]", clinicAppointment.getTime());
 
 		mailSender.send(message);
-		sendSms(clinicAppointment.getPatient().getContact(), body);
+		sendSms(clinicAppointment.getPatient().getContact(), body1);
 	}
 
 	private String toString(Integer queueNo) {
@@ -526,4 +542,5 @@ public class NurseService {
     public List<PatientClinicProfile> getPatients(Integer id) {
 		return patientClinicProfileRepo.findByClinicId(id);
     }
+
 }
