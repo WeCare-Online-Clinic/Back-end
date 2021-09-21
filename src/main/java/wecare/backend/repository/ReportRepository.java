@@ -56,4 +56,6 @@ public interface ReportRepository extends JpaRepository<Report, Integer> {
 
 	@Query("SELECT r FROM Report r WHERE r.test.id = :testType ")
 	List<Report> getPatientReportsByTestType(@Param("testType") Integer testType);
+
+	Report findTopByPatientIdOrderByIssuedDateDesc(Integer pid);
 }

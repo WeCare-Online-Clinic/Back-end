@@ -145,8 +145,8 @@ public class DoctorController {
 		return doctorService.getReports(pid, cid);
 	}
 
-	@GetMapping("/get/recent/report/{pid}/{cid}")
-	public Report getRecentReport(@PathVariable Integer pid, @PathVariable Integer cid){
-		return doctorService.getRecentReport(pid, cid);
+	@GetMapping("/get/recent/report/{pid}")
+	public Report getRecentReport(@PathVariable Integer pid){
+		return doctorService.getRecentReport(pid);
 	}
  }

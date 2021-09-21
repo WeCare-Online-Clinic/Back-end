@@ -3,6 +3,7 @@ package wecare.backend.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import wecare.backend.model.ClinicDate;
 import wecare.backend.model.Doctor;
 import wecare.backend.model.DoctorSchedule;
 import wecare.backend.model.PatientClinicProfile;
@@ -255,7 +256,14 @@ public class DoctorDashboardService {
                     Date utilDate = Date.from(zoneDateTime.toInstant()); //utilDate means Date type of nextClinicDate
 
                     //get the consulted patients of the perticular date
-                    Integer consultedCount=clinicDateRepo.getConsultedPatients(clinicId,utilDate);
+                    ClinicDate clinicDate = clinicDateRepo.findFirstByClinicSchedule_ClinicIdAndDate(clinicId,utilDate);
+                    Integer consultedCount;
+                    if(clinicDate == null){
+                        consultedCount = 0;
+                    }
+                    else{
+                        consultedCount = clinicDate.getVisitedPatients();
+                    }
                     ConsultedPatientsCount consultedPatientsCountObject= new ConsultedPatientsCount();
                     consultedPatientsCountObject.setClinicDate(nextDate);
                     consultedPatientsCountObject.setCount(consultedCount);

@@ -362,7 +362,7 @@ public class DoctorService {
 		return reportRepo.findByPatientIdAndTestClinicId(pid, cid);
     }
 
-	public Report getRecentReport(Integer pid, Integer cid) {
-		return reportRepo.findTopByPatientIdAndTestClinicIdOrderByIssuedDate(pid, cid);
+	public Report getRecentReport(Integer pid) {
+		return reportRepo.findTopByPatientIdOrderByIssuedDateDesc(pid);
 	}
 }
