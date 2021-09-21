@@ -174,7 +174,7 @@ public class DoctorService {
 
 	public PatientClinicData getPatientClinicData(Integer id){
 		Date date = new Date();
-		return patientClinicDataRepo.findFirstByClinicAppointment_PatientIdAndClinicAppointment_ClinicDateDate(id, date);
+		return patientClinicDataRepo.findTopByClinicAppointment_PatientIdAndClinicAppointment_ClinicDateDateLessThanOrderByClinicAppointment_ClinicDateDateDesc(id, date);
 	}
 
 	public List<PatientClinicData> getPatientClinicDataList(Integer id){

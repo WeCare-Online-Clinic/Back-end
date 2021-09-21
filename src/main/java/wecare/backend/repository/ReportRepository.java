@@ -47,4 +47,13 @@ public interface ReportRepository extends JpaRepository<Report, Integer> {
     List<Report> findByPatientIdAndTestClinicId(Integer pid, Integer cid);
 
     Report findTopByPatientIdAndTestClinicIdOrderByIssuedDate(Integer pid, Integer cid);
+
+	@Query("SELECT r FROM Report r WHERE r.patient.name LIKE %:patientName% ")
+	List<Report> getPatientReportsByPatientName(@Param("patientName") String patientName);
+
+	@Query("SELECT r FROM Report r WHERE r.patient.nic = :patientNIC ")
+	List<Report> getPatientReportsByPatientNIC(@Param("patientNIC") String patientNIC);
+
+	@Query("SELECT r FROM Report r WHERE r.test.id = :testType ")
+	List<Report> getPatientReportsByTestType(@Param("testType") Integer testType);
 }

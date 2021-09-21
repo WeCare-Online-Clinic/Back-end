@@ -19,4 +19,6 @@ public interface PatientClinicDataRepository extends JpaRepository<PatientClinic
     PatientClinicData findFirstByClinicAppointment_PatientIdAndClinicAppointment_ClinicDateDate(Integer id, Date date);
 
     List<PatientClinicData> findAllByClinicAppointment_PatientIdAndClinicAppointment_ClinicDateDateLessThan(Integer id, Date date);
+
+    PatientClinicData findTopByClinicAppointment_PatientIdAndClinicAppointment_ClinicDateDateLessThanOrderByClinicAppointment_ClinicDateDateDesc(Integer id, Date date);
 }
