@@ -94,5 +94,26 @@ public class LabTechController {
 
     }
 
+    //lab Report Search
+    @GetMapping("/getPatientReportsByPatientName/{patientName}")
+    public  List<Report> getPatientReportsByPatientName(@PathVariable String patientName){
+        List<Report> reports = labTechService.getPatientReportsByPatientName(patientName);
+        return reports;
+
+    }
+    @GetMapping("/getPatientReportsByPatientNIC/{patientNIC}")
+    public List<Report> getPatientReportsByPatientNIC(@PathVariable String patientNIC){
+        List<Report> reports=labTechService.getPatientReportsByPatientNIC(patientNIC);
+        return reports;
+
+    }
+
+    @GetMapping("/getPatientReportsByTestType/{testType}")
+    public List<Report> getPatientReportsByTestType(@PathVariable Integer testType){
+        List<Report> reports=labTechService.getPatientReportsByTestType(testType);
+        return reports;
+
+    }
+
 
 }
